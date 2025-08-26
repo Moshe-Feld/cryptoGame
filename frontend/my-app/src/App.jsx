@@ -12,7 +12,6 @@ function App() {
     const fetchQuote = async () => {
       const randomData = await axios.get('https://dummyjson.com/quotes/random');
       if (!ignore) {
-        console.log("useEffect runing")
         setQuote(randomData.data);
       }
       setLoad(false);
