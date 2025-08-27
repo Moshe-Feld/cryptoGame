@@ -24,6 +24,7 @@ function App() {
   }, [])
   return (
     <>
+      <h1>qoute</h1>
       {load ? <p>loading</p> : <p><strong>my random quote:</strong> {Quote.quote}</p>}
     </>
   )
