@@ -6,7 +6,7 @@ export default function Login() {
     const [user, setUser] = useState("");
     const {Login} = useUser();
     return (
-        <>
+        <div className="login-container">
             <h1>Welcome</h1>
             <p>please enter your email to connect</p>
             <input placeholder="email"
@@ -15,6 +15,6 @@ export default function Login() {
             <button onClick={async () => {
                 Login(user);
             }}>Log in</button>
-        </>
+        </div>
     )
 }

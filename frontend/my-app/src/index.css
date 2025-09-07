@@ -35,3 +35,35 @@
   background-color: #666;
   color: white;
 }
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.login-container input {
+  padding: 10px;
+  width: 250px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+}
+
+.login-container button {
+  padding: 10px 20px;
+  background: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login-container button:hover {
+  background: #1aaa9c;
+}
