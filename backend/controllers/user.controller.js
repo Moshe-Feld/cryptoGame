@@ -11,7 +11,7 @@ async function getAllUsers(req, res) {
 async function getUserById(req, res) {
     try {
         const { email } = req.params;
-        const findUser = await userModel.find({ email: email })
+        const findUser = await userModel.findOne({ email: email })
         if (!findUser) {
             return res.status(404).send("user undefine")
         }
@@ -23,10 +23,10 @@ async function getUserById(req, res) {
 
 async function addUser(req, res) {
     try {
-        const body = req.body.email;
-        const newUser = { "email": body, "coins": 0, "hints": 0 }
+        const {email} = req.body;
+        const newUser = { email, coins: 0, hints: 0 }
         await userModel.create(newUser);
-        res.status(200).send("user added");
+        res.status(200).send(newUser);
     } catch (err) {
         console.error(err.message);
     }
@@ -46,10 +46,24 @@ async function editUser(req, res) {
     }
 }
 
+async function addCoinsToUser(req, res) {
+    try{
+        const {email} = req.params;
+        await userModel.findOneAndUpdate(
+            {email: email},
+            {$inc: {coins: 10}},
+            {new: true}
+        )
+        res.status(200).send("add 1 to your coins")
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
 
 module.exports = {
     getAllUsers,
     getUserById,
     addUser,
-    editUser
+    addCoinsToUser
 }

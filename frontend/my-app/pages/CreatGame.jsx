@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CipherSquares from "../src/components/CipherSquares";
+import CreatePuzzle from "../src/components/CreatePuzzle";
 function CreatGame() {
     const [myGame, setMyGame] = useState({ quote: "", author: "" })
     const [status, setStatus] = useState(false);
@@ -10,14 +10,14 @@ function CreatGame() {
         u: 21, v: 22, w: 23, x: 24, y: 25, z: 26
     };
     return (
-        status ? <CipherSquares text={myGame.quote} mapping={code} /> :
-            <>
+        status ? <CreatePuzzle text={myGame.quote}/> :
+            <div className="login-container">
                 <h1>Creat Game</h1>
                 <p>hi plaese enter a Quote</p>
                 <input placeholder="My Quote" onChange={(e) => setMyGame({ ...myGame, quote: e.target.value })} />
                 <input placeholder="Author" onChange={(e) => setMyGame({ ...myGame, author: e.target.value })} />
                 <button onClick={() => { alert(myGame.quote + "created"); setStatus(true) }}>Create</button>
-            </>
+            </div>
     )
 }
 
