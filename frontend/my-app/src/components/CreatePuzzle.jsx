@@ -44,6 +44,7 @@ function CreatePuzzle({ text }) {
   useEffect(() => {
     const initialNumbers = [];
     let inputIndex = 0;
+
     items.forEach((item) => {
       if (item.type === "word") {
         item.chars.forEach((ch) => {
@@ -53,8 +54,23 @@ function CreatePuzzle({ text }) {
         });
       }
     });
+
+    const revealed = revealStartsLetters(items);
+    revealed.forEach((idx) => {
+      const input = inputRefs.current[idx];
+      if (!input) return;
+      const char = input.dataset.char;
+      const stillRemaining = remainingOccurrences(char);
+      if (!stillRemaining) {
+        initialNumbers[idx] = null;
+      }
+      input.value = char.toUpperCase();
+      input.disabled = true;
+    });
+
     setNumbersState(initialNumbers);
   }, [items]);
+
 
   useEffect(() => {
     if (inputRefs.current[0]) {
@@ -80,6 +96,69 @@ function CreatePuzzle({ text }) {
 
     return next;
   };
+
+  const revealStartsLetters = (items) => {
+    if (!items || items.length === 0) return [];
+
+    const chosen = new Set();
+    let runningIndex = 0;
+
+    // אות אחת אקראית במילים ארוכות
+    items.forEach((item) => {
+      if (item.type === "word" && Array.isArray(item.chars) && item.chars.length >= 5) {
+        const encs = item.chars
+          .map((ch) => ({ ch, idx: runningIndex++ }))
+          .filter(({ ch }) => ch.type === "enc");
+
+        if (encs.length > 0) {
+          const rand = encs[Math.floor(Math.random() * encs.length)];
+          chosen.add(rand.idx);
+        }
+      } else if (item.type === "word" && Array.isArray(item.chars)) {
+        item.chars.forEach((ch) => { if (ch.type === "enc") runningIndex++; });
+      }
+    });
+
+    // 2–3 אותיות נוספות אקראיות מכל הטקסט
+    const encLetters = [];
+    let globalIndex = 0;
+    items.forEach((item) => {
+      if (item.type === "word" && Array.isArray(item.chars)) {
+        item.chars.forEach((ch) => {
+          if (ch.type === "enc") {
+            encLetters.push({ char: ch.char.toLowerCase(), number: ch.number, index: globalIndex });
+          }
+          if (ch.type === "enc") globalIndex++;
+        });
+      }
+    });
+
+    const extraCount = Math.min(3, encLetters.length);
+    for (let i = 0; i < extraCount; i++) {
+      const rand = encLetters[Math.floor(Math.random() * encLetters.length)];
+      chosen.add(rand.index);
+    }
+
+    // עדכון inputRefs והסטייט
+    const indicesToClear = [];
+    chosen.forEach((index) => {
+      const input = inputRefs.current[index];
+      if (input && input.dataset.char) {
+        input.value = input.dataset.char.toUpperCase();
+        input.disabled = true;
+        indicesToClear.push(Number(input.dataset.number));
+      }
+    });
+
+    // עדכון סטייט פעם אחת
+    if (indicesToClear.length > 0) {
+      setNumbersState((prev) => prev.map((num) => (indicesToClear.includes(num) ? null : num)));
+    }
+
+    return Array.from(chosen);
+  };
+
+
 
   const remainingOccurrences = (char) => {
     const number = code[char.toLowerCase()];
@@ -120,7 +199,6 @@ function CreatePuzzle({ text }) {
   };
 
 
-  // מאזין למקשים
   const handleKeyDown = (e, index) => {
     if (e.key === "ArrowRight") {
       e.preventDefault();
@@ -132,7 +210,6 @@ function CreatePuzzle({ text }) {
     }
   };
 
-  // מספור כולל של אינדקסים
   let inputIndex = 0;
 
   return (
@@ -156,6 +233,7 @@ function CreatePuzzle({ text }) {
                         ref={(el) => (inputRefs.current[currentIndex] = el)}
                         className="puzzle-input"
                         maxLength={1}
+                        data-char={ch.char}
                         data-number={ch.number}
                         onChange={(e) => handleInput(e.target.value, currentIndex)}
                         onKeyDown={(e) => handleKeyDown(e, currentIndex)}

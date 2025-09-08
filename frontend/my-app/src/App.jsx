@@ -5,9 +5,7 @@ import axios from "axios";
 function App() {
   const [quote, setQuote] = useState(null);
   const [load, setLoad] = useState(true);
-
-  
-  
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -36,9 +34,8 @@ function App() {
         <p>Loading...</p>
       ) : (
         <>
-          <p>
-            <strong>Quote:</strong> {quote?.quote}
-          </p>
+          <button style={{margin:"10px"}} onClick={() => {setShow(!show)}}>show Qoute</button>
+          {show ? <><strong>Quote:</strong> {quote?.quote}</> : <></>}
           <CreatePuzzle text={quote?.quote || ""} />
         </>
       )}
