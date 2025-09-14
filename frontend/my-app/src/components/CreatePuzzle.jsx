@@ -9,6 +9,7 @@ function CreatePuzzle({ text }) {
   const [numbersState, setNumbersState] = useState([]);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [mistakes, setMistakes] = useState(0);
+  const [hintMode, setHintMode] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [initialHints, setInitialHints] = useState([]);
   const inputRefs = useRef([]);
@@ -113,7 +114,7 @@ function CreatePuzzle({ text }) {
   const resetGame = () => {
     setMistakes(0);
     setGameCompleted(false);
-
+    setHintMode(false);
     inputRefs.current.forEach((input) => {
       if (input) {
         input.value = "";
@@ -230,6 +231,25 @@ function CreatePuzzle({ text }) {
     }
   };
 
+  const revealHint = (index) => {
+    const input = inputRefs.current[index];
+    if (!input || input.disabled) return;
+
+    const char = input.dataset.char;
+    const number = Number(input.dataset.number);
+
+    input.value = char.toUpperCase();
+    input.disabled = true;
+
+    const stillRemaining = remainingOccurrences(char);
+    if (!stillRemaining) {
+      setNumbersState((prev) =>
+        prev.map((num) => (num === number ? null : num))
+      );
+    }
+  };
+
+
   let inputIndex = 0;
 
   return (
@@ -259,12 +279,18 @@ function CreatePuzzle({ text }) {
                       <div className="puzzle-cell">
                         <input
                           ref={(el) => (inputRefs.current[currentIndex] = el)}
-                          className="puzzle-input"
+                          className={`puzzle-input ${hintMode && !inputRefs.current[currentIndex]?.value ? "hint-available" : ""}`}
                           maxLength={1}
                           data-char={ch.char}
                           data-number={ch.number}
                           onChange={(e) => handleInput(e.target.value, currentIndex)}
                           onKeyDown={(e) => handleKeyDown(e, currentIndex)}
+                          onClick={() => {
+                            if (hintMode && !inputRefs.current[currentIndex].disabled) {
+                              revealHint(currentIndex);
+                              setHintMode(false);
+                            }
+                          }}
                         />
                       </div>
                       <div className="puzzle-number">{numbersState[currentIndex]}</div>
@@ -287,6 +313,10 @@ function CreatePuzzle({ text }) {
       <button onClick={resetGame} className="restart-btn">
         🔄 Restart
       </button>
+      <button onClick={() => setHintMode(!hintMode)} className="hint-btn">
+        💡 Hint
+      </button>
+
     </>
   );
 }

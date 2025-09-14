@@ -111,3 +111,21 @@
 .restart-btn:hover {
   background: #e60000;
 }
+
+.puzzle-input.hint-mode {
+  cursor: pointer;
+  border: 2px dashed orange;
+}
+
+/* מצב רמז זמין רק לריבועים ריקים */
+.puzzle-input.hint-available {
+  border: 2px dashed orange;
+  background-color: #fff8e1; /* צהוב בהיר */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.puzzle-input.hint-available:focus {
+  outline: none;
+  background-color: #ffecb3; /* טיפה כהה כשנבחר */
+}
