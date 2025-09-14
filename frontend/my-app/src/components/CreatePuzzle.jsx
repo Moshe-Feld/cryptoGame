@@ -1,13 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../css/CreatePuzzle.css";
-import { useUser } from "../../context/userContext";
+import { useUser } from "../context/userContext";
 
 function CreatePuzzle({ text }) {
-  const {email, countWins} = useUser();
+  const { email, countWins } = useUser();
   const form = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 };
   const [code, setCode] = useState(form);
   const [numbersState, setNumbersState] = useState([]);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [mistakes, setMistakes] = useState(0);
+  const [resetTrigger, setResetTrigger] = useState(0);
+  const [initialHints, setInitialHints] = useState([]);
   const inputRefs = useRef([]);
 
   function createCode() {
@@ -44,35 +47,43 @@ function CreatePuzzle({ text }) {
   }, [text, code]);
 
   useEffect(() => {
-    const initialNumbers = [];
+    if (initialHints.length === 0) {
+      const revealed = choseStartLetters(items);
+      setInitialHints(revealed);
+    }
+  }, [items, initialHints]);
+
+  useEffect(() => {
+    const codeNumbers = [];
     let inputIndex = 0;
 
     items.forEach((item) => {
       if (item.type === "word") {
         item.chars.forEach((ch) => {
           if (ch.type === "enc") {
-            initialNumbers[inputIndex++] = ch.number;
+            codeNumbers[inputIndex++] = ch.number;
           }
         });
       }
     });
+    setNumbersState(codeNumbers);
 
-    const revealed = revealStartsLetters(items);
-    revealed.forEach((idx) => {
+    initialHints.forEach((idx) => {
       const input = inputRefs.current[idx];
       if (!input) return;
       const char = input.dataset.char;
-      const stillRemaining = remainingOccurrences(char);
-      if (!stillRemaining) {
-        initialNumbers[idx] = null;
-      }
+      const number = Number(input.dataset.number);
       input.value = char.toUpperCase();
       input.disabled = true;
+      const stillRemaining = remainingOccurrences(char);
+      if (!stillRemaining) {
+        setNumbersState((prev) => {
+          const newState = prev.map(num => num === number ? null : num);
+          return newState;
+        })
+      }
     });
-
-    setNumbersState(initialNumbers);
-  }, [items]);
-
+  }, [items, resetTrigger, initialHints]);
 
   useEffect(() => {
     if (inputRefs.current[0]) {
@@ -99,15 +110,28 @@ function CreatePuzzle({ text }) {
     return next;
   };
 
-  const revealStartsLetters = (items) => {
+  const resetGame = () => {
+    setMistakes(0);
+    setGameCompleted(false);
+
+    inputRefs.current.forEach((input) => {
+      if (input) {
+        input.value = "";
+        input.disabled = false;
+      }
+    });
+
+    setResetTrigger(prev => prev + 1);
+  };
+
+  const choseStartLetters = (items) => {
     if (!items || items.length === 0) return [];
 
     const chosen = new Set();
     let runningIndex = 0;
 
-    // אות אחת אקראית במילים ארוכות
     items.forEach((item) => {
-      if (item.type === "word" && Array.isArray(item.chars) && item.chars.length >= 5) {
+      if (item.type === "word" && item.chars.length >= 5) {
         const encs = item.chars
           .map((ch) => ({ ch, idx: runningIndex++ }))
           .filter(({ ch }) => ch.type === "enc");
@@ -116,19 +140,19 @@ function CreatePuzzle({ text }) {
           const rand = encs[Math.floor(Math.random() * encs.length)];
           chosen.add(rand.idx);
         }
-      } else if (item.type === "word" && Array.isArray(item.chars)) {
+      } else if (item.type === "word") {
         item.chars.forEach((ch) => { if (ch.type === "enc") runningIndex++; });
       }
     });
 
-    // 2–3 אותיות נוספות אקראיות מכל הטקסט
+    // בחר עוד 2–3 אותיות רנדומליות
     const encLetters = [];
     let globalIndex = 0;
     items.forEach((item) => {
-      if (item.type === "word" && Array.isArray(item.chars)) {
+      if (item.type === "word") {
         item.chars.forEach((ch) => {
           if (ch.type === "enc") {
-            encLetters.push({ char: ch.char.toLowerCase(), number: ch.number, index: globalIndex });
+            encLetters.push({ ch, index: globalIndex });
           }
           if (ch.type === "enc") globalIndex++;
         });
@@ -141,23 +165,7 @@ function CreatePuzzle({ text }) {
       chosen.add(rand.index);
     }
 
-    // עדכון inputRefs והסטייט
-    const indicesToClear = [];
-    chosen.forEach((index) => {
-      const input = inputRefs.current[index];
-      if (input && input.dataset.char) {
-        input.value = input.dataset.char.toUpperCase();
-        input.disabled = true;
-        indicesToClear.push(Number(input.dataset.number));
-      }
-    });
-
-    // עדכון סטייט פעם אחת
-    if (indicesToClear.length > 0) {
-      setNumbersState((prev) => prev.map((num) => (indicesToClear.includes(num) ? null : num)));
-    }
-
-    return Array.from(chosen);
+    return Array.from(chosen); // מחזירה רק אינדקסים
   };
 
 
@@ -188,7 +196,6 @@ function CreatePuzzle({ text }) {
             setGameCompleted(true);
             alert("well done 🎉");
             countWins(email.email);
-           
           }
           return newState;
         });
@@ -197,8 +204,17 @@ function CreatePuzzle({ text }) {
       setTimeout(() => focusInput(getNextActiveIndex(index, 1)));
 
 
-    } else {
-      setTimeout(() => inputRefs.current[index].value = "", 250);
+    }
+    else {
+      setMistakes((prev) => {
+        const newMistakes = prev + 1;
+        if (newMistakes >= 3) {
+          alert("Game Over ❌");
+          resetGame();
+        }
+        return newMistakes;
+      });
+      setTimeout(() => (inputRefs.current[index].value = ""), 250);
     }
   };
 
@@ -217,49 +233,61 @@ function CreatePuzzle({ text }) {
   let inputIndex = 0;
 
   return (
-    <div className="puzzle-container">
-      {items.map((item, i) => {
-        if (item.type === "space") {
-          return <div key={`space-${i}`} className="puzzle-space" />;
-        }
-        return (
-          <div key={`word-${i}`} className="puzzle-word">
-            {item.chars.map((ch, j) => {
-              if (ch.type === "enc") {
-                const currentIndex = inputIndex++;
-                return (
-                  <div
-                    key={`enc-${i}-${j}`}
-                    className="puzzle-cell-wrapper"
-                  >
-                    <div className="puzzle-cell">
-                      <input
-                        ref={(el) => (inputRefs.current[currentIndex] = el)}
-                        className="puzzle-input"
-                        maxLength={1}
-                        data-char={ch.char}
-                        data-number={ch.number}
-                        onChange={(e) => handleInput(e.target.value, currentIndex)}
-                        onKeyDown={(e) => handleKeyDown(e, currentIndex)}
-                      />
+    <>
+      <div className="mistakes">
+        {[...Array(3)].map((_, i) => (
+          <span key={i} className={i < mistakes ? "mistake active" : "mistake"}>
+            ❌
+          </span>
+        ))}
+      </div>
+      <div className="puzzle-container">
+        {items.map((item, i) => {
+          if (item.type === "space") {
+            return <div key={`space-${i}`} className="puzzle-space" />;
+          }
+          return (
+            <div key={`word-${i}`} className="puzzle-word">
+              {item.chars.map((ch, j) => {
+                if (ch.type === "enc") {
+                  const currentIndex = inputIndex++;
+                  return (
+                    <div
+                      key={`enc-${i}-${j}`}
+                      className="puzzle-cell-wrapper"
+                    >
+                      <div className="puzzle-cell">
+                        <input
+                          ref={(el) => (inputRefs.current[currentIndex] = el)}
+                          className="puzzle-input"
+                          maxLength={1}
+                          data-char={ch.char}
+                          data-number={ch.number}
+                          onChange={(e) => handleInput(e.target.value, currentIndex)}
+                          onKeyDown={(e) => handleKeyDown(e, currentIndex)}
+                        />
+                      </div>
+                      <div className="puzzle-number">{numbersState[currentIndex]}</div>
                     </div>
-                    <div className="puzzle-number">{numbersState[currentIndex]}</div>
+                  );
+                }
+                return (
+                  <div key={`raw-${i}-${j}`} className="puzzle-cell-wrapper">
+                    <div className="puzzle-cell">{ch.char}</div>
+                    <div className="puzzle-number"></div> { }
                   </div>
                 );
-              }
-              return (
-                <div key={`raw-${i}-${j}`} className="puzzle-cell-wrapper">
-                  <div className="puzzle-cell">{ch.char}</div>
-                  <div className="puzzle-number"></div> { }
-                </div>
-              );
 
 
-            })}
-          </div>
-        );
-      })}
-    </div>
+              })}
+            </div>
+          );
+        })}
+      </div>
+      <button onClick={resetGame} className="restart-btn">
+        🔄 Restart
+      </button>
+    </>
   );
 }
 

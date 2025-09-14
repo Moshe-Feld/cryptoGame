@@ -7,13 +7,13 @@ function CreatGame() {
     return (
         status ? <CreatePuzzle text={myGame.quote} /> :
             <>
-                <h1>Creat Game</h1>
-                <p>hi plaese enter a Quote</p>
-                <input placeholder="My Quote" onChange={(e) => setMyGame({ ...myGame, quote: e.target.value })} />
-                <input placeholder="Author" onChange={(e) => setMyGame({ ...myGame, author: e.target.value })} />
-                <button onClick={() => { alert(myGame.quote + "created"); setStatus(true) }}>Create</button>
-            </div>
-                <button onClick={() => { alert(myGame.quote + " created"); setStatus(true) }}>Create</button>
+                <div className="login-container">
+                    <h1>Creat Game</h1>
+                    <p>hi plaese enter a Quote</p>
+                    <input placeholder="My Quote" onChange={(e) => setMyGame({ ...myGame, quote: e.target.value })} />
+                    <input placeholder="Author" onChange={(e) => setMyGame({ ...myGame, author: e.target.value })} />
+                    <button onClick={() => { alert(myGame.quote + "created"); setStatus(true) }}>Create</button>
+                </div>
             </>
     )
 }
