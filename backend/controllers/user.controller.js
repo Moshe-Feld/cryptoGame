@@ -24,7 +24,7 @@ async function getUserById(req, res) {
 async function addUser(req, res) {
     try {
         const {email} = req.body;
-        const newUser = { email, coins: 0, hints: 0 }
+        const newUser = { email, coins: 0, level: 1 }
         await userModel.create(newUser);
         res.status(200).send(newUser);
     } catch (err) {
@@ -33,28 +33,49 @@ async function addUser(req, res) {
 
 }
 
-async function editUser(req, res) {
-    try {
-        const { email, coins, hints } = req.query;
-        await userModel.findOneAndUpdate(
-            {email: email},
-            {coins: coins, hints: hints}
-        )
-       res.status(200).send("updated");
-    } catch (err) {
-        res.status(500).send(err.message);
+async function deleteAllUsers(req, res){
+    try{
+       const result = await userModel.deleteMany({});
+       res.status(200).send(`${result.deletedCount} users deleted`)
+    } catch(err){
+        console.error(err.message);
     }
 }
 
-async function addCoinsToUser(req, res) {
+// async function editUser(req, res) {
+//     try {
+//         const { email, coins, hints } = req.query;
+//         await userModel.findOneAndUpdate(
+//             {email: email},
+//             {coins: coins, hints: hints}
+//         )
+//        res.status(200).send("updated");
+//     } catch (err) {
+//         res.status(500).send(err.message);
+//     }
+// }
+
+async function updateUser(req, res) {
     try{
         const {email} = req.params;
-        await userModel.findOneAndUpdate(
+        const {coins, level} = req.body;
+        const fields = {}
+        if(coins) fields.coins = coins;
+        if(level) fields.level = level;
+        const updatedUser = await userModel.findOneAndUpdate(
             {email: email},
-            {$inc: {coins: 10}},
+            {$inc: fields},
             {new: true}
         )
-        res.status(200).send("add 1 to your coins")
+        res.status(200).send(updatedUser);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+async function getTop10(req, res) {
+    try{
+        const top10 = await userModel.find().sort({coins: -1}).limit(10);
+        res.status(200).send(top10)
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -65,5 +86,7 @@ module.exports = {
     getAllUsers,
     getUserById,
     addUser,
-    addCoinsToUser
+    deleteAllUsers,
+    updateUser,
+    getTop10
 }

@@ -1,13 +1,17 @@
 const express = require('express');
-const { getAllUsers, addUser, getUserById, addCoinsToUser } = require('../controllers/user.controller');
+const { getAllUsers, addUser, getUserById, deleteAllUsers, getTop10, updateUser } = require('../controllers/user.controller');
 const router = express.Router();
 
 router.get('/', getAllUsers)
+
+router.get('/top10', getTop10);
 
 router.get('/:email', getUserById)
 
 router.post('/', addUser)
 
-router.put('/:email', addCoinsToUser)
+router.put('/:email', updateUser)
+
+router.delete('/', deleteAllUsers);
 
 module.exports = router;
