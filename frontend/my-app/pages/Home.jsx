@@ -1,11 +1,9 @@
-function Home(){
-    return(
-        <>
-        <h1>Welcome</h1>
-        <div>
-            <p></p>
+
+function Home() {
+    return (
+        <div className="login-container">
+            <p>Welcome</p>
         </div>
-        </>
     )
 }
 export default Home;

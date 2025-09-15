@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { useUser } from "../context/userContext";
 import CreatePuzzle from "./components/CreatePuzzle";
 import axios from "axios";
 
 function App() {
   const [quote, setQuote] = useState(null);
   const [load, setLoad] = useState(true);
-
+  const {email} = useUser();
   
   
 
@@ -39,6 +40,7 @@ function App() {
           <p>
             <strong>Quote:</strong> {quote?.quote}
           </p>
+          <p><strong>your coins: </strong>{email.coins}</p>
           <CreatePuzzle text={quote?.quote || ""} />
         </>
       )}

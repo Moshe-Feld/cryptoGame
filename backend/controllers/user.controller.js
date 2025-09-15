@@ -33,28 +33,59 @@ async function addUser(req, res) {
 
 }
 
-async function editUser(req, res) {
-    try {
-        const { email, coins, hints } = req.query;
-        await userModel.findOneAndUpdate(
-            {email: email},
-            {coins: coins, hints: hints}
-        )
-       res.status(200).send("updated");
-    } catch (err) {
-        res.status(500).send(err.message);
+async function deleteAllUsers(req, res){
+    try{
+       const result = await userModel.deleteMany({});
+       res.status(200).send(`${result.deletedCount} users deleted`)
+    } catch(err){
+        console.error(err.message);
     }
 }
+
+// async function editUser(req, res) {
+//     try {
+//         const { email, coins, hints } = req.query;
+//         await userModel.findOneAndUpdate(
+//             {email: email},
+//             {coins: coins, hints: hints}
+//         )
+//        res.status(200).send("updated");
+//     } catch (err) {
+//         res.status(500).send(err.message);
+//     }
+// }
 
 async function addCoinsToUser(req, res) {
     try{
         const {email} = req.params;
-        await userModel.findOneAndUpdate(
+        const updateCoins = await userModel.findOneAndUpdate(
             {email: email},
             {$inc: {coins: 10}},
             {new: true}
         )
-        res.status(200).send("add 1 to your coins")
+        res.status(200).send(updateCoins);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
+async function setLevel(req, res) {
+    try{
+        const {email} = req.params;
+        const updateLevel = await userModel.findOneAndUpdate(
+            {email: email},
+            {$inc: {level: 1}},
+            {new: true}
+        );
+        res.status(200).send(updateLevel)
+    }catch(err){
+        res.status(500).send(err.nessage);
+    }
+}
+async function getTop10(req, res) {
+    try{
+        const top10 = await userModel.find().sort({coins: -1}).limit(10);
+        res.status(200).send(top10)
     }catch(err){
         res.status(500).send(err.message);
     }
@@ -65,5 +96,8 @@ module.exports = {
     getAllUsers,
     getUserById,
     addUser,
-    addCoinsToUser
+    deleteAllUsers,
+    addCoinsToUser,
+    setLevel,
+    getTop10
 }
