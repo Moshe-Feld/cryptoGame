@@ -10,7 +10,7 @@ export function useUser() {
 };
 
 export function UserProvider({ children }) {
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState({});
     const [level, setLevel] = useState("");
     const [coins, setCoins] = useState("");
     const navigate = useNavigate();
@@ -35,10 +35,11 @@ export function UserProvider({ children }) {
 
     }
 
-    async function setCoinsToUser(email) {
+    async function editUser(email) {
         try {
-            const {data} = await axios.put(`${API_URL}/users/${email}`);
+            const {data} = await axios.put(`${API_URL}/users/${email}`, {coins: 10, level: 1});
             setCoins(data.coins);
+            setLevel(data.level);
         } catch (err) {
             console.error(err.message);
         }
@@ -46,7 +47,7 @@ export function UserProvider({ children }) {
 
 
     return (
-        <userContext.Provider value={{ email, Login, level, setLevel, setCoinsToUser }}>
+        <userContext.Provider value={{ email, Login, setLevel, editUser }}>
             {children}
         </userContext.Provider>
     )

@@ -24,7 +24,7 @@ async function getUserById(req, res) {
 async function addUser(req, res) {
     try {
         const {email} = req.body;
-        const newUser = { email, coins: 0, hints: 0 }
+        const newUser = { email, coins: 0, level: 1 }
         await userModel.create(newUser);
         res.status(200).send(newUser);
     } catch (err) {
@@ -55,31 +55,21 @@ async function deleteAllUsers(req, res){
 //     }
 // }
 
-async function addCoinsToUser(req, res) {
+async function updateUser(req, res) {
     try{
         const {email} = req.params;
-        const updateCoins = await userModel.findOneAndUpdate(
+        const {coins, level} = req.body;
+        const fields = {}
+        if(coins) fields.coins = coins;
+        if(level) fields.level = level;
+        const updatedUser = await userModel.findOneAndUpdate(
             {email: email},
-            {$inc: {coins: 10}},
+            {$inc: fields},
             {new: true}
         )
-        res.status(200).send(updateCoins);
+        res.status(200).send(updatedUser);
     }catch(err){
         res.status(500).send(err.message);
-    }
-}
-
-async function setLevel(req, res) {
-    try{
-        const {email} = req.params;
-        const updateLevel = await userModel.findOneAndUpdate(
-            {email: email},
-            {$inc: {level: 1}},
-            {new: true}
-        );
-        res.status(200).send(updateLevel)
-    }catch(err){
-        res.status(500).send(err.nessage);
     }
 }
 async function getTop10(req, res) {
@@ -97,7 +87,6 @@ module.exports = {
     getUserById,
     addUser,
     deleteAllUsers,
-    addCoinsToUser,
-    setLevel,
+    updateUser,
     getTop10
 }

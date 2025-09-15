@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllUsers, addUser, getUserById, addCoinsToUser, deleteAllUsers, getTop10, setLevel } = require('../controllers/user.controller');
+const { getAllUsers, addUser, getUserById, deleteAllUsers, getTop10, updateUser } = require('../controllers/user.controller');
 const router = express.Router();
 
 router.get('/', getAllUsers)
@@ -10,9 +10,7 @@ router.get('/:email', getUserById)
 
 router.post('/', addUser)
 
-router.put('/:email', addCoinsToUser)
-
-router.put('/:email/level', setLevel);
+router.put('/:email', updateUser)
 
 router.delete('/', deleteAllUsers);
 
