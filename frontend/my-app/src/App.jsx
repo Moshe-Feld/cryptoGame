@@ -41,6 +41,8 @@ function App() {
             <strong>Quote:</strong> {quote?.quote}
           </p>
           <p><strong>your coins: </strong>{email.coins}</p>
+          <button style={{margin:"10px"}} onClick={() => {setShow(!show)}}>show Qoute</button>
+          {show ? <><strong>Quote:</strong> {quote?.quote}</> : <></>}
           <CreatePuzzle text={quote?.quote || ""} />
         </>
       )}

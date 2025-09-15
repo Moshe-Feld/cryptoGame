@@ -82,3 +82,50 @@
   font-size: 18px;
   vertical-align: top;
 }
+
+.mistakes {
+  display: flex;
+  gap: 8px;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.mistake {
+  opacity: 0.3;
+}
+
+.mistake.active {
+  opacity: 1;
+}
+
+.restart-btn {
+  margin-top: 15px;
+  padding: 6px 12px;
+  border: none;
+  background: #ff4d4d;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.restart-btn:hover {
+  background: #e60000;
+}
+
+.puzzle-input.hint-mode {
+  cursor: pointer;
+  border: 2px dashed orange;
+}
+
+/* מצב רמז זמין רק לריבועים ריקים */
+.puzzle-input.hint-available {
+  border: 2px dashed orange;
+  background-color: #fff8e1; /* צהוב בהיר */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.puzzle-input.hint-available:focus {
+  outline: none;
+  background-color: #ffecb3; /* טיפה כהה כשנבחר */
+}

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useUser } from "../../context/userContext";
+import { useUser } from "../context/userContext";
 function Header() {
     const {email} = useUser();
     return (
