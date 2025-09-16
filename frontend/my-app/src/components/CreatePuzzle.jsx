@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../css/CreatePuzzle.css";
 import { useUser } from "../context/userContext";
+import Keyboard from "./Keyboard"
 
 function CreatePuzzle({ text }) {
   const {email, editUser} = useUser();
@@ -10,9 +11,12 @@ function CreatePuzzle({ text }) {
   const [gameCompleted, setGameCompleted] = useState(false);
   const [mistakes, setMistakes] = useState(0);
   const [hintMode, setHintMode] = useState(false);
+  const [revealedLetters, setRevealedLetters] = useState([]);
+  const [focusedIndex, setFocusedIndex] = useState(null);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [initialHints, setInitialHints] = useState([]);
   const inputRefs = useRef([]);
+  let inputIndex = 0;
 
   function createCode() {
     const chars = Object.keys(code);
@@ -87,10 +91,13 @@ function CreatePuzzle({ text }) {
   }, [items, resetTrigger, initialHints]);
 
   useEffect(() => {
-    if (inputRefs.current[0]) {
-      inputRefs.current[0].focus();
+    if (!inputRefs.current.length) return;
+    const firstIndex = getNextActiveIndex(-1, 1);
+    if (firstIndex !== null && inputRefs.current[firstIndex]) {
+      inputRefs.current[firstIndex].focus();
+      setFocusedIndex(firstIndex);
     }
-  }, [items]);
+  }, [items, resetTrigger, initialHints]);
 
   const focusInput = (index) => {
     if (inputRefs.current[index]) {
@@ -115,14 +122,21 @@ function CreatePuzzle({ text }) {
     setMistakes(0);
     setGameCompleted(false);
     setHintMode(false);
+    setRevealedLetters([]);
     inputRefs.current.forEach((input) => {
       if (input) {
         input.value = "";
         input.disabled = false;
       }
     });
-
     setResetTrigger(prev => prev + 1);
+    setTimeout(() => {
+      const firstIndex = getNextActiveIndex(-1, 1);
+      if (firstIndex !== null && inputRefs.current[firstIndex]) {
+        inputRefs.current[firstIndex].focus();
+        setFocusedIndex(firstIndex);
+      }
+    }, 0);
   };
 
   const choseStartLetters = (items) => {
@@ -178,14 +192,21 @@ function CreatePuzzle({ text }) {
     );
   };
 
-  const handleInput = (value, index) => {
-    const inputChar = value.toLowerCase();
 
+
+  const handleInput = (value, index) => {
+    if (index === null || !inputRefs.current[index]) return;
+    const inputChar = value.toLowerCase();
     const number = Number(inputRefs.current[index].dataset.number);
 
     if (code[inputChar] === number) {
       inputRefs.current[index].value = inputChar.toUpperCase();
       inputRefs.current[index].disabled = true;
+
+      setRevealedLetters(prev => {
+        if (prev.includes(inputChar)) return prev;
+        return [...prev, inputChar];
+      });
 
       const stillRemaining = remainingOccurrences(inputChar);
       if (!stillRemaining) {
@@ -214,6 +235,7 @@ function CreatePuzzle({ text }) {
           alert("Game Over ❌");
           resetGame();
         }
+        inputRefs.current[focusedIndex].focus();
         return newMistakes;
       });
       setTimeout(() => (inputRefs.current[index].value = ""), 250);
@@ -242,16 +264,63 @@ function CreatePuzzle({ text }) {
     input.value = char.toUpperCase();
     input.disabled = true;
 
+    setRevealedLetters(prev => {
+      if (prev.includes(char.toLowerCase())) return prev;
+      return [...prev, char.toLowerCase()];
+    });
+
     const stillRemaining = remainingOccurrences(char);
     if (!stillRemaining) {
       setNumbersState((prev) =>
         prev.map((num) => (num === number ? null : num))
       );
     }
+
+    setTimeout(() => {
+      const nextIndex = getNextActiveIndex(index, 1);
+      if (nextIndex !== null && inputRefs.current[nextIndex]) {
+        inputRefs.current[nextIndex].focus();
+        setFocusedIndex(nextIndex);
+      }
+    }, 0);
   };
 
+  useEffect(() => {
+    if (!initialHints || initialHints.length === 0) return;
+    setRevealedLetters(prev => {
+      const s = new Set(prev);
+      initialHints.forEach(idx => {
+        const ch = inputRefs.current[idx]?.dataset.char?.toLowerCase();
+        if (ch) s.add(ch);
+      });
+      return Array.from(s);
+    });
+  }, [initialHints, items, resetTrigger]);
 
-  let inputIndex = 0;
+  const alphabet = useMemo(() => Object.keys(form).map(c => c.toUpperCase()), [form]);
+
+  const fullyRevealedLetters = useMemo(() => {
+    return Object.keys(form).filter(letter => {
+      const existed = items.some(item =>
+        item.type === "word" &&
+        Array.isArray(item.chars) &&
+        item.chars.some(ch => ch.type === "enc" && ch.char.toLowerCase() === letter)
+      );
+      const stillRemaining = remainingOccurrences(letter);
+      return existed && !stillRemaining;
+    });
+  }, [numbersState, resetTrigger, items]);
+
+  const onKeyboardLetterClick = (letterLower) => {
+    if (fullyRevealedLetters.includes(letterLower)) return;
+    if (focusedIndex === null || !inputRefs.current[focusedIndex]) return;
+    handleInput(letterLower, focusedIndex);
+    const input = inputRefs.current[focusedIndex];
+    if (input && !input.disabled) {
+      input.focus();
+    }
+  };
+
 
   return (
     <>
@@ -280,12 +349,16 @@ function CreatePuzzle({ text }) {
                       <div className="puzzle-cell">
                         <input
                           ref={(el) => (inputRefs.current[currentIndex] = el)}
-                          className={`puzzle-input ${hintMode && !inputRefs.current[currentIndex]?.value ? "hint-available" : ""}`}
+                          className={`puzzle-input 
+                            ${hintMode && !inputRefs.current[currentIndex]?.value ? "hint-available" : ""}
+                            ${focusedIndex === currentIndex ? "focused-input" : ""}`}
                           maxLength={1}
                           data-char={ch.char}
                           data-number={ch.number}
                           onChange={(e) => handleInput(e.target.value, currentIndex)}
                           onKeyDown={(e) => handleKeyDown(e, currentIndex)}
+                          onFocus={() => setFocusedIndex(currentIndex)}
+                          onBlur={() => setFocusedIndex(null)}
                           onClick={() => {
                             if (hintMode && !inputRefs.current[currentIndex].disabled) {
                               revealHint(currentIndex);
@@ -311,6 +384,12 @@ function CreatePuzzle({ text }) {
           );
         })}
       </div>
+      <Keyboard
+        alphabet={alphabet}
+        revealedLetters={revealedLetters}
+        fullyRevealedLetters={fullyRevealedLetters}
+        onLetterClick={onKeyboardLetterClick}
+      />
       <button onClick={resetGame} className="restart-btn">
         🔄 Restart
       </button>

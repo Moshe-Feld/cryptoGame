@@ -129,3 +129,14 @@
   outline: none;
   background-color: #ffecb3; /* טיפה כהה כשנבחר */
 }
+
+.puzzle-container {
+  padding-bottom: 220px;  /* מרווח מתחת כדי שלא יכוסה ע"י המקלדת */
+  overflow-y: auto;       /* גלילה אנכית */
+  max-height: calc(100vh - 240px); /* גובה מקסימלי: כל המסך פחות גובה המקלדת */
+}
+
+.puzzle-input.focused-input {
+  background-color: beige; /* בז' */
+  outline: 2px solid #d2b48c; /* מסגרת חומה עדינה */
+}
