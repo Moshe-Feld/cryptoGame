@@ -11,6 +11,7 @@ export function useUser() {
 
 export function UserProvider({ children }) {
     const [email, setEmail] = useState({});
+    const [connected, setConnected] = useState(false);
     const [myQoutes, setMyQoutes] = useState([])
     const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ export function UserProvider({ children }) {
             const userLogIn = await axios.get(`${API_URL}/users/${email}`);
             setEmail(userLogIn.data);
             loadGames(email);
+            setConnected(true);
             return navigate("/home")
         }
         catch (err) {
@@ -33,6 +35,17 @@ export function UserProvider({ children }) {
             }
         }
 
+    }
+
+    async function LogOut() {
+        try{
+            setConnected(false);
+            setEmail(null);
+            setMyQoutes(null);
+            navigate("/");
+        }catch(err){
+            console.error(err.message);
+        }
     }
 
     async function loadGames(email) {
@@ -56,7 +69,7 @@ export function UserProvider({ children }) {
 
 
     return (
-        <userContext.Provider value={{ email, Login, editUser, myQoutes }}>
+        <userContext.Provider value={{ email, connected, Login, LogOut, editUser, myQoutes }}>
             {children}
         </userContext.Provider>
     )

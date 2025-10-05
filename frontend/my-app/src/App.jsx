@@ -17,7 +17,7 @@ function App() {
       try {
         console.log(email);
         const randomData = await axios.get(
-          `https://dummyjson.com/quotes/${email.level + 1}`
+          `https://dummyjson.com/quotes/${email.level}`
         );
         if (!ignore) setQuote(randomData.data);
       } catch (err) {

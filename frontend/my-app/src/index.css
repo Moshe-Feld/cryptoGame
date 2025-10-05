@@ -62,6 +62,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: 0.2s;
+  margin: 15px;
 }
 
 .login-container button:hover {

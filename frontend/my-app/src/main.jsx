@@ -8,13 +8,15 @@ import Home from './pages/Home.jsx'
 import MainLayout from './layout/MainLayout.jsx'
 import CreatGame from './pages/CreatGame.jsx'
 import { UserProvider } from './context/userContext.jsx'
+import Signup from './pages/Signup.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
     <BrowserRouter>
       <UserProvider>
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Signup/>}/>
+          <Route path='/login' element={<Login />} />
           <Route element={<MainLayout />}>
             <Route path='/home' element={<Home />} />
             <Route path='/startGame' element={<App />} />
