@@ -7,7 +7,7 @@ function App() {
   const [quote, setQuote] = useState(null);
   const [load, setLoad] = useState(true);
   const[show, setShow] = useState(false);
-  const {email} = useUser();
+  const {user} = useUser();
   
   
 
@@ -15,9 +15,9 @@ function App() {
     let ignore = false;
     const fetchQuote = async () => {
       try {
-        console.log(email);
+        console.log(user);
         const randomData = await axios.get(
-          `https://dummyjson.com/quotes/${email.level}`
+          `https://dummyjson.com/quotes/${user.level}`
         );
         if (!ignore) setQuote(randomData.data);
       } catch (err) {
@@ -39,7 +39,7 @@ function App() {
         <p>Loading...</p>
       ) : (
         <>
-          <p><strong>your coins: </strong>{email?.coins}</p> 
+          <p><strong>your coins: </strong>{user?.coins}</p> 
           <button style={{margin:"10px"}} onClick={() => {setShow(!show)}}>show Qoute</button>
           {show ? <><strong>Quote:</strong> {quote?.quote}</> : <></>}
           <CreatePuzzle text={quote?.quote || ""} />
