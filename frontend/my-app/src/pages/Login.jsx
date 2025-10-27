@@ -3,16 +3,18 @@ import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import {useUser} from "../context/userContext"
 export default function Login() {
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState({});
     const {Login} = useUser();
     return (
         <div className="login-container">
             <h1>Welcome</h1>
             <p>please enter your email to connect</p>
-            <input placeholder="email"
-                onChange={(e) => setUser(e.target.value)} />
-
+            <input placeholder="user-name"
+                onChange={(e) => setUser({...user, userName: e.target.value})} />
+            <input placeholder="password"
+                onChange={(e)=> setUser({...user, password: e.target.value})}/>
             <button onClick={async () => {
+                alert("user login...")
                 Login(user);
             }}>Log in</button>
         </div>

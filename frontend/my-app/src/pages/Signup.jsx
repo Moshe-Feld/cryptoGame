@@ -1,13 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Signup(){
+    const navigate = useNavigate();
     const API_URL = 'http://localhost:3000' 
     const [newUser, setNewUser] = useState({});
+    const [load, setLoad] = useState(false);
     async function postNewUser(newUser) {
         try{
             console.log(newUser);
+            setLoad(true);
             await axios.post(`${API_URL}/users`, newUser);
-            alert("user created succefuly!")
+            setLoad(false);
+            alert("user created succefuly!");
+            navigate("/login");
         }catch(err){
             console.error(err.message);
         }
@@ -24,6 +30,8 @@ function Signup(){
                 <option value="student">Student</option>
             </select>
             <button onClick={()=>postNewUser(newUser)}>Create User</button>
+            {load ? <p>Loading...</p> : <></>}
+            <p>already have an account? <strong onClick={()=> navigate("/login")}>log in</strong></p>
         </div>
     )
 }

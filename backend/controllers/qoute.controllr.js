@@ -1,8 +1,17 @@
 const qouteModel = require('../models/qoute.model')
+
+async function getAllQoutes(req, res) {
+    try{
+        const allQoutes = await qouteModel.find({});
+        res.status(200).send(allQoutes);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
 async function getQouteOfUser(req, res) {
     try{
-        const {userId} = req.params
-        const result = await qouteModel.find({userId: userId})
+        const {teacherId} = req.params
+        const result = await qouteModel.find({teacherId: teacherId})
         res.status(200).send(result)
     }catch(err){
         res.status(500).send(err.message)
@@ -30,6 +39,7 @@ async function postQoute(req, res) {
 }
 
 module.exports = {
+    getAllQoutes,
     getQouteOfUser,
     getQouteById,
     postQoute

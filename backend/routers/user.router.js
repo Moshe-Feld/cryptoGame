@@ -6,11 +6,11 @@ router.get('/', getAllUsers)
 
 router.get('/top10', getTop10);
 
-router.get('/:email', getUserById)
+router.get('/:userName', getUserById)
 
 router.post('/', addUser)
 
-router.put('/:email', updateUser)
+router.put('/:userName', updateUser)
 
 router.delete('/', deleteAllUsers);
 

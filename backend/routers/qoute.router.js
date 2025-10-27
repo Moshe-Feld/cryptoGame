@@ -1,9 +1,11 @@
 const express = require('express');
-const { getQouteOfUser, getQouteById, postQoute } = require('../controllers/qoute.controllr');
+const { getQouteOfUser, getQouteById, postQoute, getAllQoutes } = require('../controllers/qoute.controllr');
 
 const router = express.Router();
 
-router.get('/:userId', getQouteOfUser);
+router.get('/', getAllQoutes);
+
+router.get('/:teacherId', getQouteOfUser);
 
 router.get('/:_id', getQouteById),
 

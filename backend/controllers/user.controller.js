@@ -10,8 +10,8 @@ async function getAllUsers(req, res) {
 
 async function getUserById(req, res) {
     try {
-        const { email } = req.params;
-        const findUser = await userModel.findOne({ email: email })
+        const { userName } = req.params;
+        const findUser = await userModel.findOne({ userName: userName })
         if (!findUser) {
             return res.status(404).send("user undefine")
         }
