@@ -7,9 +7,11 @@ app.use(express.json());
 app.use(cors());
 const userRouter = require("./routers/user.router")
 const qouteRouter = require("./routers/qoute.router")
+const classRouter = require("./routers/class.router")
 
+app.use("/class", classRouter);
 app.use("/users", userRouter);
-app.use("/qoutes", qouteRouter)
+app.use("/qoutes", qouteRouter);
 
 connect();
 

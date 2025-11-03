@@ -5,6 +5,7 @@ import {useUser} from "../context/userContext"
 export default function Login() {
     const [user, setUser] = useState({});
     const {Login} = useUser();
+    const navigate = useNavigate();
     return (
         <div className="login-container">
             <h1>Welcome</h1>
@@ -17,6 +18,7 @@ export default function Login() {
                 alert("user login...")
                 Login(user);
             }}>Log in</button>
+            <p>Don't have an account? <strong onClick={()=>navigate("/sign-up")}>Sign Up</strong></p>
         </div>
     )
 }

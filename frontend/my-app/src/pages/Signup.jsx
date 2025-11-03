@@ -13,7 +13,7 @@ function Signup(){
             await axios.post(`${API_URL}/users`, newUser);
             setLoad(false);
             alert("user created succefuly!");
-            navigate("/login");
+            navigate("/");
         }catch(err){
             console.error(err.message);
         }
@@ -26,12 +26,13 @@ function Signup(){
             <input placeholder="email" onChange={(e)=> setNewUser({...newUser, email: e.target.value})}/>
             <label>Choose a profile</label>
             <select onChange={(e)=> setNewUser({...newUser, profile: e.target.value})}>
+                <option value="">Your Choose</option>
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
             </select>
             <button onClick={()=>postNewUser(newUser)}>Create User</button>
             {load ? <p>Loading...</p> : <></>}
-            <p>already have an account? <strong onClick={()=> navigate("/login")}>log in</strong></p>
+            <p>already have an account? <strong onClick={()=> navigate("/")}>log in</strong></p>
         </div>
     )
 }

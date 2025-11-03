@@ -12,57 +12,47 @@ export function useUser() {
 export function UserProvider({ children }) {
     const [user, setUser] = useState({});
     const [connected, setConnected] = useState(false);
-    const [myQoutes, setMyQoutes] = useState([])
+    const [myClasse, setMyClasses] = useState([])
     const navigate = useNavigate();
+
+    async function loadClasses(teacherId) {
+        try {
+            const response = await axios.get(`${API_URL}/class/${teacherId}`);
+            setMyClasses(response.data);
+            alert(response.data);
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
 
     async function Login(user) {
         try{
-            console.log(`connect to: ###-${API_URL}/users/${user.userName}-###`)
             const userLogIn = await axios.get(`${API_URL}/users/${user.userName}`);
             if(user.password !== userLogIn.data.password){
                 alert("wrong password");
             }
             setUser(userLogIn.data);
             setConnected(true);
+            if(userLogIn.data.profile === 'teacher'){
+                loadClasses(userLogIn.data.email);
+            }
             navigate('/home');
         }catch(err){
             console.error(err.message);
         }
     }
 
-    // async function Login(email) {
-    //     try {
-    //         const userLogIn = await axios.get(`${API_URL}/users/${email}`);
-    //         setEmail(userLogIn.data);
-    //         loadGames(email);
-    //         setConnected(true);
-    //         return navigate("/home")
-    //     }
-    //     catch (err) {
-    //         console.error(err.message);
-    //     }
-
-    // }
-
     async function LogOut() {
         try {
             setConnected(false);
             setUser(null);
-            setMyQoutes(null);
+            setMyClasses(null);
             navigate("/");
         } catch (err) {
             console.error(err.message);
         }
     }
 
-    async function loadGames(email) {
-        try {
-            const response = axios.get(`${API_URL}/qoutes/${email}`);
-            setMyQoutes(response.data);
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
 
     // async function editUser(email) {
     //     try {
@@ -76,7 +66,7 @@ export function UserProvider({ children }) {
 
 
     return (
-        <userContext.Provider value={{ user, connected, Login, LogOut }}>
+        <userContext.Provider value={{ user, connected, myClasse, Login, LogOut }}>
             {children}
         </userContext.Provider>
     )

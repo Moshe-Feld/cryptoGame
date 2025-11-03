@@ -7,7 +7,7 @@ function Header() {
         <>
             <div className="header">
                 <p>Crypto Game</p>
-                <p onClick={()=> navigate('/profile')}>connect as {user.email}</p>
+                <p onClick={()=> navigate('/profile')}>connect as {user.userName}</p>
             </div>
             {/* <div className="navbar">
                 <div className="a"><NavLink to={"/home"}>Home</NavLink></div>
