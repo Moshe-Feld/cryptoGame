@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../css/CreatePuzzle.css";
 import { useUser } from "../context/userContext";
-import Keyboard from "./Keyboard"
+import Keyboard from "./Keyboard";
+import axios from "axios";
+
 
 function CreatePuzzle({ text }) {
   const { user, editUser } = useUser();
@@ -16,6 +18,7 @@ function CreatePuzzle({ text }) {
   const [resetTrigger, setResetTrigger] = useState(0);
   const [initialHints, setInitialHints] = useState([]);
   const inputRefs = useRef([]);
+  const completedRef = useRef(false);
   let inputIndex = 0;
 
   function createCode() {
@@ -35,8 +38,9 @@ function CreatePuzzle({ text }) {
   }
 
   useEffect(() => {
+    resetGame();
     createCode();
-  }, []);
+  }, [user.level, text]);
 
   const items = useMemo(() => {
     const parts = text.split(/(\s+)/);
@@ -107,13 +111,18 @@ function CreatePuzzle({ text }) {
 
   const getNextActiveIndex = (currentIndex, direction = 1) => {
     const refs = inputRefs.current;
+    if (!refs.length) return null;
+
     let next = currentIndex;
+    let loops = 0;
 
     do {
       next += direction;
       if (next >= refs.length) next = 0;
       if (next < 0) next = refs.length - 1;
-    } while (refs[next].disabled && next !== currentIndex);
+      loops++;
+      if (loops > refs.length) return null;
+    } while (refs[next]?.disabled);
 
     return next;
   };
@@ -121,6 +130,7 @@ function CreatePuzzle({ text }) {
   const resetGame = () => {
     setMistakes(0);
     setGameCompleted(false);
+    completedRef.current = false;
     setHintMode(false);
     setRevealedLetters([]);
     inputRefs.current.forEach((input) => {
@@ -214,11 +224,11 @@ function CreatePuzzle({ text }) {
           const newState = prev.map(num => num === number ? null : num);
 
           const allCleared = newState.every(num => num === null);
-          if (allCleared) {
+          if (allCleared && !completedRef.current) {
+            completedRef.current = true;
             setGameCompleted(true);
             alert("well done 🎉");
-            editUser(email.email);
-           
+            editUser(user);
           }
           return newState;
         });
@@ -233,7 +243,7 @@ function CreatePuzzle({ text }) {
         const newMistakes = prev + 1;
         if (newMistakes >= 3) {
           alert("Game Over ❌");
-          // resetGame();
+          resetGame();
         }
         inputRefs.current[focusedIndex].focus();
         return newMistakes;

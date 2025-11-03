@@ -26,18 +26,18 @@ export function UserProvider({ children }) {
     }
 
     async function Login(user) {
-        try{
+        try {
             const userLogIn = await axios.get(`${API_URL}/users/${user.userName}`);
-            if(user.password !== userLogIn.data.password){
+            if (user.password !== userLogIn.data.password) {
                 alert("wrong password");
             }
             setUser(userLogIn.data);
             setConnected(true);
-            if(userLogIn.data.profile === 'teacher'){
+            if (userLogIn.data.profile === 'teacher') {
                 loadClasses(userLogIn.data.email);
             }
             navigate('/home');
-        }catch(err){
+        } catch (err) {
             console.error(err.message);
         }
     }
@@ -54,19 +54,26 @@ export function UserProvider({ children }) {
     }
 
 
-    // async function editUser(email) {
-    //     try {
-    //         const { data } = await axios.put(`${API_URL}/users/${email}`, { coins: 10, level: 1 });
-    //         setCoins(data.coins);
-    //         setLevel(data.level);
-    //     } catch (err) {
-    //         console.error(err.message);
-    //     }
-    // }
+    async function editUser(user) {
+        try {
+            const { data: updatedUser } = await axios.put(`${API_URL}/users/${encodeURIComponent(user.email)}`, {
+                coins: 10,
+                level: 1,
+            });
+            setUser(updatedUser);
+        } catch (err) {
+            if (err.response?.status === 404) {
+                console.error(`User ${user.email} not found on server.`);
+            } else {
+                console.error("Error updating user:", err.message);
+            }
+        }
+    }
+
 
 
     return (
-        <userContext.Provider value={{ user, connected, myClasse, Login, LogOut }}>
+        <userContext.Provider value={{ user, connected, myClasse, Login, LogOut, editUser }}>
             {children}
         </userContext.Provider>
     )

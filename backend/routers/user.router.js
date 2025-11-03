@@ -10,7 +10,7 @@ router.get('/:userName', getUserById)
 
 router.post('/', addUser)
 
-router.put('/:userName', updateUser)
+router.put('/:email', updateUser)
 
 router.delete('/', deleteAllUsers);
 
