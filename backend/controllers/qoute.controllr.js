@@ -8,10 +8,10 @@ async function getAllQoutes(req, res) {
         res.status(500).send(err.message);
     }
 }
-async function getQouteOfUser(req, res) {
+async function getQouteByClass(req, res) {
     try{
-        const {teacherId} = req.params
-        const result = await qouteModel.find({teacherId: teacherId})
+        const {classId} = req.params
+        const result = await qouteModel.find({classId: classId})
         res.status(200).send(result)
     }catch(err){
         res.status(500).send(err.message)
@@ -40,7 +40,7 @@ async function postQoute(req, res) {
 
 module.exports = {
     getAllQoutes,
-    getQouteOfUser,
+    getQouteByClass,
     getQouteById,
     postQoute
 }

@@ -9,7 +9,7 @@ import MainLayout from './layout/MainLayout.jsx'
 import CreatGame from './pages/CreatGame.jsx'
 import { UserProvider } from './context/userContext.jsx'
 import Signup from './pages/Signup.jsx'
-import Profile from './pages/Profile.jsx'
+import Class from './pages/Class.jsx'
 import ClassPage from './pages/ClassPage.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -23,8 +23,8 @@ createRoot(document.getElementById('root')).render(
             <Route path='/home' element={<Home />} />
             <Route path='/startGame' element={<App />} />
             <Route path='/creatGame' element={<CreatGame />} />
-            <Route path='/profile' element={<Profile/>}/>
             <Route path='/class' element={<ClassPage/>}/>
+            <Route path='/class/:classId' element={<Class/>}/>
           </Route>
         </Routes>
       </UserProvider>
