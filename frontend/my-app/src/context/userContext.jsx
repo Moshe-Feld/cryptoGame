@@ -12,7 +12,7 @@ export function useUser() {
 export function UserProvider({ children }) {
     const [user, setUser] = useState({});
     const [connected, setConnected] = useState(false);
-    const [myClasse, setMyClasses] = useState([])
+    const [myClasses, setMyClasses] = useState([])
     const navigate = useNavigate();
 
     async function loadClasses(teacherId) {
@@ -33,9 +33,7 @@ export function UserProvider({ children }) {
             }
             setUser(userLogIn.data);
             setConnected(true);
-            if (userLogIn.data.profile === 'teacher') {
-                loadClasses(userLogIn.data.email);
-            }
+            loadClasses(userLogIn.data.email);
             navigate('/home');
         } catch (err) {
             console.error(err.message);
@@ -73,7 +71,7 @@ export function UserProvider({ children }) {
 
 
     return (
-        <userContext.Provider value={{ user, connected, myClasse, Login, LogOut, editUser }}>
+        <userContext.Provider value={{ user, connected, myClasses, loadClasses, Login, LogOut, editUser }}>
             {children}
         </userContext.Provider>
     )

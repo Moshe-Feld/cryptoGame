@@ -24,7 +24,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/startGame' element={<App />} />
             <Route path='/creatGame' element={<CreatGame />} />
             <Route path='/profile' element={<Profile/>}/>
-            <Route path='/classes' element={<ClassPage/>}/>
+            <Route path='/class' element={<ClassPage/>}/>
           </Route>
         </Routes>
       </UserProvider>

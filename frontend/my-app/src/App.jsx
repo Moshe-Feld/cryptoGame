@@ -39,6 +39,7 @@ function App() {
         <p>Loading...</p>
       ) : (
         <>
+        <h3>Level: {user.level}</h3>
           <p><strong>your coins: </strong>{user?.coins}</p>
           <button style={{ margin: "10px" }} onClick={() => { setShow(!show) }}>show Qoute</button>
           {show ? <><strong>Quote:</strong> {quote?.quote}</> : <></>}
