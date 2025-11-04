@@ -11,20 +11,22 @@ import { UserProvider } from './context/userContext.jsx'
 import Signup from './pages/Signup.jsx'
 import Profile from './pages/Profile.jsx'
 import ClassPage from './pages/ClassPage.jsx'
+import Wiki from './pages/Wiki.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
     <BrowserRouter>
       <UserProvider>
         <Routes>
-          <Route path='/' element={<Login/>}/>
+          <Route path='/' element={<Login />} />
           <Route path='/sign-up' element={<Signup />} />
           <Route element={<MainLayout />}>
             <Route path='/home' element={<Home />} />
             <Route path='/startGame' element={<App />} />
+            <Route path='/startWiki' element={<Wiki />} />
             <Route path='/creatGame' element={<CreatGame />} />
-            <Route path='/profile' element={<Profile/>}/>
-            <Route path='/class' element={<ClassPage/>}/>
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/class' element={<ClassPage />} />
           </Route>
         </Routes>
       </UserProvider>

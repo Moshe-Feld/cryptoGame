@@ -40,7 +40,7 @@ function CreatePuzzle({ text }) {
   useEffect(() => {
     resetGame();
     createCode();
-  }, [user.level, text]);
+  }, [user.level]);
 
   const items = useMemo(() => {
     const parts = text.split(/(\s+)/);
