@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "../context/userContext";
+import ClassItem from "../components/ClassItem";
 function ClassPage() {
     const [subject, setSubject] = useState("");
     const { user, myClasses, loadClasses } = useUser();
@@ -27,7 +28,7 @@ function ClassPage() {
         <div className="class-page">
             <h1>My Classes</h1>
             {Array.isArray(myClasses) && myClasses.length > 0 ? (
-                myClasses.map((item) => <div key={item.classId}>{item.subject}</div>)
+                myClasses.map((item) => <ClassItem item={item}/>)
             ) : (
                 <p>No classes yet.</p>
             )}

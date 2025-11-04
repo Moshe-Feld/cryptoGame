@@ -15,7 +15,6 @@ export default function Login() {
             <input placeholder="password"
                 onChange={(e)=> setUser({...user, password: e.target.value})}/>
             <button onClick={async () => {
-                // alert("user login...")
                 Login(user);
             }}>Log in</button>
             <p>Don't have an account? <strong onClick={()=>navigate("/sign-up")}>Sign Up</strong></p>

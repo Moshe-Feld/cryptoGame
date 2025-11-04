@@ -19,7 +19,6 @@ export function UserProvider({ children }) {
         try {
             const response = await axios.get(`${API_URL}/class/${teacherId}`);
             setMyClasses(response.data);
-            // alert(response.data);
         } catch (err) {
             console.error(err.message);
         }
