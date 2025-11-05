@@ -5,6 +5,7 @@ import axios from "axios";
 
 function App() {
   const [quote, setQuote] = useState(null);
+  const [wiki, setWiki] = useState(null);
   const [load, setLoad] = useState(true);
   const [show, setShow] = useState(false);
   const { user } = useUser();
@@ -39,11 +40,11 @@ function App() {
         <p>Loading...</p>
       ) : (
         <>
-        <h3>Level: {user.level}</h3>
+          <h3>Level: {user.level}</h3>
           <p><strong>your coins: </strong>{user?.coins}</p>
           <button style={{ margin: "10px" }} onClick={() => { setShow(!show) }}>show Qoute</button>
           {show ? <><strong>Quote:</strong> {quote?.quote}</> : <></>}
-          <CreatePuzzle text={quote?.quote || ""} />
+          <CreatePuzzle text={quote?.quote || ""} type={"level"} />
         </>
       )}
     </div>

@@ -51,12 +51,15 @@ export function UserProvider({ children }) {
     }
 
 
-    async function editUser(user) {
+    async function editUser(user, type) {
         try {
-            const { data: updatedUser } = await axios.put(`${API_URL}/users/${encodeURIComponent(user.email)}`, {
-                coins: 10,
-                level: 1,
-            });
+            const update = {
+                coins: 10
+            };
+            if (type === "level") update.level = 1;
+            else if (type === "wikiLevel") update.wikiLevels = 1;
+            const { data: updatedUser } = await axios.put(`${API_URL}/users/${encodeURIComponent(user.email)}`,
+                update);
             setUser(updatedUser);
         } catch (err) {
             if (err.response?.status === 404) {
@@ -66,8 +69,6 @@ export function UserProvider({ children }) {
             }
         }
     }
-
-
 
     return (
         <userContext.Provider value={{ user, connected, myClasses, loadClasses, Login, LogOut, editUser }}>

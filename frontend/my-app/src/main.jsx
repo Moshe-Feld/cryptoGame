@@ -18,11 +18,12 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <UserProvider>
         <Routes>
-          <Route path='/' element={<Login/>}/>
+          <Route path='/' element={<Login />} />
           <Route path='/sign-up' element={<Signup />} />
           <Route element={<MainLayout />}>
             <Route path='/home' element={<Home />} />
             <Route path='/startGame' element={<App />} />
+            <Route path='/startWiki' element={<Wiki />} />
             <Route path='/creatGame' element={<CreatGame />} />
             <Route path='/class' element={<ClassPage/>}/>
             <Route path='/class/:classId' element={<Class/>}/>
