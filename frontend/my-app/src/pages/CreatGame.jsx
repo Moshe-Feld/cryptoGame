@@ -5,17 +5,10 @@ import { useParams } from "react-router-dom";
 function CreatGame() {
     const {classId} = useParams;
     const [myQoute, setMyQoute] = useState({ quote: "", author: "" })
-    const [myQoutes, setMyQoutes] = useState([]);
+    const [newe, setMyQoutes] = useState([]);
     const [status, setStatus] = useState(false);
     const API_URL = 'http://localhost:3000'
-    async function loadQoutes(classId) {
-        try{
-            const response = await axios.get(`${API_URL}/qoutes/${classId}`);
-            setMyQoutes(response.data);
-        }catch(err){
-            console.error(err.message);
-        }
-    }
+    
     useEffect(()=>{
         loadQoutes()
     },[myQoutes]);

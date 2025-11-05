@@ -68,3 +68,42 @@
 .login-container button:hover {
   background: #1aaa9c;
 }
+
+.class-page{
+  align-items: center;
+  justify-content: center;
+}
+
+.class-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  width: 50vh;
+  margin: 10px;
+  border-radius: 20px;
+  border: solid #1aaa9c 2px ;
+  font-family: Arial, sans-serif;
+}
+
+.class-box p{
+  cursor: pointer;
+}
+
+.class-box p:hover{
+  font-size: larger;
+}
+
+.class-box button{
+  height: 30px;
+  width: 55px;
+  border-radius: 25px;
+  background-color: red;
+  color: #1abc9c;
+}
+
+.class-box button:hover{
+   height: 33px;
+  width: 58px;
+}

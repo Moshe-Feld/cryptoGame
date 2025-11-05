@@ -36,10 +36,10 @@ async function addClass(req, res) {
 async function editClass(req, res) {
     try{
         const {classId} = req.params;
-        const body = req.body;
+        const {email} = req.body;
         const classToEdid = await classModel.findOneAndUpdate(
             {classId: classId},
-            {...body},
+            {$push:{students: email}},
             {new: true}
         )
         res.status(200).send(classToEdid);

@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.get('/', getAllQoutes);
 
-router.get('/:teacherId', getQouteByClass);
+router.get('/:classId', getQouteByClass);
 
-router.get('/:_id', getQouteById),
+router.get('/id/:id', getQouteById),
 
 router.post('/', postQoute);
 

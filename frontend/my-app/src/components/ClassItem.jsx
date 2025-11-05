@@ -17,9 +17,9 @@ function ClassItem({item}){
         }
     }
 return(
-    <div>
+    <div className="class-box">
         <p onClick={()=>{navigate(`/class/${item.classId}`)}}>{item.subject}</p>
-        <button onClick={()=>deleteClass(item.classId)}>{item.classId}</button>
+        <button onClick={()=>deleteClass(item.classId)}>Delete</button>
     </div>
 )
 }
