@@ -40,10 +40,10 @@ function CreatePuzzle({ text, type }) {
   useEffect(() => {
     resetGame();
     createCode();
-  }, [user.level, user.wikiLevels]);
+  }, [text]);
 
   const items = useMemo(() => {
-    const parts = text.split(/(\s+)/);
+    const parts = (text || "").split(/(\s+)/);
     return parts.map((part) => {
       if (part.trim() === "") return { type: "space" };
       const chars = part.split("").map((ch) => {

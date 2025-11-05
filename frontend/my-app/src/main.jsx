@@ -12,6 +12,7 @@ import Signup from './pages/Signup.jsx'
 import Class from './pages/Class.jsx'
 import ClassPage from './pages/ClassPage.jsx'
 import Wiki from './pages/Wiki.jsx'
+import WikiHome from './pages/wikiHome.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
@@ -23,10 +24,11 @@ createRoot(document.getElementById('root')).render(
           <Route element={<MainLayout />}>
             <Route path='/home' element={<Home />} />
             <Route path='/startGame' element={<App />} />
-            <Route path='/startWiki' element={<Wiki />} />
+            <Route path='/startWiki/:category' element={<Wiki />} />
+            <Route path='/homeWiki' element={<WikiHome />} />
             <Route path='/creatGame' element={<CreatGame />} />
-            <Route path='/class' element={<ClassPage/>}/>
-            <Route path='/class/:classId' element={<Class/>}/>
+            <Route path='/class' element={<ClassPage />} />
+            <Route path='/class/:classId' element={<Class />} />
           </Route>
         </Routes>
       </UserProvider>
