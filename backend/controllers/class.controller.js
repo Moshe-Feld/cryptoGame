@@ -8,6 +8,19 @@ async function getAllClasses(req, res) {
     }
 }
 
+async function getClssById(req, res) {
+    try{
+        const {classId} = req.params;
+        const response = await classModel.findOne({classId:classId});
+        if(!response){
+            return res.status(404).send(`${classId} undefine`);
+        }
+        res.status(200).send(response);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
 async function getClassesOfTeacher(req, res) {
     try{
         const {teacherId} = req.params;
@@ -71,6 +84,7 @@ async function deleteClass(req, res) {
 
 module.exports = {
     getAllClasses,
+    getClssById,
     getClassesOfTeacher,
     addClass,
     editClass,
