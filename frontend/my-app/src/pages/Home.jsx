@@ -9,7 +9,7 @@ function Home() {
             <p>Welcome</p>
             <button onClick={() => LogOut()}>Log Out</button>
             <button onClick={() => navigate("/startGame")}>Current Level: {user.level}</button>
-            <button onClick={() => navigate("/startWiki")}>wiki</button>
+            <button onClick={() => navigate("/homeWiki")}>wiki</button>
 
         </div>
     )
