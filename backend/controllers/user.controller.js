@@ -76,11 +76,11 @@ async function deleteAllUsers(req, res) {
 async function updateUser(req, res) {
     try {
         const email = req.params.email; // לא destructure
-        const { coins = 0, level = 0 } = req.body;
+        const { coins = 0, level = 0, wikiLevels = 0 } = req.body;
 
         const updatedUser = await userModel.findOneAndUpdate(
             { email },
-            { $inc: { coins, level } },
+            { $inc: { coins, level, wikiLevels } },
             { new: true }
         );
 

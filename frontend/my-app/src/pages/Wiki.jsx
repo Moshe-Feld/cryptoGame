@@ -19,14 +19,13 @@ function Wiki() {
         const fetchwiki = async () => {
             try {
                 setLoad(true);
-                const topicList = [
-                    "Computer", "Internet", "Artificial intelligence", "Israel", "Music",
-                    "Physics", "Mathematics", "History", "Science", "Technology"
-                ];
-                const topic = topicList[user.level % topicList.length];
+                // const topicList = [
+                //     "Computer", "Internet", "Artificial intelligence", "Israel", "Music",
+                //     "Physics", "Mathematics", "History", "Science", "Technology"
+                // ];
+                // const topic = topicList[user.level % topicList.length];
 
-                // 1️⃣ ניסיון ראשון: ויקיפדיה ישירה
-                const mainUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(topic)}`;
+                const mainUrl = `https://en.wikipedia.org/api/rest_v1/page/random/summary`;
                 try {
                     const { data } = await axios.get(mainUrl);
                     if (!ignore) {
@@ -38,26 +37,6 @@ function Wiki() {
                     console.warn("Main Wikipedia API failed:", err.message);
                 }
 
-                // // // 2️⃣ ניסיון שני: דרך פרוקסי ציבורי
-                // try {
-                //     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(mainUrl)}`;
-                //     const { data } = await axios.get(proxyUrl);
-                //     const parsed = JSON.parse(data.contents);
-                //     if (!ignore) setWiki({ wiki: parsed.extract });
-                //     return;
-                // } catch (err) {
-                //     console.warn("Proxy Wikipedia API failed:", err.message);
-                // }
-
-                // // 3️⃣ ניסיון שלישי: גיבוי מקומי
-                // const backupSummaries = [
-                //     { wiki: "Albert Einstein was a theoretical physicist who developed the theory of relativity." },
-                //     { wiki: "A computer is an electronic device that manipulates information or data." },
-                //     { wiki: "The Internet is a global system of interconnected computer networks." }
-                // ];
-                // const randomBackup = backupSummaries[Math.floor(Math.random() * backupSummaries.length)];
-                // if (!ignore) setWiki(randomBackup);
-
             } catch (err) {
                 console.error("Error fetching wiki:", err);
             } finally {
@@ -67,7 +46,7 @@ function Wiki() {
 
         fetchwiki();
         return () => { ignore = true };
-    }, [user.level]);
+    }, [user?.wikiLevels]);
 
     return (
         <div style={{ padding: 20 }}>
@@ -77,11 +56,11 @@ function Wiki() {
                 <p>Loading...</p>
             ) : (
                 <>
-                    <h3>Level: {user.level}</h3>
+                    <h3>wiki levels completed: {user.wikiLevels}</h3>
                     <p><strong>your coins: </strong>{user?.coins}</p>
                     <button style={{ margin: "10px" }} onClick={() => { setShow(!show) }}>show Qoute</button>
                     {show ? <><strong>wiki:</strong> {wiki?.wiki}</> : <></>}
-                    <CreatePuzzle text={memoWiki} />
+                    <CreatePuzzle text={memoWiki} type={"wikiLevel"} />
                 </>
             )}
         </div>

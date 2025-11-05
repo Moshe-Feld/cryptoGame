@@ -25,13 +25,8 @@ createRoot(document.getElementById('root')).render(
             <Route path='/startGame' element={<App />} />
             <Route path='/startWiki' element={<Wiki />} />
             <Route path='/creatGame' element={<CreatGame />} />
-<<<<<<< HEAD
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/class' element={<ClassPage />} />
-=======
             <Route path='/class' element={<ClassPage/>}/>
             <Route path='/class/:classId' element={<Class/>}/>
->>>>>>> e59f924f1714977d721dcfed366ae95b2befd0a7
           </Route>
         </Routes>
       </UserProvider>
