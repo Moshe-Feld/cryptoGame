@@ -11,12 +11,8 @@ import { UserProvider } from './context/userContext.jsx'
 import Signup from './pages/Signup.jsx'
 import Class from './pages/Class.jsx'
 import ClassPage from './pages/ClassPage.jsx'
-<<<<<<< HEAD
 import Wiki from './pages/Wiki.jsx'
 import WikiHome from './pages/wikiHome.jsx'
-=======
-import Qoute from './pages/Qoute.jsx'
->>>>>>> fccb2975e4913ebc02ef6a8a3cf6c928536c2ee8
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
