@@ -11,6 +11,7 @@ import { UserProvider } from './context/userContext.jsx'
 import Signup from './pages/Signup.jsx'
 import Class from './pages/Class.jsx'
 import ClassPage from './pages/ClassPage.jsx'
+import Qoute from './pages/Qoute.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/creatGame' element={<CreatGame />} />
             <Route path='/class' element={<ClassPage/>}/>
             <Route path='/class/:classId' element={<Class/>}/>
+            <Route path='/qoute/:_id' element={<Qoute/>}/>
           </Route>
         </Routes>
       </UserProvider>

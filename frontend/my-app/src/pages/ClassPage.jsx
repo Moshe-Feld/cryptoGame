@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import ClassItem from "../components/ClassItem";
 function ClassPage() {
+    const navigate = useNavigate();
     const [subject, setSubject] = useState("");
     const { user, myClasses, loadClasses } = useUser();
     const API_URL = "http://localhost:3000";
@@ -25,10 +27,13 @@ function ClassPage() {
     }
 
     return (
+        <>
+        <h1>My Classes</h1>
         <div className="class-page">
-            <h1>My Classes</h1>
             {Array.isArray(myClasses) && myClasses.length > 0 ? (
-                myClasses.map((item) => <ClassItem item={item}/>)
+                myClasses.map((item) => <div className="class-box"
+                onClick={()=>navigate(`/class/${item.classId}`)}
+                > <p>{item.subject}</p></div> )
             ) : (
                 <p>No classes yet.</p>
             )}
@@ -43,6 +48,7 @@ function ClassPage() {
                 <button onClick={addClass}>Add Class</button>
             </div>
         </div>
+        </>
     );
 }
 export default ClassPage;

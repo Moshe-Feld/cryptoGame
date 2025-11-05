@@ -20,9 +20,9 @@ async function getQouteByClass(req, res) {
 
 async function getQouteById(req, res) {
     try{
-        const {_id} = req.params;
-        const qoute = qouteModel.findOne({_id:_id})
-        res.status(200).sen(qoute)
+        const {id} = req.params;
+        const qoute = await qouteModel.findById(id)
+        res.status(200).send(qoute)
     }catch(err){
         res.status(500).send(err.message)
     }

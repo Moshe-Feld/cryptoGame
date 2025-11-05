@@ -21,6 +21,19 @@ async function getUserById(req, res) {
     }
 }
 
+async function getUserByEmail(req, res) {
+    try {
+        const { email } = req.params;
+        const findUser = await userModel.findOne({ email: email })
+        if (!findUser) {
+            return res.status(404).send("user undefine")
+        }
+        res.status(200).send(findUser);
+    } catch (err) {
+        console.error(err.message);
+    }
+}
+
 async function addUser(req, res) {
     try {
         const body = req.body;
@@ -104,6 +117,7 @@ async function getTop10(req, res) {
 module.exports = {
     getAllUsers,
     getUserById,
+    getUserByEmail,
     addUser,
     deleteAllUsers,
     updateUser,
