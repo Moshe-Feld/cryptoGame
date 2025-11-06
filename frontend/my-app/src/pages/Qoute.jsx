@@ -17,7 +17,6 @@ function Qoute(){
     }
     useEffect(()=>{
         loadQoute(_id);
-        alert(_id);
     },[]);
 
     return(

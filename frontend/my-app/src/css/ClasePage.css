@@ -1,0 +1,100 @@
+.class-page {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.class-sections {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.class-section {
+  flex: 1;
+  background-color: #f8f9fb;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+}
+
+.class-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.class-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.class-card:hover {
+  transform: scale(1.02);
+  background-color: #f0f7ff;
+}
+
+.class-card.student {
+  border-left: 4px solid #4f46e5;
+}
+
+.subject {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.code,
+.teacher {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.forms-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.form-card {
+  background-color: #eef3ff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  background-color: #2563eb;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}

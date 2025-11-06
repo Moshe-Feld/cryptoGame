@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllClasses, addClass, editClass, deleteClass, getClassesOfTeacher, getClssById } = require('../controllers/class.controller');
+const { getAllClasses, addClass, editClass, deleteClass, getClassesOfTeacher, getClssById, getClassesOfStudents } = require('../controllers/class.controller');
 
 const router = express.Router();
 
@@ -9,9 +9,11 @@ router.get('/id/:classId', getClssById)
 
 router.get('/:teacherId', getClassesOfTeacher);
 
+router.get('/students/:email', getClassesOfStudents);
+
 router.post('/', addClass);
 
-router.put('/:classId', editClass);
+router.put('/', editClass);
 
 router.delete('/:classId', deleteClass);
 

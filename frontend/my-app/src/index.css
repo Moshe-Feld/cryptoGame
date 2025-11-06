@@ -107,3 +107,58 @@
    height: 33px;
   width: 58px;
 }
+
+.class-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.qoutes-section, .students-section {
+  flex: 1;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.quote-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.form-section {
+  background-color: #eef3ff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  height: 275px;
+  width: 400px;
+}
+
+.form-section input {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.form-section button {
+  background-color: #2d6cdf;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.form-section button:hover {
+  background-color: #1d4ed8;
+}

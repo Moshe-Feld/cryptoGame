@@ -7,14 +7,17 @@ function Class() {
     const { classId } = useParams();
     const API_URL = "http://localhost:3000";
     const [myStudents, setMyStudents] = useState([]);
+    const [classData, setclassData] = useState("");
     const [myQoutes, setMyQoutes] = useState([]);
-    const [student, setStudent] = useState("");
-    const [newQoute, setNewQoute] = useState({ classId: classId });
+    const [newQuote, setNewQuote] = useState({ classId: classId });
+    const { user } = useUser();
+
     const navigate = useNavigate();
 
     async function getClass(id) {
         try {
-            const response = await axios.get(`${API_URL}/id/${id}`);
+            const response = await axios.get(`${API_URL}/class/id/${id}`);
+            setclassData(response.data);
             setMyStudents(response.data.students);
         } catch (err) {
             console.error(err.message);
@@ -39,48 +42,77 @@ function Class() {
         }
     }
 
-    async function addStudent(email) {
-        try {
-            console.log(`chack: localhost:3000/users/email/${email}`)
-            const response = await axios.get(`${API_URL}/users/email/${email}`);
-            await axios.put(`${API_URL}/class/${classId}`, { email: response.data.email });
-            alert("user added")
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
     useEffect(() => {
         getClass(classId);
         loadQoutes(classId);
     }, [myQoutes])
+
+    if (!classData || !user) return <p>Loading...</p>;
+
+    const isTeacher = classData?.teacherId === user.email;
+    const isStudent = classData?.students?.includes(user.email);
     return (
         <>
-            {Array.isArray(myQoutes) && myQoutes.length > 0 ? (
-                myQoutes.map((item) => <p onClick={() => navigate(`/qoute/${item._id}`)}>{item.author}</p>)
-            ) : (
-                <p>No Qoutes yet.</p>
-            )}
-            {Array.isArray(myStudents) && myStudents.length > 0 ? (
-                myStudents.map((item) => <p>{item}</p>)
-            ) : (
-                <p>No Students yet.</p>
-            )}
-            <div className="login-container">
-                <p>hi plaese enter a Quote</p>
-                <input placeholder="Quote" onChange={(e) => setNewQoute({ ...newQoute, qoute: e.target.value })} />
-                <input placeholder="Author" onChange={(e) => setNewQoute({ ...newQoute, author: e.target.value })} />
-                <button onClick={() => postQoute(newQoute)}>Add</button>
+            <div className="class-content">
+                <div className="qoutes-section">
+                    <h3>Qoutes</h3>
+                    {Array.isArray(myQoutes) && myQoutes.length > 0 ? (
+                        myQoutes.map((item, index) => <div className="qoute-card"
+                            key={index}
+                            onClick={() => navigate(`/qoute/${item._id}`)}>Level: {index+1}</div>)
+                    ) : (
+                        <p>No Qoutes yet.</p>
+                    )}
+                </div>
+                {isTeacher && (
+                    <div className="students-section">
+                        <h3>Students</h3>
+                        {Array.isArray(myStudents) && myStudents.length > 0 ? (
+                            <ul>
+                                {myStudents.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No Students yet.</p>
+                        )}
+                    </div>
+                )}
             </div>
 
-            <div className="login-container">
-                <h3>Add Student</h3>
-                <input
-                    placeholder="enter the email of the Student"
-                    value={student}
-                    onChange={(e) => setStudent(e.target.value)}
-                />
-                <button onClick={() => { addStudent(student) }}>Add</button>
-            </div>
+            {isTeacher && (
+                <>
+                    <div className="form-section">
+                        <h3>Add New Quote</h3>
+                        <input
+                            placeholder="Quote"
+                            onChange={(e) =>
+                                setNewQuote({ ...newQuote, qoute: e.target.value })
+                            }
+                        />
+                        <input
+                            placeholder="Author"
+                            onChange={(e) =>
+                                setNewQuote({ ...newQuote, author: e.target.value })
+                            }
+                        />
+                        <button onClick={() => postQoute(newQuote)}>Add</button>
+                    </div>
+
+                    <div className="form-section">
+                        <h3>Invite Students</h3>
+                        <p>Send them this join code:</p>
+                        <h2 className="code-box">{classData.joinCode}</h2>
+                        <p>(Students can join by entering this code in their dashboard)</p>
+                    </div>
+                </>
+            )}
+            {isStudent && !isTeacher && (
+                <div className="student-view">
+                    <p>You are a student in this class.</p>
+                    <p>Click on a quote to start the activity!</p>
+                </div>
+            )}
         </>
     )
 }
