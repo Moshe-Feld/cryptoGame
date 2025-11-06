@@ -110,7 +110,7 @@ function Class() {
             {isStudent && !isTeacher && (
                 <div className="student-view">
                     <p>You are a student in this class.</p>
-                    <p>Click on a quote to start the activity!</p>
+                    <p>Click on a level to start the activity!</p>
                 </div>
             )}
         </>
