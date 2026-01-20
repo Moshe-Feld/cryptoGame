@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllClasses, addClass, editClass, deleteClass, getClassesOfTeacher, getClssById, getClassesOfStudents } = require('../controllers/class.controller');
+const { getAllClasses, addClass, editClass, deleteClass, getClassesOfTeacher, getClssById, getClassesOfStudents, deleteAllClasses } = require('../controllers/class.controller');
 
 const router = express.Router();
 
@@ -16,5 +16,7 @@ router.post('/', addClass);
 router.put('/', editClass);
 
 router.delete('/:classId', deleteClass);
+
+router.delete('/', deleteAllClasses);
 
 module.exports = router;

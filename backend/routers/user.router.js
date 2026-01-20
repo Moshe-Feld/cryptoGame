@@ -1,18 +1,18 @@
 const express = require('express');
-const { getAllUsers, addUser, getUserById, deleteAllUsers, getTop10, updateUser, getUserByEmail } = require('../controllers/user.controller');
+const { getAllUsers, addUser, getUserById, getUserByUserName, deleteAllUsers, updateUser, completedLevel } = require('../controllers/user.controller');
 const router = express.Router();
 
 router.get('/', getAllUsers)
 
-router.get('/top10', getTop10);
+router.get('/:_id', getUserById);
 
-router.get('/:userName', getUserById)
-
-router.get('/email/:email', getUserByEmail)
+router.get('/user-name/:userName', getUserByUserName);
 
 router.post('/', addUser)
 
-router.put('/:email', updateUser)
+router.put('/:_id', updateUser);
+
+router.put('/stag-progress/:_id', completedLevel)
 
 router.delete('/', deleteAllUsers);
 

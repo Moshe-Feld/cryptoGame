@@ -26,7 +26,7 @@ export function UserProvider({ children }) {
 
     async function Login(user) {
         try {
-            const userLogIn = await axios.get(`${API_URL}/users/${user.userName}`);
+            const userLogIn = await axios.get(`${API_URL}/users/user-name/${user.userName}`);
             if (user.password !== userLogIn.data.password) {
                 alert("wrong password");
             }
@@ -51,19 +51,25 @@ export function UserProvider({ children }) {
     }
 
 
-    async function editUser(user, type) {
+    async function editUser(user, type, qouteId) {
         try {
             const update = {
-                coins: 10
+                coins: 10,
+                qouteId
             };
+
             if (type === "level") update.level = 1;
             else if (type === "wikiLevel") update.wikiLevels = 1;
-            const { data: updatedUser } = await axios.put(`${API_URL}/users/${encodeURIComponent(user.email)}`,
+            const { data: updatedUser } = await axios.put(`${API_URL}/users/${user._id}`,
                 update);
             setUser(updatedUser);
+            // if(qouteId){
+            //     await axios.put(`${API_URL}/users/stag-progress/${user._id}`, { qouteId});
+            // }
         } catch (err) {
             if (err.response?.status === 404) {
-                console.error(`User ${user.email} not found on server.`);
+                // console.error(`User ${user._id} not found on server.`);
+                console.error(err.message);
             } else {
                 console.error("Error updating user:", err.message);
             }

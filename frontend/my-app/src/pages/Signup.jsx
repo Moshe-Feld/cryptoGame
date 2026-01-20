@@ -10,6 +10,8 @@ function Signup() {
         try {
             console.log(newUser);
             setLoad(true);
+            const userExists = await axios.get(`${API_URL}/users/user-name/${newUser.userName}`);
+            if(userExists) return alert('user alredy exists');
             await axios.post(`${API_URL}/users`, newUser);
             setLoad(false);
             alert("user created succefuly!");

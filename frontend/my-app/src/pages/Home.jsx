@@ -3,15 +3,16 @@ import { useUser } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 function Home() {
     const navigate = useNavigate();
-    const { user, LogOut } = useUser();
+    const { user } = useUser();
     return (
-        <div className="login-container">
-            <p>Welcome</p>
-            <button onClick={() => LogOut()}>Log Out</button>
-            <button onClick={() => navigate("/startGame")}>Current Level: {user.level}</button>
-            <button onClick={() => navigate("/homeWiki")}>wiki</button>
+        <>
 
-        </div>
+            <div className="home-container">
+                <div className="home-item" onClick={() => navigate("/startGame")}>Current Level: {user.level}</div>
+                <div className="home-item" onClick={() => navigate("/homeWiki")}>Wiki Level: {user.wikiLevels}</div>
+                <div className="home-item" onClick={() => navigate("/class")}>My Classes</div>
+            </div>
+        </>
     )
 }
 export default Home;

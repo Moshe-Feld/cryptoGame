@@ -57,9 +57,21 @@ function Class() {
                 <div className="qoutes-section">
                     <h3>Qoutes</h3>
                     {Array.isArray(myQoutes) && myQoutes.length > 0 ? (
-                        myQoutes.map((item, index) => <div className="qoute-card"
-                            key={index}
-                            onClick={() => navigate(`/qoute/${item._id}`)}>Level: {index+1}</div>)
+                        myQoutes.map((item, index) => {
+                            const isCompleted = user?.levelCompleted?.includes(item._id);
+
+                            return (
+                                <div
+                                    className="qoute-card"
+                                    key={item._id}
+                                    onClick={() => navigate(`/qoute/${item._id}`)}
+                                >
+                                    Level: {index + 1}
+                                    {isCompleted && <span> ✔</span>}
+                                </div>
+                            );
+                        })
+
                     ) : (
                         <p>No Qoutes yet.</p>
                     )}

@@ -102,6 +102,15 @@ async function deleteClass(req, res) {
     }
 }
 
+async function deleteAllClasses(req, res) {
+    try{
+        const result = await classModel.deleteMany({});
+        res.status(200).send(`${result.deletedCount} classes deleted`);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
 module.exports = {
     getAllClasses,
     getClssById,
@@ -109,5 +118,6 @@ module.exports = {
     getClassesOfStudents,
     addClass,
     editClass,
-    deleteClass
+    deleteClass,
+    deleteAllClasses
 }

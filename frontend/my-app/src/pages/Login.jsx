@@ -9,7 +9,7 @@ export default function Login() {
     return (
         <div className="login-container">
             <h1>Welcome</h1>
-            <p>please enter your email to connect</p>
+          
             <input placeholder="user-name"
                 onChange={(e) => setUser({ ...user, userName: e.target.value })} />
             <input placeholder="password"
@@ -17,7 +17,7 @@ export default function Login() {
             <button onClick={async () => {
                 Login(user);
             }}>Log in</button>
-            <p>Don't have an account? <strong onClick={() => navigate("/sign-up")}>Sign Up</strong></p>
+            <p style={{"cursor": "pointer"}}>Don't have an account? <strong onClick={() => navigate("/sign-up")}>Sign Up</strong></p>
         </div>
     )
 }

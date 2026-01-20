@@ -21,7 +21,7 @@ function Qoute(){
 
     return(
         <>
-        <CreatePuzzle text={qoute}/>
+        <CreatePuzzle text={qoute} qouteId={_id}/>
         </>
     )
 }

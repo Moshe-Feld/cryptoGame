@@ -10,8 +10,8 @@ async function getAllUsers(req, res) {
 
 async function getUserById(req, res) {
     try {
-        const { userName } = req.params;
-        const findUser = await userModel.findOne({ userName: userName })
+        const { _id } = req.params;
+        const findUser = await userModel.findById(_id);
         if (!findUser) {
             return res.status(404).send("user undefine")
         }
@@ -21,16 +21,16 @@ async function getUserById(req, res) {
     }
 }
 
-async function getUserByEmail(req, res) {
+async function getUserByUserName(req, res) {
     try {
-        const { email } = req.params;
-        const findUser = await userModel.findOne({ email: email })
-        if (!findUser) {
-            return res.status(404).send("user undefine")
+        const { userName } = req.params;
+        const result = await userModel.findOne({ userName });
+        if (!result) {
+            return res.status(404).send(`${userName} undefine`);
         }
-        res.status(200).send(findUser);
+        res.status(200).send(result);
     } catch (err) {
-        console.error(err.message);
+        res.status(500).send(err.message);
     }
 }
 
@@ -88,38 +88,55 @@ async function deleteAllUsers(req, res) {
 
 async function updateUser(req, res) {
     try {
-        const email = req.params.email; // לא destructure
-        const { coins = 0, level = 0, wikiLevels = 0 } = req.body;
+        const { _id } = req.params;
+        const { coins = 0, level = 0, wikiLevels = 0, qouteId = "" } = req.body;
 
-        const updatedUser = await userModel.findOneAndUpdate(
-            { email },
-            { $inc: { coins, level, wikiLevels } },
-            { new: true }
+        console.log("1. Received _id:", _id);
+        console.log("2. Request body:", req.body);
+
+        const result = await userModel.findById(_id);
+        console.log("3. Found user:", result);
+
+        if (!result) return res.status(404).send("4. User not found");
+        await userModel.updateOne(
+            { _id },
+            { $inc: { coins, level, wikiLevels } }
         );
-
-        if (!updatedUser) return res.status(404).send("User not found");
+        const updatedUser = await userModel.findById(_id);
+         if (!updatedUser.levelCompleted.includes(qouteId)) {
+            updatedUser.levelCompleted.push(qouteId);
+            await updatedUser.save();
+        }
         res.status(200).send(updatedUser);
     } catch (err) {
         res.status(500).send(err.message);
     }
 }
 
-async function getTop10(req, res) {
+async function completedLevel(req, res) {
     try {
-        const top10 = await userModel.find().sort({ coins: -1 }).limit(10);
-        res.status(200).send(top10)
+        const {_id} = req.params;
+        const { qouteId } = req.body;
+        const userCompleted = await userModel.findById(_id);
+        if (!userCompleted) {
+            return res.status(404).send(`${_id} undefine`);
+        }
+        if (!userCompleted.levelCompleted.includes(qouteId)) {
+            userCompleted.levelCompleted.push(qouteId);
+            await userCompleted.save();
+        }
+        res.status(200).send(`${_id} updated`);
     } catch (err) {
         res.status(500).send(err.message);
     }
 }
 
-
 module.exports = {
     getAllUsers,
     getUserById,
-    getUserByEmail,
+    getUserByUserName,
     addUser,
     deleteAllUsers,
     updateUser,
-    getTop10
+    completedLevel
 }

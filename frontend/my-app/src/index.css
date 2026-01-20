@@ -69,6 +69,23 @@
   background: #1aaa9c;
 }
 
+.home-container{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-item{
+  height: 300px;
+  width: 275px;
+  margin: 15px;
+  border: 2px solid black;
+  text-align: center;
+  cursor: pointer;
+}
+
 .class-page{
   align-items: center;
   justify-content: center;

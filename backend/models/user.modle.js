@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   coins: { type: Number, default: 0 },
   level: { type: Number, default: 1 },
   wikiLevels: { type: Number, default: 0 },
+  levelCompleted: {type: [String], default: []}
 });
 
 const userModel = mongoose.model('user', userSchema);

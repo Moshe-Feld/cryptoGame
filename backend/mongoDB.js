@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const DB_URL = 'mongodb+srv://user:123@cluster0.r2nip.mongodb.net/test'
+const DB_URL = 'mongodb+srv://user:123@cluster0.r2nip.mongodb.net/'
 
 const connect = () => {
     try {

@@ -38,9 +38,19 @@ async function postQoute(req, res) {
     }
 }
 
+async function deleteAllQoutes(req, res) {
+    try{
+        const result = await qouteModel.deleteMany({});
+        res.status(200).send(`${result.deletedCount} qoutes deleted`);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
 module.exports = {
     getAllQoutes,
     getQouteByClass,
     getQouteById,
-    postQoute
+    postQoute,
+    deleteAllQoutes
 }

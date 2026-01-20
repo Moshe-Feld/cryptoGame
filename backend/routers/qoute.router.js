@@ -1,5 +1,5 @@
 const express = require('express');
-const { getQouteByClass, getQouteById, postQoute, getAllQoutes } = require('../controllers/qoute.controllr');
+const { getQouteByClass, getQouteById, postQoute, getAllQoutes, deleteAllQoutes } = require('../controllers/qoute.controllr');
 
 const router = express.Router();
 
@@ -10,6 +10,8 @@ router.get('/:classId', getQouteByClass);
 router.get('/id/:id', getQouteById),
 
 router.post('/', postQoute);
+
+router.delete('/', deleteAllQoutes);
 
 // router.put('/:_id');
 
