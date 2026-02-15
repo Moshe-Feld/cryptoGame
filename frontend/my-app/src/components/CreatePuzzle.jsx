@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../css/CreatePuzzle.css";
 import { useUser } from "../context/userContext";
 import Keyboard from "./Keyboard";
-import axios from "axios";
 
 
 function CreatePuzzle({ text, type, qouteId }) {

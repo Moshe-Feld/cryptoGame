@@ -12,10 +12,10 @@ function ClassPage() {
     const { user, myClasses, loadClasses } = useUser();
     const API_URL = "http://localhost:3000";
 
-    if (!user || !user.email) return <p>Loading user...</p>;
-    async function loadStudentClass(email) {
+    if (!user || !user.userName) return <p>Loading...</p>;
+    async function loadStudentClass(userName) {
         try {
-            const response = await axios.get(`${API_URL}/class/students/${email}`);
+            const response = await axios.get(`${API_URL}/class/students/${userName}`);
             setStudentClass(response.data);
         } catch (err) {
             console.error(err.message);
@@ -24,13 +24,12 @@ function ClassPage() {
     async function addClass() {
         try {
             const classDetails = {
-                teacherId: user.email,
-                classId: `${user.userName}-${Date.now()}`,
+                teacherId: user.userName,
                 subject,
             };
             await axios.post(`${API_URL}/class`, classDetails);
             alert("Class added");
-            loadClasses(user.email);
+            loadClasses(user.userName);
         } catch (err) {
             console.error(err.message);
         }
@@ -39,7 +38,7 @@ function ClassPage() {
     async function joinToClss() {
         try {
             const student = {
-                email: user.email,
+                userName: user.userName,
                 joinCode: code
             }
             await axios.put(`${API_URL}/class`, student);
@@ -49,7 +48,7 @@ function ClassPage() {
     }
 
     useEffect(() => {
-        loadStudentClass(user.email);
+        loadStudentClass(user.userName);
     }, [studentClass]);
 
     return (
@@ -60,7 +59,7 @@ function ClassPage() {
                     <h3>Classes I Teach</h3>
                     {Array.isArray(myClasses) && myClasses.length > 0 ? (
                         myClasses.map((item) => <div className="class-box"
-                            onClick={() => navigate(`/class/${item.classId}`)}
+                            onClick={() => navigate(`/class/${item._id}`)}
                         > <p>{item.subject}</p></div>)
                     ) : (
                         <p>No classes yet.</p>
@@ -71,7 +70,7 @@ function ClassPage() {
                     <h3>Classes I Joined</h3>
                     {Array.isArray(studentClass) && studentClass.length > 0 ? (
                         studentClass.map((item) => <div className="class-box"
-                            onClick={() => navigate(`/class/${item.classId}`)}
+                            onClick={() => navigate(`/class/${item._id}`)}
                         > <p>{item.subject}</p></div>)
                     ) : (
                         <p>No classes yet.</p>

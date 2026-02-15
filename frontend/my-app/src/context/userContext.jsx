@@ -32,7 +32,7 @@ export function UserProvider({ children }) {
             }
             setUser(userLogIn.data);
             setConnected(true);
-            loadClasses(userLogIn.data.email);
+            loadClasses(userLogIn.data.userName);
             navigate('/home');
         } catch (err) {
             console.error(err.message);
@@ -63,12 +63,8 @@ export function UserProvider({ children }) {
             const { data: updatedUser } = await axios.put(`${API_URL}/users/${user._id}`,
                 update);
             setUser(updatedUser);
-            // if(qouteId){
-            //     await axios.put(`${API_URL}/users/stag-progress/${user._id}`, { qouteId});
-            // }
         } catch (err) {
             if (err.response?.status === 404) {
-                // console.error(`User ${user._id} not found on server.`);
                 console.error(err.message);
             } else {
                 console.error("Error updating user:", err.message);

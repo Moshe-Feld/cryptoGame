@@ -9,7 +9,7 @@ function Qoute(){
     const [qoute, setQoute] = useState("");
     async function loadQoute(id){
         try{
-            const response = await axios.get(`${API_URL}/qoutes/id/${id}`);
+            const response = await axios.get(`${API_URL}/qoutes/${id}`);
             setQoute(response.data.qoute);
         }catch(err){
             console.error(err.message);

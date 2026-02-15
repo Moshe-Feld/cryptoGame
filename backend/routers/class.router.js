@@ -5,17 +5,17 @@ const router = express.Router();
 
 router.get('/', getAllClasses);
 
-router.get('/id/:classId', getClssById)
+router.get('/id/:_id', getClssById)
 
 router.get('/:teacherId', getClassesOfTeacher);
 
-router.get('/students/:email', getClassesOfStudents);
+router.get('/students/:userName', getClassesOfStudents);
 
 router.post('/', addClass);
 
 router.put('/', editClass);
 
-router.delete('/:classId', deleteClass);
+router.delete('/:_id', deleteClass);
 
 router.delete('/', deleteAllClasses);
 

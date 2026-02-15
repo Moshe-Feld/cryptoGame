@@ -10,10 +10,10 @@ async function getAllClasses(req, res) {
 
 async function getClssById(req, res) {
     try {
-        const { classId } = req.params;
-        const response = await classModel.findOne({ classId: classId });
+        const { _id } = req.params;
+        const response = await classModel.findById(_id);
         if (!response) {
-            return res.status(404).send(`${classId} undefine`);
+            return res.status(404).send(`${_id} undefine`);
         }
         res.status(200).send(response);
     } catch (err) {
@@ -38,9 +38,9 @@ async function getClassesOfTeacher(req, res) {
 
 async function getClassesOfStudents(req, res) {
     try{
-        const {email} = req.params;
+        const {userName} = req.params;
         const response = await classModel.find({});
-        const result = response.filter((item)=> item.students.includes(email));
+        const result = response.filter((item)=> item.students.includes(userName));
         res.status(200).send(result);
     }catch(err){
         res.status(500).send(res.message);
@@ -70,16 +70,16 @@ async function addClass(req, res) {
 
 async function editClass(req, res) {
     try {
-        const { email, joinCode } = req.body;
+        const { userName, joinCode } = req.body;
         const classToEdit = await classModel.findOne({ joinCode: joinCode });
         if (!classToEdit) {
             return res.status(404).send(`${joinCode} undefine`);
         }
-        if(!classToEdit.students.includes(email)){
-            classToEdit.students.push(email);
+        if(!classToEdit.students.includes(userName)){
+            classToEdit.students.push(userName);
             await classToEdit.save();
         }
-        res.status(200).send(`${email} added to class`);
+        res.status(200).send(`${userName} added to class`);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -88,13 +88,13 @@ async function editClass(req, res) {
 
 async function deleteClass(req, res) {
     try {
-        const { classId } = req.params;
-        const result = await classModel.findOne({ classId: classId });
+        const { _id } = req.params;
+        const result = await classModel.findById( _id);
         await classModel.deleteOne(result);
         res.status(200).send(`${result} deleted`)
     } catch (err) {
         if (!result) {
-            res.status(404).send(`${classId} undegine`)
+            res.status(404).send(`${_id} undegine`)
         }
         else {
             res.status(500).send(err.message);

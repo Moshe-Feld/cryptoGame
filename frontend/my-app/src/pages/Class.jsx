@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Class() {
-    const { classId } = useParams();
+    const { _id } = useParams();
     const API_URL = "http://localhost:3000";
     const [myStudents, setMyStudents] = useState([]);
     const [classData, setclassData] = useState("");
     const [myQoutes, setMyQoutes] = useState([]);
-    const [newQuote, setNewQuote] = useState({ classId: classId });
+    const [newQuote, setNewQuote] = useState({classId: _id });
     const { user } = useUser();
 
     const navigate = useNavigate();
@@ -24,9 +24,9 @@ function Class() {
         }
     }
 
-    async function loadQoutes(classId) {
+    async function loadQoutes(id) {
         try {
-            const response = await axios.get(`${API_URL}/qoutes/${classId}`);
+            const response = await axios.get(`${API_URL}/qoutes/by-class/${id}`);
             setMyQoutes(response.data);
         } catch (err) {
             console.error(err.message);
@@ -43,14 +43,14 @@ function Class() {
     }
 
     useEffect(() => {
-        getClass(classId);
-        loadQoutes(classId);
+        getClass(_id);
+        loadQoutes(_id);
     }, [myQoutes])
 
     if (!classData || !user) return <p>Loading...</p>;
 
-    const isTeacher = classData?.teacherId === user.email;
-    const isStudent = classData?.students?.includes(user.email);
+    const isTeacher = classData?.teacherId === user.userName;
+    const isStudent = classData?.students?.includes(user.userName);
     return (
         <>
             <div className="class-content">

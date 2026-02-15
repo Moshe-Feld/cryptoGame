@@ -11,7 +11,7 @@ async function getAllQoutes(req, res) {
 async function getQouteByClass(req, res) {
     try{
         const {classId} = req.params
-        const result = await qouteModel.find({classId: classId})
+        const result = await qouteModel.find({classId})
         res.status(200).send(result)
     }catch(err){
         res.status(500).send(err.message)

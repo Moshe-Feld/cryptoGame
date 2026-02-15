@@ -1,17 +1,35 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import '../css/Login.css';
 function Signup() {
     const navigate = useNavigate();
     const API_URL = 'http://localhost:3000'
     const [newUser, setNewUser] = useState({});
     const [load, setLoad] = useState(false);
+
+    function isValidEmail(email){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
     async function postNewUser(newUser) {
         try {
-            console.log(newUser);
+            const {userName, password, email} = newUser;
+            if(!userName || !password || !email){
+                alert("Pleae fill all fileds");
+                return;
+            }
+            if(!isValidEmail(email)){
+                alert("Invalid email format")
+                return
+            }
+
             setLoad(true);
-            const userExists = await axios.get(`${API_URL}/users/user-name/${newUser.userName}`);
-            if(userExists) return alert('user alredy exists');
+            const existing = await axios.get(`${API_URL}/users/user-name/${userName}`);
+            if (existing.data.exists) {
+                alert("Username already exists!");
+                setLoad(false);
+                return;
+            }
             await axios.post(`${API_URL}/users`, newUser);
             setLoad(false);
             alert("user created succefuly!");

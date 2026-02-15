@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const classSchema = new mongoose.Schema({
     teacherId:{ type: String, required: false},
-    classId: {type: String, required: true},
     subject: {type: String, required: true},
     joinCode: {type: String, required: true},
     students: {type: [String], required: false, default:[]}

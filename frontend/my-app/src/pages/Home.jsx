@@ -1,18 +1,68 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useUser } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
+
 function Home() {
     const navigate = useNavigate();
     const { user } = useUser();
-    return (
-        <>
+useEffect(() => {
+    const sections = document.querySelectorAll(".reveal");
 
-            <div className="home-container">
-                <div className="home-item" onClick={() => navigate("/startGame")}>Current Level: {user.level}</div>
-                <div className="home-item" onClick={() => navigate("/homeWiki")}>Wiki Level: {user.wikiLevels}</div>
-                <div className="home-item" onClick={() => navigate("/class")}>My Classes</div>
-            </div>
-        </>
-    )
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    sections.forEach(section => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+    return (
+        <div className="home-wrapper">
+
+            <section className="hero">
+                <h1>Welcome to CipherQuest</h1>
+                <p>
+                    Learn how to break ciphers, improve logical thinking, and progress
+                    through interactive challenges.
+                </p>
+                <p className="scroll-hint">Scroll down to begin</p>
+            </section>
+
+            <section className="section reveal game-bg" onClick={() => navigate("/startGame")}>
+                <h2>Cipher Game</h2>
+                <p>
+                    Solve encrypted sentences, improve your decoding skills, and unlock
+                    higher difficulty levels.
+                </p>
+                <span>Your level: {user.level}</span>
+            </section>
+
+            <section className="section reveal wiki-bg" onClick={() => navigate("/homeWiki")}>
+                <h2>Cipher Wiki</h2>
+                <p>
+                    Learn how encryption works, explore common cipher techniques,
+                    and get hints to solve harder challenges.
+                </p>
+                <span>Your knowledge level: {user.wikiLevels}</span>
+            </section>
+
+            <section className="section reveal class-bg" onClick={() => navigate("/class")}>
+                <h2>My Classes</h2>
+                <p>
+                    Track your progress, assignments, and challenges within your class.
+                </p>
+            </section>
+
+        </div>
+    );
 }
+
 export default Home;

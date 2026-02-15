@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Login from './pages/Login.jsx'
+import ResetPass from './pages/resetPass.jsx'
 import Home from './pages/Home.jsx'
 import MainLayout from './layout/MainLayout.jsx'
 import CreatGame from './pages/CreatGame.jsx'
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/sign-up' element={<Signup />} />
+          <Route path='/reset-pass' element={<ResetPass/>}/>
           <Route element={<MainLayout />}>
             <Route path='/home' element={<Home />} />
             <Route path='/startGame' element={<App />} />
@@ -29,7 +31,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/homeWiki' element={<WikiHome />} />
             <Route path='/creatGame' element={<CreatGame />} />
             <Route path='/class' element={<ClassPage />} />
-            <Route path='/class/:classId' element={<Class />} />
+            <Route path='/class/:_id' element={<Class />} />
             <Route path='/qoute/:_id' element={<Qoute/>}/>
           </Route>
         </Routes>
