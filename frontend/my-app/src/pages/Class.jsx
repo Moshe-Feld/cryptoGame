@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "../css/Class.css"
 
 function Class() {
     const { _id } = useParams();
@@ -16,7 +17,7 @@ function Class() {
 
     async function getClass(id) {
         try {
-            const response = await axios.get(`${API_URL}/class/id/${id}`);
+            const response = await axios.get(`${API_URL}/class/${id}`);
             setclassData(response.data);
             setMyStudents(response.data.students);
         } catch (err) {
@@ -38,6 +39,16 @@ function Class() {
             await axios.post(`${API_URL}/qoutes`, body);
             alert("qoute added");
         } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    async function deleteClass(id) {
+        try{
+            confirm('are you sure you want to delete ?')
+            const res = await axios.delete(`${API_URL}/class/${id}`)
+            navigate('/class');
+        }catch(err){
             console.error(err.message);
         }
     }
@@ -117,6 +128,11 @@ function Class() {
                         <h2 className="code-box">{classData.joinCode}</h2>
                         <p>(Students can join by entering this code in their dashboard)</p>
                     </div>
+                </>
+            )}
+            {isTeacher && (
+                <>
+                <button onClick={()=> deleteClass(_id)}>Delete</button>
                 </>
             )}
             {isStudent && !isTeacher && (

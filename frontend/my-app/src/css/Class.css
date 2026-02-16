@@ -1,0 +1,376 @@
+/* ===================================
+   CIPHERQUEST - INDIVIDUAL CLASS PAGE
+   Design: Modern Minimalist
+   Colors: Red/Orange Energy
+   Feel: Focused like Wordle
+   =================================== */
+
+/* ============ LOADING STATE ============ */
+body > p {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.2rem;
+  color: #95A5A6;
+  text-align: center;
+  margin-top: 100px;
+}
+
+/* ============ CLASS CONTENT CONTAINER ============ */
+.class-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* ============ QUOTES SECTION ============ */
+.qoutes-section {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid #E74C3C;
+}
+
+.qoutes-section h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #F0F0F0;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.qoutes-section > p {
+  color: #95A5A6;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* ============ QUOTE CARD (Individual Level) ============ */
+.qoute-card {
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 100%);
+  border: 2px solid #F0F0F0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2C3E50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qoute-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #E74C3C 0%, #F39C12 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.qoute-card:hover::before {
+  transform: scaleX(1);
+}
+
+.qoute-card:hover {
+  transform: translateY(-4px);
+  border-color: #E74C3C;
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
+}
+
+.qoute-card span {
+  color: #27AE60;
+  font-size: 1.5rem;
+  margin-left: auto;
+}
+
+/* ============ STUDENTS SECTION ============ */
+.students-section {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid #F39C12;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.students-section h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #F0F0F0;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.students-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.students-section li {
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: #FAFAFA;
+  border-radius: 8px;
+  color: #2C3E50;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.students-section li:hover {
+  background: #FFF5F5;
+  transform: translateX(4px);
+}
+
+.students-section > p {
+  color: #95A5A6;
+  font-size: 0.95rem;
+  font-style: italic;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ============ FORM SECTIONS ============ */
+.form-section {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid #E67E22;
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.form-section h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 24px;
+  text-align: center;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-section p {
+  color: #5A6C7D;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 12px;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============ FORM INPUTS ============ */
+.form-section input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1rem;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  background: #FAFAFA;
+  color: #2C3E50;
+}
+
+.form-section input:focus {
+  outline: none;
+  border-color: #E74C3C;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+}
+
+.form-section input::placeholder {
+  color: #95A5A6;
+  font-weight: 400;
+}
+
+/* ============ CODE BOX (Join Code Display) ============ */
+.code-box {
+  background: linear-gradient(135deg, #E74C3C 0%, #F39C12 100%);
+  color: #FFFFFF;
+  padding: 20px 32px;
+  border-radius: 12px;
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 4px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  font-family: 'Courier New', monospace;
+  user-select: all;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.code-box:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* ============ BUTTONS ============ */
+.form-section button,
+body > button {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #E74C3C 0%, #F39C12 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+
+.form-section button:hover,
+body > button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.form-section button:active,
+body > button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+}
+
+/* ============ DELETE BUTTON (Special Styling) ============ */
+body > button {
+  max-width: 300px;
+  margin: 40px auto;
+  display: block;
+  background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+}
+
+body > button:hover {
+  background: linear-gradient(135deg, #C0392B 0%, #A93226 100%);
+}
+
+/* ============ STUDENT VIEW ============ */
+.student-view {
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 100%);
+  border: 2px solid #E74C3C;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.1);
+}
+
+.student-view p {
+  font-size: 1.15rem;
+  color: #5A6C7D;
+  margin-bottom: 12px;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+.student-view p:first-child {
+  font-weight: 600;
+  color: #E74C3C;
+  font-size: 1.3rem;
+}
+
+/* ============ RESPONSIVE DESIGN ============ */
+
+@media (max-width: 1200px) {
+  .class-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .students-section {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .class-content {
+    padding: 0 16px;
+    margin: 40px auto;
+  }
+
+  .qoutes-section,
+  .students-section,
+  .form-section {
+    padding: 30px;
+  }
+
+  .qoutes-section h3,
+  .form-section h3 {
+    font-size: 1.6rem;
+  }
+
+  .students-section h3 {
+    font-size: 1.4rem;
+  }
+
+  .qoute-card {
+    padding: 16px 20px;
+    font-size: 1rem;
+  }
+
+  .code-box {
+    font-size: 1.5rem;
+    padding: 16px 24px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .qoutes-section,
+  .students-section,
+  .form-section,
+  .student-view {
+    padding: 24px;
+  }
+
+  .qoutes-section h3,
+  .form-section h3 {
+    font-size: 1.4rem;
+  }
+
+  .qoute-card {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+  }
+
+  .code-box {
+    font-size: 1.3rem;
+    padding: 14px 20px;
+  }
+
+  .form-section button,
+  body > button {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+}

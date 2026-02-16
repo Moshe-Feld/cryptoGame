@@ -68,7 +68,7 @@ async function addClass(req, res) {
     }
 }
 
-async function editClass(req, res) {
+async function joinToClass(req, res) {
     try {
         const { userName, joinCode } = req.body;
         const classToEdit = await classModel.findOne({ joinCode: joinCode });
@@ -117,7 +117,7 @@ module.exports = {
     getClassesOfTeacher,
     getClassesOfStudents,
     addClass,
-    editClass,
+    joinToClass,
     deleteClass,
     deleteAllClasses
 }

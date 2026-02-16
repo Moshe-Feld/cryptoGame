@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import "../css/ClasePage.css";
- 
+
 function ClassPage() {
     const navigate = useNavigate();
     const [subject, setSubject] = useState("");
@@ -29,7 +29,6 @@ function ClassPage() {
             };
             await axios.post(`${API_URL}/class`, classDetails);
             alert("Class added");
-            loadClasses(user.userName);
         } catch (err) {
             console.error(err.message);
         }
@@ -49,7 +48,23 @@ function ClassPage() {
 
     useEffect(() => {
         loadStudentClass(user.userName);
-    }, [studentClass]);
+        loadClasses(user.userName);
+    }, [studentClass, myClasses]);
+
+    useEffect(() => {
+        const sections = document.querySelectorAll('.class-section, .form-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        sections.forEach(section => observer.observe(section));
+
+        return () => sections.forEach(section => observer.unobserve(section));
+    },[])
 
     return (
         <>

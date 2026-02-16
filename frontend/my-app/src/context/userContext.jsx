@@ -17,7 +17,7 @@ export function UserProvider({ children }) {
 
     async function loadClasses(teacherId) {
         try {
-            const response = await axios.get(`${API_URL}/class/${teacherId}`);
+            const response = await axios.get(`${API_URL}/class/by-creater/${teacherId}`);
             setMyClasses(response.data);
         } catch (err) {
             console.error(err.message);
@@ -27,10 +27,12 @@ export function UserProvider({ children }) {
     async function Login(user) {
         try {
             const userLogIn = await axios.get(`${API_URL}/users/user-name/${user.userName}`);
-            if (user.password !== userLogIn.data.password) {
-                alert("wrong password");
+            console.log(`the user password: ${userLogIn.data.user.password}`);
+            console.log(`input password: ${user.password}`);
+            if (user.password !== userLogIn.data.user.password) {
+               return alert("wrong password");
             }
-            setUser(userLogIn.data);
+            setUser(userLogIn.data.user);
             setConnected(true);
             loadClasses(userLogIn.data.userName);
             navigate('/home');

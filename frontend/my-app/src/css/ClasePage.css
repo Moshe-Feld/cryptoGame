@@ -1,100 +1,269 @@
-.class-page {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
-  font-family: "Segoe UI", sans-serif;
-}
+/* ===================================
+   CIPHERQUEST - CLASS PAGE STYLES
+   Design: Modern Minimalist
+   Colors: Red/Orange Energy
+   Feel: Focused like Wordle
+   =================================== */
 
+/* ============ PAGE TITLE ============ */
 h1 {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #E74C3C;
   text-align: center;
-  margin-bottom: 30px;
+  margin: 60px 0 40px 0;
+  letter-spacing: -1px;
 }
 
+/* ============ CLASS SECTIONS CONTAINER ============ */
 .class-sections {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 60px auto;
+  padding: 0 20px;
 }
 
+/* ============ CLASS SECTION CARDS ============ */
 .class-section {
-  flex: 1;
-  background-color: #f8f9fb;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  min-width: 300px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  min-height: 300px;
+  border-left: 4px solid #E74C3C;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s ease;
 }
 
-.class-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
+.class-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.class-card {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: 0.2s;
+.class-section h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #F0F0F0;
 }
 
-.class-card:hover {
-  transform: scale(1.02);
-  background-color: #f0f7ff;
-}
-
-.class-card.student {
-  border-left: 4px solid #4f46e5;
-}
-
-.subject {
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
-.code,
-.teacher {
-  color: #666;
-  font-size: 0.9em;
-}
-
-.forms-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 30px;
-  flex-wrap: wrap;
-}
-
-.form-card {
-  background-color: #eef3ff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 300px;
+.class-section > p {
+  color: #95A5A6;
+  font-size: 1rem;
+  font-style: italic;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 60px;
 }
 
-input {
-  width: 100%;
-  margin: 8px 0;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-button {
-  background-color: #2563eb;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 6px;
+/* ============ CLASS BOX (Individual Class) ============ */
+.class-box {
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 100%);
+  border: 2px solid #F0F0F0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-button:hover {
-  background-color: #1d4ed8;
+.class-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #E74C3C 0%, #F39C12 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.class-box:hover::before {
+  transform: scaleX(1);
+}
+
+.class-box:hover {
+  transform: translateY(-4px);
+  border-color: #E74C3C;
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
+}
+
+.class-box p {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2C3E50;
+  margin: 0;
+}
+
+/* ============ FORM SECTIONS CONTAINER ============ */
+.form-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 80px auto;
+  padding: 0 20px;
+}
+
+/* ============ FORM CARDS ============ */
+.form-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid #F39C12;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s ease;
+}
+
+.form-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-card h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* ============ FORM INPUTS ============ */
+.form-card input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1rem;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  background: #FAFAFA;
+  color: #2C3E50;
+}
+
+.form-card input:focus {
+  outline: none;
+  border-color: #E74C3C;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+}
+
+.form-card input::placeholder {
+  color: #95A5A6;
+  font-weight: 400;
+}
+
+/* ============ FORM BUTTONS ============ */
+.form-card button {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #E74C3C 0%, #F39C12 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.form-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.form-card button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+}
+
+/* ============ LOADING STATE ============ */
+body > p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  color: #95A5A6;
+  text-align: center;
+  margin-top: 100px;
+}
+
+/* ============ RESPONSIVE DESIGN ============ */
+
+@media (max-width: 900px) {
+  .class-sections,
+  .form-sections {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 40px 0 30px 0;
+  }
+
+  .class-section,
+  .form-card {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2rem;
+    margin: 30px 0 20px 0;
+  }
+
+  .class-sections,
+  .form-sections {
+    padding: 0 16px;
+    gap: 20px;
+  }
+
+  .class-section,
+  .form-card {
+    padding: 24px;
+  }
+
+  .class-section h3,
+  .form-card h3 {
+    font-size: 1.4rem;
+  }
+
+  .class-box {
+    padding: 20px;
+  }
+
+  .class-box p {
+    font-size: 1rem;
+  }
+
+  .form-card input,
+  .form-card button {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .class-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .form-sections {
+    grid-template-columns: 1fr;
+  }
 }

@@ -7,7 +7,6 @@ import Login from './pages/Login.jsx'
 import ResetPass from './pages/resetPass.jsx'
 import Home from './pages/Home.jsx'
 import MainLayout from './layout/MainLayout.jsx'
-import CreatGame from './pages/CreatGame.jsx'
 import { UserProvider } from './context/userContext.jsx'
 import Signup from './pages/Signup.jsx'
 import Class from './pages/Class.jsx'
@@ -15,6 +14,7 @@ import ClassPage from './pages/ClassPage.jsx'
 import Wiki from './pages/Wiki.jsx'
 import WikiHome from './pages/wikiHome.jsx'
 import Qoute from './pages/Qoute.jsx'
+import Profile from './pages/Profile.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
@@ -29,7 +29,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/startGame' element={<App />} />
             <Route path='/startWiki/:category' element={<Wiki />} />
             <Route path='/homeWiki' element={<WikiHome />} />
-            <Route path='/creatGame' element={<CreatGame />} />
+            <Route path='/profile/:userName' element={<Profile />} />
             <Route path='/class' element={<ClassPage />} />
             <Route path='/class/:_id' element={<Class />} />
             <Route path='/qoute/:_id' element={<Qoute/>}/>

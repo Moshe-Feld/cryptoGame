@@ -1,4 +1,4 @@
-/* כללי – חשוב שיהיה box-sizing נכון */
+כללי – חשוב שיהיה box-sizing נכון
 *, *::before, *::after {
   box-sizing: border-box;
 }

@@ -5,24 +5,6 @@ import { useNavigate } from "react-router-dom";
 function Home() {
     const navigate = useNavigate();
     const { user } = useUser();
-useEffect(() => {
-    const sections = document.querySelectorAll(".reveal");
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    sections.forEach(section => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
 
     return (
         <div className="home-wrapper">
