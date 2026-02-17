@@ -27,10 +27,11 @@ export function UserProvider({ children }) {
     async function Login(user) {
         try {
             const userLogIn = await axios.get(`${API_URL}/users/user-name/${user.userName}`);
-            console.log(`the user password: ${userLogIn.data.user.password}`);
-            console.log(`input password: ${user.password}`);
+            if (!userLogIn.data.exists) {
+                return alert("No account found with this username");
+            }
             if (user.password !== userLogIn.data.user.password) {
-               return alert("wrong password");
+                return alert("Wrong password");
             }
             setUser(userLogIn.data.user);
             setConnected(true);

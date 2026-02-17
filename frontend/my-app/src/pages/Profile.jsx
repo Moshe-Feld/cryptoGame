@@ -1,27 +1,147 @@
-import { useEffect, useState } from "react";
-import CreatePuzzle from "../components/CreatePuzzle";
+import { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useUser } from "../context/userContext";
+import "../css/Profile.css";
+
 function Profile() {
-    const {classId} = useParams;
-    const [myQoute, setMyQoute] = useState({ quote: "", author: "" })
-    const [newe, setMyQoutes] = useState([]);
-    const [status, setStatus] = useState(false);
-    const API_URL = 'http://localhost:3000'
-    
-    const {userName} = useParams();
+    const API_URL = 'http://localhost:3000';
+    const { user } = useUser();
+    const [showModal, setShowModal] = useState(false);
+    const [details, setDetails] = useState({
+        userName: user?.userName || "",
+        email: user?.email || "",
+        password: ""
+    });
+
+    async function updateProfile() {
+        try {
+            if (!details.email) {
+                alert("Email is required");
+                return;
+            }
+
+            await axios.put(`${API_URL}/users/update-profile/${user.userName}`, details);
+            alert("Profile updated successfully!");
+            setShowModal(false);
+            setDetails({ ...details, password: "" }); 
+        } catch (err) {
+            console.error(err.message);
+            alert("Error updating profile");
+        }
+    }
+
+    if (!user) return <p>Loading...</p>;
+
     return (
-        status ? <CreatePuzzle text={myGame.quote} /> :
-            <>
-                <div className="login-container">
-                    <h1>{userName}</h1>
-                    <p>hi plaese enter a Quote</p>
-                    <input placeholder="My Quote" onChange={(e) => setMyGame({ ...myGame, quote: e.target.value })} />
-                    <input placeholder="Author" onChange={(e) => setMyGame({ ...myGame, author: e.target.value })} />
-                    <button onClick={() => { alert(myGame.quote + "created"); setStatus(true) }}>Create</button>
+        <>
+            <div className="profile-container">
+                <h1>Profile</h1>
+                
+                <div className="profile-info">
+                    <div className="info-row">
+                        <span className="info-label">Username:</span>
+                        <span className="info-value">{user.userName}</span>
+                    </div>
+                    <div className="info-row">
+                        <span className="info-label">Email:</span>
+                        <span className="info-value">{user.email}</span>
+                    </div>
+                    <div className="info-row">
+                        <span className="info-label">Level:</span>
+                        <span className="info-value">{user.level}</span>
+                    </div>
+                    <div className="info-row">
+                        <span className="info-label">Wiki Levels:</span>
+                        <span className="info-value">{user.wikiLevels}</span>
+                    </div>
                 </div>
-            </>
-    )
+
+                {user.password === "0000" && (
+                    <div className="warning-box">
+                        <p>⚠️ Your password was reset to default (0000)</p>
+                        <p>Please change it for security!</p>
+                    </div>
+                )}
+
+                <button 
+                    className="update-btn"
+                    onClick={() => setShowModal(true)}
+                >
+                    ✏️ Update Details
+                </button>
+            </div>
+
+            {/* Modal Popup */}
+            {showModal && (
+                <>
+                    <div 
+                        className="modal-overlay" 
+                        onClick={() => setShowModal(false)}
+                    />
+                    <div className="modal">
+                        <div className="modal-header">
+                            <h2>Update Profile</h2>
+                            <button 
+                                className="close-btn"
+                                onClick={() => setShowModal(false)}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <div className="modal-body">
+                            <div className="input-group">
+                                <label>Username</label>
+                                <input
+                                    type="text"
+                                    value={details.userName}
+                                    disabled
+                                    className="disabled-input"
+                                />
+                                <small>Username cannot be changed</small>
+                            </div>
+
+                            <div className="input-group">
+                                <label>Email</label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter new email"
+                                    value={details.email}
+                                    onChange={(e) => setDetails({...details, email: e.target.value})}
+                                />
+                            </div>
+
+                            <div className="input-group">
+                                <label>New Password</label>
+                                <input
+                                    type="password"
+                                    placeholder="Leave empty to keep current"
+                                    value={details.password}
+                                    onChange={(e) => setDetails({...details, password: e.target.value})}
+                                />
+                                <small>Only fill if you want to change password</small>
+                            </div>
+                        </div>
+
+                        <div className="modal-footer">
+                            <button 
+                                className="cancel-btn"
+                                onClick={() => setShowModal(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                className="save-btn"
+                                onClick={updateProfile}
+                            >
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
+        </>
+    );
 }
 
 export default Profile;

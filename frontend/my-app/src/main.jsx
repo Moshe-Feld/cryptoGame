@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Login from './pages/Login.jsx'
-import ResetPass from './pages/resetPass.jsx'
+import ResetPass from './pages/ResetPass.jsx'
 import Home from './pages/Home.jsx'
 import MainLayout from './layout/MainLayout.jsx'
 import { UserProvider } from './context/userContext.jsx'
@@ -29,7 +29,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/startGame' element={<App />} />
             <Route path='/startWiki/:category' element={<Wiki />} />
             <Route path='/homeWiki' element={<WikiHome />} />
-            <Route path='/profile/:userName' element={<Profile />} />
+            <Route path='/profile' element={<Profile />} />
             <Route path='/class' element={<ClassPage />} />
             <Route path='/class/:_id' element={<Class />} />
             <Route path='/qoute/:_id' element={<Qoute/>}/>

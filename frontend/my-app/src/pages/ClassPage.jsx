@@ -40,7 +40,7 @@ function ClassPage() {
                 userName: user.userName,
                 joinCode: code
             }
-            await axios.put(`${API_URL}/class`, student);
+            await axios.put(`${API_URL}/class/join/`, student);
         } catch (err) {
             console.error(err.message);
         }

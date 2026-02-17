@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "./context/userContext";
 import CreatePuzzle from "../src/components/CreatePuzzle"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [quote, setQuote] = useState(null);
@@ -9,14 +10,18 @@ function App() {
   const [load, setLoad] = useState(true);
   const [show, setShow] = useState(false);
   const { user } = useUser();
-
+  const navigate = useNavigate()
 
 
   useEffect(() => {
     let ignore = false;
     const fetchQuote = async () => {
       try {
-        console.log(user);
+        if(user.level >= 1400){
+          alert("no more levels for you");
+          navigate('/home');
+          return
+        }
         const randomData = await axios.get(
           `https://dummyjson.com/quotes/${user.level}`
         );

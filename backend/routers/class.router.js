@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllClasses, addClass, joinToClass, deleteClass, getClassesOfTeacher, getClssById, getClassesOfStudents, deleteAllClasses } = require('../controllers/class.controller');
+const { getAllClasses, addClass, joinToClass, deleteClass, getClassesOfTeacher, getClssById, getClassesOfStudents, deleteAllClasses, updateClass } = require('../controllers/class.controller');
 
 const router = express.Router();
 
@@ -13,7 +13,9 @@ router.get('/students/:userName', getClassesOfStudents);
 
 router.post('/', addClass);
 
-router.put('/', joinToClass);
+router.put('/join/', joinToClass);
+
+router.put('/:_id', updateClass)
 
 router.delete('/:_id', deleteClass);
 

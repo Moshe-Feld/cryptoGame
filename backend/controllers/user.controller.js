@@ -36,7 +36,7 @@ async function getUserByUserName(req, res) {
 async function addUser(req, res) {
     try {
         const body = req.body;
-        const newUser = { ...body, coins: 0, level: 1 }
+        const newUser = { ...body, coins: 0, level: 1401 }
         await userModel.create(newUser);
         res.status(200).send(newUser);
     } catch (err) {
@@ -65,6 +65,24 @@ async function updateUser(req, res) {
         res.status(200).send(updatedUser);
     } catch (err) {
         res.status(500).send(err.message);
+    }
+}
+
+async function updateProfile(req,res) {
+    try{
+        const {userName} = req.params;
+        const dateToEdit = req.body
+        const result = await userModel.findOneAndUpdate(
+            {userName},
+            {...dateToEdit},
+            {new: true}
+        );
+        if(!result){
+          return res.status(404).send(`${userName} is undefine`)
+        }
+        res.status(200).send(result)
+    }catch(err){
+        res.status(500).send(err.message)
     }
 }
 
@@ -97,5 +115,6 @@ module.exports = {
     addUser,
     deleteAllUsers,
     updateUser,
+    updateProfile,
     resetPass
 }

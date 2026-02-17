@@ -10,7 +10,9 @@ function Class() {
     const [myStudents, setMyStudents] = useState([]);
     const [classData, setclassData] = useState("");
     const [myQoutes, setMyQoutes] = useState([]);
-    const [newQuote, setNewQuote] = useState({classId: _id });
+    const [newQuote, setNewQuote] = useState({ classId: _id });
+    const [showModel, setShowModal] = useState(false);
+    const [input, setInput] = useState("");
     const { user } = useUser();
 
     const navigate = useNavigate();
@@ -43,12 +45,21 @@ function Class() {
         }
     }
 
+    async function updateClass(id, details) {
+        try {
+            const res = await axios.put(`${API_URL}/class/${id}`, details)
+            setShowModal(false);
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     async function deleteClass(id) {
-        try{
-            confirm('are you sure you want to delete ?')
+        try {
+            if (!window.confirm('Are you sure? This will delete all quotes!')) return;
             const res = await axios.delete(`${API_URL}/class/${id}`)
             navigate('/class');
-        }catch(err){
+        } catch (err) {
             console.error(err.message);
         }
     }
@@ -64,6 +75,7 @@ function Class() {
     const isStudent = classData?.students?.includes(user.userName);
     return (
         <>
+            <h1>{classData.subject}</h1>
             <div className="class-content">
                 <div className="qoutes-section">
                     <h3>Qoutes</h3>
@@ -127,12 +139,50 @@ function Class() {
                         <p>Send them this join code:</p>
                         <h2 className="code-box">{classData.joinCode}</h2>
                         <p>(Students can join by entering this code in their dashboard)</p>
+                        <button onClick={() => setShowModal(true)}>Update Class</button>
                     </div>
                 </>
             )}
-            {isTeacher && (
+            {showModel && (
                 <>
-                <button onClick={()=> deleteClass(_id)}>Delete</button>
+                    <div
+                        className="modal-overlay"
+                        onClick={() => setShowModal(false)}
+                    />
+                    <div className="modal">
+                        <div className="modal-body">
+                            <div className="input-group">
+                                <label>Subject</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter new Subject"
+                                    onChange={(e) => setInput(e.target.value)}
+                                />
+                            </div>
+                            <button
+                                className="delete-btn"
+                                onClick={() => deleteClass(_id)}
+                            >
+                                Delete Class
+                            </button>
+
+                        </div>
+
+                        <div className="modal-footer">
+                            <button
+                                className="cancel-btn"
+                                onClick={() => setShowModal(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="save-btn"
+                                onClick={() => updateClass(classData._id, { subject: input })}
+                            >
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
                 </>
             )}
             {isStudent && !isTeacher && (

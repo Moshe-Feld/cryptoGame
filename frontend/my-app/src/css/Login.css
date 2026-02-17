@@ -228,3 +228,27 @@
   border-color: #27AE60;
   background: #F0FFF4;
 }
+
+.reset-info {
+    background: linear-gradient(135deg, #FFF5F5 0%, #FFE5E5 100%);
+    border: 2px solid #E74C3C;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.reset-info p {
+    color: #5A6C7D;
+    font-size: 0.95rem;
+    margin: 6px 0;
+}
+
+.reset-info strong {
+    color: #E74C3C;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
