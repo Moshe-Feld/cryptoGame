@@ -1,5 +1,5 @@
 const classModel = require('../models/class.model');
-const qouteModel = require('../models/qoute.model');
+const quoteModel = require('../models/quote.model');
 const userModel = require('../models/user.modle');
 async function getAllClasses(req, res) {
     try {
@@ -25,12 +25,12 @@ async function getClssById(req, res) {
 
 async function getClassesOfTeacher(req, res) {
     try {
-        const { teacherId } = req.params;
-        const result = await classModel.find({ teacherId: teacherId });
+        const { userId } = req.params;
+        const result = await classModel.find({ userId: userId });
         res.status(200).send(result);
     } catch (err) {
         if (result.length < 1) {
-            res.status(404).send(`${teacherId} undefine`);
+            res.status(404).send(`${userId} undefine`);
         }
         else {
             res.status(500).send(err.message);
@@ -42,7 +42,7 @@ async function getClassesOfStudents(req, res) {
     try {
         const { userName } = req.params;
         const response = await classModel.find({});
-        const result = response.filter((item) => item.students.includes(userName));
+        const result = response.filter((item) => item.joinedUsers.includes(userName));
         res.status(200).send(result);
     } catch (err) {
         res.status(500).send(res.message);
@@ -77,8 +77,8 @@ async function joinToClass(req, res) {
         if (!classToEdit) {
             return res.status(404).send(`${joinCode} undefine`);
         }
-        if (!classToEdit.students.includes(userName)) {
-            classToEdit.students.push(userName);
+        if (!classToEdit.joinedUsers.includes(userName)) {
+            classToEdit.joinedUsers.push(userName);
             await classToEdit.save();
         }
         res.status(200).send(`${userName} added to class`);
@@ -109,15 +109,16 @@ async function updateClass(req, res) {
 async function deleteClass(req, res) {
     try {
         const { _id } = req.params;
-        const qoutesToDelete = await qouteModel.find({ classId: _id });
-        const qoutesIds = qoutesToDelete.map(qoute => qoute._id.toString());
-        await userModel.updateMany(
-            { levelCompleted: { $in: qoutesIds } },
-            { $pull: { levelCompleted: { $in: qoutesIds } } }
+        const quotesToDelete = await quoteModel.find({ classId: _id });
+        const quotesIds = quotesToDelete.map(quote => quote._id.toString());
+        console.log(quotesIds)
+        const updateRes = await userModel.updateMany(
+            { levelCompleted: { $in: quotesIds } },
+            { $pull: { levelCompleted: { $in: quotesIds } } }
         );
-        console.log(`deleted qoutes from users`);
-        await qouteModel.deleteMany({ classId: _id });
-        console.log(`deleted ${qoutesIds.length} qoutes`);
+        console.log(updateRes);
+        await quoteModel.deleteMany({ classId: _id });
+        console.log(`deleted ${quotesIds.length} quotes`);
         const result = await classModel.deleteOne({ _id: _id });
         res.status(200).send(`${result} deleted`)
     } catch (err) {

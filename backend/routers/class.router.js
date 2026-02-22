@@ -7,9 +7,9 @@ router.get('/', getAllClasses);
 
 router.get('/:_id', getClssById)
 
-router.get('/by-creater/:teacherId', getClassesOfTeacher);
+router.get('/by-creater/:userId', getClassesOfTeacher);
 
-router.get('/students/:userName', getClassesOfStudents);
+router.get('/joinedUsers/:userName', getClassesOfStudents);
 
 router.post('/', addClass);
 

@@ -22,7 +22,7 @@ function Home() {
                 <h2>Cipher Game</h2>
                 <p>
                     Solve encrypted sentences, improve your decoding skills, and unlock
-                    higher difficulty levels.
+                    the next levels.
                 </p>
                 <span>Your level: {user.level}</span>
             </section>

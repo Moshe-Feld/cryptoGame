@@ -4,11 +4,10 @@ import CreatePuzzle from "../src/components/CreatePuzzle"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function App() {
+function Game() {
   const [quote, setQuote] = useState(null);
   const [wiki, setWiki] = useState(null);
   const [load, setLoad] = useState(true);
-  const [show, setShow] = useState(false);
   const { user } = useUser();
   const navigate = useNavigate()
 
@@ -47,8 +46,6 @@ function App() {
         <>
           <h3>Level: {user.level}</h3>
           <p><strong>your coins: </strong>{user?.coins}</p>
-          {/* <button style={{ margin: "10px" }} onClick={() => { setShow(!show) }}>show Qoute</button> */}
-          {show ? <><strong>Quote:</strong> {quote?.quote}</> : <></>}
           <CreatePuzzle text={quote?.quote || ""} type={"level"} />
         </>
       )}
@@ -56,4 +53,4 @@ function App() {
   );
 }
 
-export default App;
+export default Game;

@@ -9,7 +9,7 @@ function Class() {
     const API_URL = "http://localhost:3000";
     const [myStudents, setMyStudents] = useState([]);
     const [classData, setclassData] = useState("");
-    const [myQoutes, setMyQoutes] = useState([]);
+    const [myQuotes, setMyQuotes] = useState([]);
     const [newQuote, setNewQuote] = useState({ classId: _id });
     const [showModel, setShowModal] = useState(false);
     const [input, setInput] = useState("");
@@ -21,25 +21,25 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/class/${id}`);
             setclassData(response.data);
-            setMyStudents(response.data.students);
+            setMyStudents(response.data.joinedUsers);
         } catch (err) {
             console.error(err.message);
         }
     }
 
-    async function loadQoutes(id) {
+    async function loadQuotes(id) {
         try {
-            const response = await axios.get(`${API_URL}/qoutes/by-class/${id}`);
-            setMyQoutes(response.data);
+            const response = await axios.get(`${API_URL}/quotes/by-class/${id}`);
+            setMyQuotes(response.data);
         } catch (err) {
             console.error(err.message);
         }
     }
 
-    async function postQoute(body) {
+    async function postQuote(body) {
         try {
-            await axios.post(`${API_URL}/qoutes`, body);
-            alert("qoute added");
+            await axios.post(`${API_URL}/quotes`, body);
+            alert("quote added");
         } catch (err) {
             console.error(err.message);
         }
@@ -64,39 +64,54 @@ function Class() {
         }
     }
 
+    async function deleteQuote(id) {
+        try {
+            if (!window.confirm('Are you sure? This will delete all quotes!')) return;
+            const res = await axios.delete(`${API_URL}/quotes/${id}`)
+            navigate(`/class/${classData._id}`)
+        }catch(err){
+            console.error(err.message)
+        }
+    }
+
     useEffect(() => {
         getClass(_id);
-        loadQoutes(_id);
-    }, [myQoutes])
+        loadQuotes(_id);
+    }, [myQuotes])
 
     if (!classData || !user) return <p>Loading...</p>;
 
-    const isTeacher = classData?.teacherId === user.userName;
-    const isStudent = classData?.students?.includes(user.userName);
+    const isTeacher = classData?.userId === user.userName;
+    const isStudent = classData?.joinedUsers?.includes(user.userName);
     return (
         <>
             <h1>{classData.subject}</h1>
+            {
+                isTeacher && (
+                    <button className="update-btn" onClick={() => setShowModal(true)}>Update Class</button>
+                )
+            }
             <div className="class-content">
-                <div className="qoutes-section">
-                    <h3>Qoutes</h3>
-                    {Array.isArray(myQoutes) && myQoutes.length > 0 ? (
-                        myQoutes.map((item, index) => {
+                <div className="quotes-section">
+                    <h3>Quotes</h3>
+                    {Array.isArray(myQuotes) && myQuotes.length > 0 ? (
+                        myQuotes.map((item, index) => {
                             const isCompleted = user?.levelCompleted?.includes(item._id);
 
                             return (
                                 <div
-                                    className="qoute-card"
+                                    className="quote-card"
                                     key={item._id}
-                                    onClick={() => navigate(`/qoute/${item._id}`)}
                                 >
-                                    Level: {index + 1}
+                                   <p onClick={() => navigate(`/quote/${item._id}`)}>Level: {index + 1}</p> 
                                     {isCompleted && <span> ✔</span>}
+                                    {isTeacher && (<button className="dlt-btn" onClick={() => deleteQuote(item._id)}>Delete</button>)}
                                 </div>
                             );
                         })
 
                     ) : (
-                        <p>No Qoutes yet.</p>
+                        <p>No Quotes yet.</p>
                     )}
                 </div>
                 {isTeacher && (
@@ -122,7 +137,7 @@ function Class() {
                         <input
                             placeholder="Quote"
                             onChange={(e) =>
-                                setNewQuote({ ...newQuote, qoute: e.target.value })
+                                setNewQuote({ ...newQuote, quote: e.target.value })
                             }
                         />
                         <input
@@ -131,7 +146,7 @@ function Class() {
                                 setNewQuote({ ...newQuote, author: e.target.value })
                             }
                         />
-                        <button onClick={() => postQoute(newQuote)}>Add</button>
+                        <button onClick={() => postQuote(newQuote)}>Add</button>
                     </div>
 
                     <div className="form-section">
@@ -139,7 +154,6 @@ function Class() {
                         <p>Send them this join code:</p>
                         <h2 className="code-box">{classData.joinCode}</h2>
                         <p>(Students can join by entering this code in their dashboard)</p>
-                        <button onClick={() => setShowModal(true)}>Update Class</button>
                     </div>
                 </>
             )}
@@ -187,6 +201,7 @@ function Class() {
             )}
             {isStudent && !isTeacher && (
                 <div className="student-view">
+                    <p>class created by user: {classData.userId}</p>
                     <p>You are a student in this class.</p>
                     <p>Click on a level to start the activity!</p>
                 </div>

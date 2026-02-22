@@ -25,7 +25,7 @@ body > p {
 }
 
 /* ============ QUOTES SECTION ============ */
-.qoutes-section {
+.quotes-section {
   background: #FFFFFF;
   border-radius: 16px;
   padding: 40px;
@@ -33,7 +33,7 @@ body > p {
   border-left: 4px solid #E74C3C;
 }
 
-.qoutes-section h3 {
+.quotes-section h3 {
   font-size: 2rem;
   font-weight: 700;
   color: #2C3E50;
@@ -43,7 +43,7 @@ body > p {
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.qoutes-section > p {
+.quotes-section > p {
   color: #95A5A6;
   font-size: 1rem;
   font-style: italic;
@@ -52,13 +52,12 @@ body > p {
 }
 
 /* ============ QUOTE CARD (Individual Level) ============ */
-.qoute-card {
+.quote-card {
   background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 100%);
   border: 2px solid #F0F0F0;
   border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 16px;
-  cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -71,7 +70,7 @@ body > p {
   justify-content: space-between;
 }
 
-.qoute-card::before {
+.quote-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -84,20 +83,45 @@ body > p {
   transition: transform 0.3s ease;
 }
 
-.qoute-card:hover::before {
-  transform: scaleX(1);
+/* .quote-card:hover::before {
+  transform: scaleY(1);
 }
 
-.qoute-card:hover {
+.quote-card:hover {
   transform: translateY(-4px);
   border-color: #E74C3C;
   box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
-}
+} */
 
-.qoute-card span {
+.quote-card span {
   color: #27AE60;
   font-size: 1.5rem;
   margin-left: auto;
+}
+
+.quote-card p{
+  cursor: pointer;
+  font-size: large;
+}
+
+.quote-card p:hover{
+  font-size: larger;
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
+}
+
+.quote-card button{
+  height: 40px;
+  width: 80px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #b30802 0%, #f45c4b 100%);
+  color: #FFFFFF;
+}
+.quote-card button:hover{
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
+  height: 42px;
+  width: 82px;
+  cursor: pointer;
 }
 
 /* ============ STUDENTS SECTION ============ */
@@ -318,13 +342,13 @@ body > button:hover {
     margin: 40px auto;
   }
 
-  .qoutes-section,
+  .quotes-section,
   .students-section,
   .form-section {
     padding: 30px;
   }
 
-  .qoutes-section h3,
+  .quotes-section h3,
   .form-section h3 {
     font-size: 1.6rem;
   }
@@ -333,17 +357,34 @@ body > button:hover {
     font-size: 1.4rem;
   }
 
-  .qoute-card {
+  .quote-card {
     padding: 16px 20px;
     font-size: 1rem;
   }
 
   .code-box {
     font-size: 1.5rem;
+    font-family: ;
     padding: 16px 24px;
     letter-spacing: 2px;
   }
 }
+.update-btn {
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #E74C3C 0%, #F39C12 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  margin: 8px auto;
+  max-width: 300px; /* ← הוסף את זה! */
+  display: block; /* ← הוסף את זה! */
+}
+
 /* ============ MODAL ============ */
 .modal {
   position: fixed;
@@ -406,6 +447,7 @@ body > button:hover {
   background: #F0F0F0;
   color: #E74C3C;
 }
+
 
 /* ============ MODAL BODY ============ */
 .modal-body {
@@ -517,19 +559,19 @@ body > button:hover {
 }
 
 @media (max-width: 480px) {
-  .qoutes-section,
+  .quotes-section,
   .students-section,
   .form-section,
   .student-view {
     padding: 24px;
   }
 
-  .qoutes-section h3,
+  .quotes-section h3,
   .form-section h3 {
     font-size: 1.4rem;
   }
 
-  .qoute-card {
+  .quote-card {
     padding: 14px 18px;
     font-size: 0.95rem;
   }

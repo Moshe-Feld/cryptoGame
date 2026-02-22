@@ -3,26 +3,26 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CreatePuzzle from "../components/CreatePuzzle";
 
-function Qoute(){
+function Quote(){
     const API_URL = "http://localhost:3000";
     const {_id} = useParams();
-    const [qoute, setQoute] = useState("");
-    async function loadQoute(id){
+    const [quote, setQuote] = useState("");
+    async function loadQuote(id){
         try{
-            const response = await axios.get(`${API_URL}/qoutes/${id}`);
-            setQoute(response.data.qoute);
+            const response = await axios.get(`${API_URL}/quotes/${id}`);
+            setQuote(response.data.quote);
         }catch(err){
             console.error(err.message);
         }
     }
     useEffect(()=>{
-        loadQoute(_id);
+        loadQuote(_id);
     },[]);
 
     return(
         <>
-        <CreatePuzzle text={qoute} qouteId={_id}/>
+        <CreatePuzzle text={quote} quoteId={_id}/>
         </>
     )
 }
-export default Qoute;
+export default Quote;

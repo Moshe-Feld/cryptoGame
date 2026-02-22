@@ -15,7 +15,7 @@ function ClassPage() {
     if (!user || !user.userName) return <p>Loading...</p>;
     async function loadStudentClass(userName) {
         try {
-            const response = await axios.get(`${API_URL}/class/students/${userName}`);
+            const response = await axios.get(`${API_URL}/class/joinedUsers/${userName}`);
             setStudentClass(response.data);
         } catch (err) {
             console.error(err.message);
@@ -24,7 +24,7 @@ function ClassPage() {
     async function addClass() {
         try {
             const classDetails = {
-                teacherId: user.userName,
+                userId: user.userName,
                 subject,
             };
             await axios.post(`${API_URL}/class`, classDetails);
@@ -71,7 +71,7 @@ function ClassPage() {
             <h1>My Classes</h1>
             <div className="class-sections">
                 <div className="class-section">
-                    <h3>Classes I Teach</h3>
+                    <h3>Classes I Created</h3>
                     {Array.isArray(myClasses) && myClasses.length > 0 ? (
                         myClasses.map((item) => <div className="class-box"
                             onClick={() => navigate(`/class/${item._id}`)}

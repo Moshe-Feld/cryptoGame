@@ -15,9 +15,9 @@ export function UserProvider({ children }) {
     const [myClasses, setMyClasses] = useState([])
     const navigate = useNavigate();
 
-    async function loadClasses(teacherId) {
+    async function loadClasses(userId) {
         try {
-            const response = await axios.get(`${API_URL}/class/by-creater/${teacherId}`);
+            const response = await axios.get(`${API_URL}/class/by-creater/${userId}`);
             setMyClasses(response.data);
         } catch (err) {
             console.error(err.message);
@@ -54,11 +54,11 @@ export function UserProvider({ children }) {
     }
 
 
-    async function editUser(user, type, qouteId) {
+    async function editUser(user, type, quoteId) {
         try {
             const update = {
                 coins: 10,
-                qouteId
+                quoteId
             };
 
             if (type === "level") update.level = 1;

@@ -36,7 +36,7 @@ async function getUserByUserName(req, res) {
 async function addUser(req, res) {
     try {
         const body = req.body;
-        const newUser = { ...body, coins: 0, level: 1401 }
+        const newUser = { ...body, coins: 0, level: 1 }
         await userModel.create(newUser);
         res.status(200).send(newUser);
     } catch (err) {
@@ -48,7 +48,7 @@ async function addUser(req, res) {
 async function updateUser(req, res) {
     try {
         const { _id } = req.params;
-        const { coins = 0, level = 0, wikiLevels = 0, qouteId = "" } = req.body;
+        const { coins = 0, level = 0, wikiLevels = 0, quoteId = "" } = req.body;
 
         const result = await userModel.findById(_id);
 
@@ -58,8 +58,8 @@ async function updateUser(req, res) {
             { $inc: { coins, level, wikiLevels } }
         );
         const updatedUser = await userModel.findById(_id);
-         if (!updatedUser.levelCompleted.includes(qouteId)) {
-            updatedUser.levelCompleted.push(qouteId);
+         if (!updatedUser.levelCompleted.includes(quoteId)) {
+            updatedUser.levelCompleted.push(quoteId);
             await updatedUser.save();
         }
         res.status(200).send(updatedUser);
