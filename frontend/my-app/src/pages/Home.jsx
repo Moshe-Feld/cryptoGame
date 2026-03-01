@@ -10,7 +10,7 @@ function Home() {
         <div className="home-wrapper">
 
             <section className="hero">
-                <h1>Welcome to CipherQuest</h1>
+                <h1>Welcome to Crypto Game</h1>
                 <p>
                     Learn how to break ciphers, improve logical thinking, and progress
                     through interactive challenges.

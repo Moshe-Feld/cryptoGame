@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useUser } from "./context/userContext";
-import CreatePuzzle from "../src/components/CreatePuzzle"
+import { useUser } from "../context/userContext"
+import CreatePuzzle from "../components/CreatePuzzle"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +38,9 @@ function Game() {
   }, [user.level]);
 
   return (
+  
     <div style={{ padding: 20 }}>
+      <p>{quote}</p>
       <h1>Cipher Game</h1>
       {load ? (
         <p>Loading...</p>
