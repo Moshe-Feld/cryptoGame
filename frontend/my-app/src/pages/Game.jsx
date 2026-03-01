@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Game() {
-  const [quote, setQuote] = useState(null);
+  const [quote, setQuote] = useState("");
   const [wiki, setWiki] = useState(null);
   const [load, setLoad] = useState(true);
   const { user } = useUser();
@@ -40,7 +40,6 @@ function Game() {
   return (
   
     <div style={{ padding: 20 }}>
-      <p>{quote}</p>
       <h1>Cipher Game</h1>
       {load ? (
         <p>Loading...</p>
