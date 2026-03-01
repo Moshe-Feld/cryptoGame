@@ -16,7 +16,7 @@ function Game() {
     let ignore = false;
     const fetchQuote = async () => {
       try {
-        if(user.level >= 1400){
+        if (user.level >= 1400) {
           alert("no more levels for you");
           navigate('/home');
           return
@@ -38,10 +38,10 @@ function Game() {
   }, [user.level]);
 
   return (
-  
+
     <div style={{ padding: 20 }}>
-      <p>{quote}</p>
       <h1>Cipher Game</h1>
+      <p>{quote?.quote || ""}</p>
       {load ? (
         <p>Loading...</p>
       ) : (
