@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useUser } from "./context/userContext";
-import CreatePuzzle from "../src/components/CreatePuzzle"
+import { useUser } from "../context/userContext";
+import CreatePuzzle from "../components/CreatePuzzle"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
