@@ -38,7 +38,9 @@ function Game() {
   }, [user.level]);
 
   return (
+  
     <div style={{ padding: 20 }}>
+      <p>{quote}</p>
       <h1>Cipher Game</h1>
       {load ? (
         <p>Loading...</p>
