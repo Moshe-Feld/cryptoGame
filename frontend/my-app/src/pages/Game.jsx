@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Game() {
-  const [quote, setQuote] = useState(null);
+  const [quote, setQuote] = useState("");
   const [wiki, setWiki] = useState(null);
   const [load, setLoad] = useState(true);
   const { user } = useUser();
