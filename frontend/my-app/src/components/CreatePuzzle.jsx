@@ -139,13 +139,13 @@ function CreatePuzzle({ text, type, quoteId }) {
       }
     });
     setResetTrigger(prev => prev + 1);
-    setTimeout(() => {
-      const firstIndex = getNextActiveIndex(-1, 1);
-      if (firstIndex !== null && inputRefs.current[firstIndex]) {
-        inputRefs.current[firstIndex].focus();
-        setFocusedIndex(firstIndex);
-      }
-    }, 0);
+    // setTimeout(() => {
+    //   const firstIndex = getNextActiveIndex(-1, 1);
+    //   if (firstIndex !== null && inputRefs.current[firstIndex]) {
+    //     inputRefs.current[firstIndex].focus();
+    //     setFocusedIndex(firstIndex);
+    //   }
+    // }, 0);
   };
 
   const choseStartLetters = (items) => {
@@ -188,6 +188,7 @@ function CreatePuzzle({ text, type, quoteId }) {
       const rand = encLetters[Math.floor(Math.random() * encLetters.length)];
       chosen.add(rand.index);
     }
+
 
     return Array.from(chosen); // מחזירה רק אינדקסים
   };

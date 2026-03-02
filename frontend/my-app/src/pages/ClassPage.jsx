@@ -12,7 +12,7 @@ function ClassPage() {
     const { user, myClasses, loadClasses } = useUser();
     const API_URL = "http://localhost:3000";
 
-    if (!user || !user.userName) return <p>Loading...</p>;
+    if (!user || !user.userName) return navigate("/");
     async function loadStudentClass(userName) {
         try {
             const response = await axios.get(`${API_URL}/class/joinedUsers/${userName}`);
