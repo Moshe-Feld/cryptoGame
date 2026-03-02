@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../css/CreatePuzzle.css";
 import { useUser } from "../context/userContext";
 import Keyboard from "./Keyboard";
+import axios from "axios";
 
 
-function CreatePuzzle({ text, type, quoteId }) {
+function CreatePuzzle({ text, type }) {
   const { user, editUser } = useUser();
   const form = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 };
   const [code, setCode] = useState(form);
@@ -139,13 +140,13 @@ function CreatePuzzle({ text, type, quoteId }) {
       }
     });
     setResetTrigger(prev => prev + 1);
-    setTimeout(() => {
-      const firstIndex = getNextActiveIndex(-1, 1);
-      if (firstIndex !== null && inputRefs.current[firstIndex]) {
-        inputRefs.current[firstIndex].focus();
-        setFocusedIndex(firstIndex);
-      }
-    }, 0);
+    // setTimeout(() => {
+    //   const firstIndex = getNextActiveIndex(-1, 1);
+    //   if (firstIndex !== null && inputRefs.current[firstIndex]) {
+    //     inputRefs.current[firstIndex].focus();
+    //     setFocusedIndex(firstIndex);
+    //   }
+    // }, 0);
   };
 
   const choseStartLetters = (items) => {
@@ -227,7 +228,7 @@ function CreatePuzzle({ text, type, quoteId }) {
             completedRef.current = true;
             setGameCompleted(true);
             alert("well done 🎉");
-            editUser(user, type, quoteId);
+            editUser(user, type);
           }
           return newState;
         });
