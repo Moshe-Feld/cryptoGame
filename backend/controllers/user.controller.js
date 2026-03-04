@@ -26,7 +26,7 @@ async function getUserByUserName(req, res) {
         const { userName } = req.params;
         const result = await userModel.findOne({ userName });
         res.status(200).send({ exists: !!result, user: result || null });
-        
+
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -48,17 +48,16 @@ async function addUser(req, res) {
 async function updateUser(req, res) {
     try {
         const { _id } = req.params;
-        const { coins = 0, level = 0, wikiLevels = 0, quoteId = "" } = req.body;
-
+        const { coins = 0, level = 0, filmLevel = 0, peopleLevel = 0, tvLevel = 0, quoteId = "" } = req.body;
         const result = await userModel.findById(_id);
 
         if (!result) return res.status(404).send("user not found");
         await userModel.updateOne(
             { _id },
-            { $inc: { coins, level, wikiLevels } }
+            { $inc: { coins, level, filmLevel, peopleLevel, tvLevel } }
         );
         const updatedUser = await userModel.findById(_id);
-         if (!updatedUser.levelCompleted.includes(quoteId)) {
+        if (!updatedUser.levelCompleted.includes(quoteId)) {
             updatedUser.levelCompleted.push(quoteId);
             await updatedUser.save();
         }
@@ -68,33 +67,33 @@ async function updateUser(req, res) {
     }
 }
 
-async function updateProfile(req,res) {
-    try{
-        const {userName} = req.params;
+async function updateProfile(req, res) {
+    try {
+        const { userName } = req.params;
         const dateToEdit = req.body
         const result = await userModel.findOneAndUpdate(
-            {userName},
-            {...dateToEdit},
-            {new: true}
+            { userName },
+            { ...dateToEdit },
+            { new: true }
         );
-        if(!result){
-          return res.status(404).send(`${userName} is undefine`)
+        if (!result) {
+            return res.status(404).send(`${userName} is undefine`)
         }
         res.status(200).send(result)
-    }catch(err){
+    } catch (err) {
         res.status(500).send(err.message)
     }
 }
 
 async function resetPass(req, res) {
-    try{
-        const{email} = req.params;
-        const result = await userModel.findOne({email});
-        if(!result) return res.status(404).send(`user not found`);
+    try {
+        const { email } = req.params;
+        const result = await userModel.findOne({ email });
+        if (!result) return res.status(404).send(`user not found`);
         result.password = "0000";
         await result.save()
         res.status(200).send(result);
-    }catch(err){
+    } catch (err) {
         res.status(500).send(err.message);
     }
 }

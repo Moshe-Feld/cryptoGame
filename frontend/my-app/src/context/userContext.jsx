@@ -62,7 +62,9 @@ export function UserProvider({ children }) {
             };
 
             if (type === "level") update.level = 1;
-            else if (type === "wikiLevel") update.wikiLevels = 1;
+            else if (type === "filmLevel") update.filmLevel = 1;
+            else if (type === "peopleLevel") update.peopleLevel = 1;
+            else if (type === "tvLevel") update.tvLevel = 1;
             const { data: updatedUser } = await axios.put(`${API_URL}/users/${user._id}`,
                 update);
             setUser(updatedUser);
