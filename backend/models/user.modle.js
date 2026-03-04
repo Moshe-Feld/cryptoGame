@@ -6,8 +6,10 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   coins: { type: Number, default: 0 },
   level: { type: Number, default: 1 },
-  wikiLevels: { type: Number, default: 0 },
-  levelCompleted: {type: [String], default: []}
+  filmLevel: { type: Number, default: 1 },
+  peopleLevel: { type: Number, default: 1 },
+  tvLevel: { type: Number, default: 1 },
+  levelCompleted: { type: [String], default: [] }
 });
 
 const userModel = mongoose.model('user', userSchema);
