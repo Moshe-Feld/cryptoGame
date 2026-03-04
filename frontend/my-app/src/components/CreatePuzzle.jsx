@@ -5,7 +5,7 @@ import Keyboard from "./Keyboard";
 import axios from "axios";
 
 
-function CreatePuzzle({ text, type, titleToGuess }) {
+function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
   const { user, editUser } = useUser();
   const form = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 };
   const [code, setCode] = useState(form);
@@ -238,7 +238,7 @@ function CreatePuzzle({ text, type, titleToGuess }) {
               setCipherDone(true);
             } else {
               alert("well done 🎉");
-              editUser(user, type);
+              editUser(user, type, quoteId);
             }
           }
           return newState;
@@ -420,12 +420,14 @@ function CreatePuzzle({ text, type, titleToGuess }) {
         fullyRevealedLetters={fullyRevealedLetters}
         onLetterClick={onKeyboardLetterClick}
       />
-      <button onClick={resetGame} className="restart-btn">
-        🔄 Restart
-      </button>
-      <button onClick={() => setHintMode(!hintMode)} className="hint-btn">
-        💡 Hint
-      </button>
+      <div className="game-buttons">
+        <button onClick={resetGame} className="restart-btn">
+          🔄 Restart
+        </button>
+        <button onClick={() => setHintMode(!hintMode)} className="hint-btn">
+          💡 Hint
+        </button>
+      </div>
       {titleToGuess && cipherDone && (
         <div className="guess-container">
           <h3>🎯 Now guess the title!</h3>

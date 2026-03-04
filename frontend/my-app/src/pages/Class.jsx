@@ -69,7 +69,7 @@ function Class() {
             if (!window.confirm('Are you sure? This will delete all quotes!')) return;
             const res = await axios.delete(`${API_URL}/quotes/${id}`)
             navigate(`/class/${classData._id}`)
-        }catch(err){
+        } catch (err) {
             console.error(err.message)
         }
     }
@@ -103,7 +103,7 @@ function Class() {
                                     className="quote-card"
                                     key={item._id}
                                 >
-                                   <p onClick={() => navigate(`/quote/${item._id}`)}>Level: {index + 1}</p> 
+                                    <p onClick={() => navigate(`/quote/${item._id}`)}>Level: {index + 1}</p>
                                     {isCompleted && <span> ✔</span>}
                                     {isTeacher && (<button className="dlt-btn" onClick={() => deleteQuote(item._id)}>Delete</button>)}
                                 </div>

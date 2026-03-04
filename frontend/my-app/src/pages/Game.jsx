@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../context/userContext";
-import CreatePuzzle from "../components/CreatePuzzle"
+import CreatePuzzle from "../components/CreatePuzzle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import '../css/Game.css';
 
 function Game() {
   const [quote, setQuote] = useState("");
   const [load, setLoad] = useState(true);
   const { user } = useUser();
-  const navigate = useNavigate()
-  const API_URL = 'http://localhost:3000'
+  const navigate = useNavigate();
+  const API_URL = 'http://localhost:3000';
 
   useEffect(() => {
     let ignore = false;
     const fetchQuote = async () => {
       try {
         if (user.level >= 1400) {
-          alert("no more levels");
+          alert("No more levels! You've completed all challenges! 🎉");
           navigate("/home");
-          return
+          return;
         }
         const randomData = await axios.get(
           `https://dummyjson.com/quotes/${user.level}`
@@ -36,20 +37,29 @@ function Game() {
     };
   }, [user.level]);
 
-  return (
+  if (load) {
+    return (
+      <div className="loading-container">
+        <p>Loading your challenge...</p>
+      </div>
+    );
+  }
 
-    <div style={{ padding: 20 }}>
-      <h1>Cipher Game</h1>
-      <p>{quote?.quote || ""}</p>
-      {load ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <h3>Level: {user.level}</h3>
-          <p><strong>your coins: </strong>{user?.coins}</p>
-          <CreatePuzzle text={quote?.quote || ""} type={"level"} />
-        </>
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h1>Cipher Game</h1>
+        <h3>Level: {user.level}</h3>
+        <p><strong>Your coins:</strong> {user?.coins || 0}</p>
+      </div>
+
+      {quote?.quote && (
+        <div className="quote-display">
+          <p>"{quote.quote}"</p>
+        </div>
       )}
+
+      <CreatePuzzle text={quote?.quote || ""} type={"level"} />
     </div>
   );
 }

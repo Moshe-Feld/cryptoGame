@@ -36,7 +36,7 @@ async function getUserByUserName(req, res) {
 async function addUser(req, res) {
     try {
         const body = req.body;
-        const newUser = { ...body, coins: 0, level: 1399 }
+        const newUser = { ...body, coins: 0, level: 1 }
         await userModel.create(newUser);
         res.status(200).send(newUser);
     } catch (err) {
