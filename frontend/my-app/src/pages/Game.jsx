@@ -6,19 +6,18 @@ import { useNavigate } from "react-router-dom";
 
 function Game() {
   const [quote, setQuote] = useState("");
-  const [wiki, setWiki] = useState(null);
   const [load, setLoad] = useState(true);
   const { user } = useUser();
   const navigate = useNavigate()
-
+  const API_URL = 'http://localhost:3000'
 
   useEffect(() => {
     let ignore = false;
     const fetchQuote = async () => {
       try {
         if (user.level >= 1400) {
-          alert("no more levels for you");
-          navigate('/home');
+          alert("no more levels");
+          navigate("/home");
           return
         }
         const randomData = await axios.get(
