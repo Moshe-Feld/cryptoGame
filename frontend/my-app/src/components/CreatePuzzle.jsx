@@ -190,6 +190,7 @@ function CreatePuzzle({ text, type, guessResult }) {
       chosen.add(rand.index);
     }
 
+
     return Array.from(chosen); // מחזירה רק אינדקסים
   };
 
