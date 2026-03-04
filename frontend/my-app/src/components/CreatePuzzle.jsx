@@ -5,7 +5,7 @@ import Keyboard from "./Keyboard";
 import axios from "axios";
 
 
-function CreatePuzzle({ text, type, guessResult }) {
+function CreatePuzzle({ text, type, titleToGuess }) {
   const { user, editUser } = useUser();
   const form = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 };
   const [code, setCode] = useState(form);
@@ -17,6 +17,9 @@ function CreatePuzzle({ text, type, guessResult }) {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [initialHints, setInitialHints] = useState([]);
+  const [cipherDone, setCipherDone] = useState(false);
+  const [guessInput, setGuessInput] = useState("");
+  const [guessResult, setGuessResult] = useState(null);
   const inputRefs = useRef([]);
   const completedRef = useRef(false);
   let inputIndex = 0;
@@ -133,6 +136,9 @@ function CreatePuzzle({ text, type, guessResult }) {
     completedRef.current = false;
     setHintMode(false);
     setRevealedLetters([]);
+    setCipherDone(false);
+    setGuessInput("");
+    setGuessResult(null);
     inputRefs.current.forEach((input) => {
       if (input) {
         input.value = "";
@@ -228,8 +234,12 @@ function CreatePuzzle({ text, type, guessResult }) {
           if (allCleared && !completedRef.current) {
             completedRef.current = true;
             setGameCompleted(true);
-            alert("well done 🎉");
-            editUser(user, type);
+            if (titleToGuess) {
+              setCipherDone(true);
+            } else {
+              alert("well done 🎉");
+              editUser(user, type);
+            }
           }
           return newState;
         });
@@ -253,6 +263,15 @@ function CreatePuzzle({ text, type, guessResult }) {
     }
   };
 
+  const handleGuess = () => {
+    const cleanTitle = titleToGuess.replace(/\s*\(.*?\)/g, "").trim().toLowerCase();
+    if (guessInput.trim().toLowerCase() === cleanTitle) {
+      setGuessResult("correct");
+      editUser(user, type);
+    } else {
+      setGuessResult("wrong");
+    }
+  };
 
   const handleKeyDown = (e, index) => {
     if (e.key === "ArrowRight") {
@@ -407,6 +426,32 @@ function CreatePuzzle({ text, type, guessResult }) {
       <button onClick={() => setHintMode(!hintMode)} className="hint-btn">
         💡 Hint
       </button>
+      {titleToGuess && cipherDone && (
+        <div className="guess-container">
+          <h3>🎯 Now guess the title!</h3>
+          <div className="guess-row">
+            <input
+              className="guess-input"
+              value={guessInput}
+              onChange={e => {
+                setGuessInput(e.target.value);
+                setGuessResult(null);
+              }}
+              onKeyDown={e => e.key === "Enter" && handleGuess()}
+              placeholder="Type your guess..."
+            />
+            <button className="guess-btn" onClick={handleGuess}>
+              Guess
+            </button>
+          </div>
+          {guessResult === "correct" && (
+            <p className="guess-result correct">✅ Correct! It was: <strong>{titleToGuess}</strong></p>
+          )}
+          {guessResult === "wrong" && (
+            <p className="guess-result wrong">❌ Wrong, try again!</p>
+          )}
+        </div>
+      )}
 
     </>
   );

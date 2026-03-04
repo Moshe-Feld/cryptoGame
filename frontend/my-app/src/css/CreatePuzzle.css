@@ -140,3 +140,67 @@
   background-color: beige; /* בז' */
   outline: 2px solid #d2b48c; /* מסגרת חומה עדינה */
 }
+
+.guess-container {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: #f0f4ff;
+  border-radius: 12px;
+  display: inline-block;
+  min-width: 300px;
+  border: 1px solid #d0d8f0;
+}
+
+.guess-container h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.guess-row {
+  display: flex;
+  gap: 8px;
+}
+
+.guess-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  flex: 1;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.guess-input:focus {
+  border-color: #4f46e5;
+}
+
+.guess-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.guess-btn:hover {
+  background: #3730a3;
+}
+
+.guess-result {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.guess-result.correct {
+  color: #16a34a;
+}
+
+.guess-result.wrong {
+  color: #dc2626;
+}

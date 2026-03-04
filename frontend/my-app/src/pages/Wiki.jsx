@@ -301,9 +301,7 @@ function Wiki() {
     const [title, setTitle] = useState("");
     const [load, setLoad] = useState(true);
     const [show, setShow] = useState(false);
-    const [guessInput, setGuessInput] = useState("");
-    const [guessResult, setGuessResult] = useState(false);
-    const { user, editUser } = useUser();
+    const { user } = useUser();
     const { category } = useParams();
 
     const levelKey = category === "films" ? "filmLevel"
@@ -317,8 +315,6 @@ function Wiki() {
         const fetchData = async () => {
             try {
                 setLoad(true);
-                setGuessResult(null);
-                setGuessInput("");
 
                 const page = Math.floor(currentLevel / 20) + 1;
                 const index = currentLevel % 20;
@@ -327,7 +323,7 @@ function Wiki() {
                     const { data } = await axios.get(
                         `${TMDB}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
                     );
-                    const film = data.results[index-1];
+                    const film = data.results[index - 1];
                     if (!ignore) {
                         const masked = maskTitle(film.overview, film.title);
                         setTitle(film.title);
@@ -343,7 +339,7 @@ function Wiki() {
                         p.known_for && p.known_for.length > 0 &&
                         p.profile_path !== null
                     );
-                    const person = people[(index % people.length)-1];
+                    const person = people[(index % people.length) - 1];
                     if (!ignore) {
                         const sentence = buildKnownForSentence(person);
                         const masked = maskTitle(sentence, person.name);
@@ -356,7 +352,7 @@ function Wiki() {
                     const { data } = await axios.get(
                         `${TMDB}/tv/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
                     );
-                    const show = data.results[index-1];
+                    const show = data.results[index - 1];
                     if (!ignore) {
                         const masked = maskTitle(show.overview, show.name);
                         setTitle(show.name);
@@ -376,15 +372,6 @@ function Wiki() {
         return () => { ignore = true };
     }, [currentLevel, category]);
 
-    const handleGuess = () => {
-        const cleanTitle = title.replace(/\s*\(.*?\)/g, "").trim().toLowerCase();
-        if (guessInput.trim().toLowerCase() === cleanTitle) {
-            setGuessResult("correct");
-            editUser(user, levelKey);
-        } else {
-            setGuessResult("wrong");
-        }
-    };
 
     return (
         <div style={{ padding: 20 }}>
@@ -403,62 +390,8 @@ function Wiki() {
                     <CreatePuzzle
                         text={puzzleText}
                         type={levelKey}
-                        guessResult={guessResult}
+                        titleToGuess={title}
                     />
-
-                    <div style={{
-                        marginTop: 24,
-                        padding: "16px 20px",
-                        background: "#f0f4ff",
-                        borderRadius: 12,
-                        display: "inline-block",
-                        minWidth: 300
-                    }}>
-                        <h3 style={{ margin: "0 0 12px 0" }}>
-                            {category === "films" ? "🎬" : category === "people" ? "👤" : "📺"}
-                            {" "}Guess the {category === "films" ? "film" : category === "people" ? "person" : "show"}!
-                        </h3>
-                        <div style={{ display: "flex", gap: 8 }}>
-                            <input
-                                value={guessInput}
-                                onChange={e => {
-                                    setGuessInput(e.target.value);
-                                    setGuessResult(null);
-                                }}
-                                onKeyDown={e => e.key === "Enter" && handleGuess()}
-                                placeholder="Type your guess..."
-                                style={{
-                                    padding: "8px 12px",
-                                    borderRadius: 8,
-                                    border: "1px solid #ccc",
-                                    fontSize: 16,
-                                    flex: 1
-                                }}
-                            />
-                            <button
-                                onClick={handleGuess}
-                                style={{
-                                    padding: "8px 16px",
-                                    borderRadius: 8,
-                                    background: "#4f46e5",
-                                    color: "white",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    fontSize: 16
-                                }}
-                            >
-                                Guess
-                            </button>
-                        </div>
-                        {guessResult === "correct" && (
-                            <p style={{ color: "green", marginTop: 10 }}>
-                                ✅ Correct! It was: <strong>{title}</strong>
-                            </p>
-                        )}
-                        {guessResult === "wrong" && (
-                            <p style={{ color: "red", marginTop: 10 }}>❌ Wrong, try again!</p>
-                        )}
-                    </div>
                 </>
             )}
         </div>
