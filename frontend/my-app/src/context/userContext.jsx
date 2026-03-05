@@ -65,6 +65,7 @@ export function UserProvider({ children }) {
             else if (type === "filmLevel") update.filmLevel = 1;
             else if (type === "peopleLevel") update.peopleLevel = 1;
             else if (type === "tvLevel") update.tvLevel = 1;
+            else if (type === "restart") {update.coins = -user.coins; update.level = -user.level + 1}
             const { data: updatedUser } = await axios.put(`${API_URL}/users/${user._id}`,
                 update);
             setUser(updatedUser);

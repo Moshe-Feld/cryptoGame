@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
     const navigate = useNavigate();
-    const { user } = useUser();
+    const { user, editUser } = useUser();
 
     return (
         <div className="home-wrapper">
@@ -25,6 +25,13 @@ function Home() {
                     the next levels.
                 </p>
                 <span>Your level: {user.level}</span>
+                {
+                    user.level >= 1400 ? 
+                    <div>
+                        <p>you finished all the levels!!</p>
+                        <button onClick={()=> editUser(user, "restart")}>Restart Levels</button>
+                    </div> : <></>
+                }
             </section>
 
             <section className="section reveal wiki-bg" onClick={() => navigate("/homeWiki")}>

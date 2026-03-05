@@ -8,6 +8,7 @@ import '../css/Game.css';
 function Game() {
   const [quote, setQuote] = useState("");
   const [load, setLoad] = useState(true);
+  const [showModel, setShowModal] = useState(false)
   const { user } = useUser();
   const navigate = useNavigate();
   const API_URL = 'http://localhost:3000';
@@ -17,7 +18,6 @@ function Game() {
     const fetchQuote = async () => {
       try {
         if (user.level >= 1400) {
-          alert("No more levels! You've completed all challenges! 🎉");
           navigate("/home");
           return;
         }
