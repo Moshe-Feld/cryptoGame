@@ -36,7 +36,7 @@ async function getUserByUserName(req, res) {
 async function addUser(req, res) {
     try {
         const body = req.body;
-        const newUser = { ...body, coins: 0, level: 1 }
+        const newUser = { ...body, coins: 50, level: 1 }
         await userModel.create(newUser);
         res.status(200).send(newUser);
     } catch (err) {
@@ -48,7 +48,7 @@ async function addUser(req, res) {
 async function updateUser(req, res) {
     try {
         const { _id } = req.params;
-        const { coins = 0, level = 0, filmLevel = 0, peopleLevel = 0, tvLevel = 0, quoteId = "" } = req.body;
+        const { coins = 50, level = 0, filmLevel = 0, peopleLevel = 0, tvLevel = 0, quoteId = "" } = req.body;
         const result = await userModel.findById(_id);
 
         if (!result) return res.status(404).send("user not found");
