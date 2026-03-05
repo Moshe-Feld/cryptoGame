@@ -240,6 +240,7 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
             if (titleToGuess) {
               setCipherDone(true);
             } else {
+              editUser(user, type, quoteId)
               setShowModel(true)
               // alert("well done 🎉");
               // editUser(user, type, quoteId);
@@ -272,6 +273,7 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
     if (guessInput.trim().toLowerCase() === cleanTitle) {
       setGuessResult("correct");
       // editUser(user, type);
+      editUser(user, type, quoteId)
       setShowModel(true)
     } else {
       setGuessResult("wrong");
@@ -366,7 +368,7 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
           </span>
         ))}
       </div>
-      <div className="puzzle-container">
+      {!showModel && (<div className="puzzle-container">
         {items.map((item, i) => {
           if (item.type === "space") {
             return <div key={`space-${i}`} className="puzzle-space" />;
@@ -418,7 +420,7 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
             </div>
           );
         })}
-      </div>
+      </div>)}
       <Keyboard
         alphabet={alphabet}
         revealedLetters={revealedLetters}
@@ -465,12 +467,12 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
             <p>well done!!</p>
             <p>{text}</p>
             <button onClick={() => {
-              editUser(user, type, quoteId)
+              // editUser(user, type, quoteId)
               setShowModel(false)
             }
             }>Next</button>
             <button onClick={() => {
-              editUser(user, type, quoteId)
+              // editUser(user, type, quoteId)
               navigate("/home")
               setShowModel(false)
             }}>Home</button>
