@@ -27,14 +27,12 @@ async function getClassesOfTeacher(req, res) {
     try {
         const { userId } = req.params;
         const result = await classModel.find({ userId: userId });
+        if (result.length < 1) {
+            return res.status(404).send(`${userId} undefine`);
+        }
         res.status(200).send(result);
     } catch (err) {
-        if (result.length < 1) {
-            res.status(404).send(`${userId} undefine`);
-        }
-        else {
-            res.status(500).send(err.message);
-        }
+        res.status(500).send(err.message);
     }
 }
 
@@ -89,19 +87,19 @@ async function joinToClass(req, res) {
 }
 
 async function updateClass(req, res) {
-    try{
-        const {_id} = req.params
-        const {subject} = req.body;
+    try {
+        const { _id } = req.params
+        const { subject } = req.body;
         const classToEdit = await classModel.findOneAndUpdate(
-            {_id},
-            {subject},
-            {new: true}
+            { _id },
+            { subject },
+            { new: true }
         )
-        if(!classToEdit){
+        if (!classToEdit) {
             return res.status(404).send(`class: ${_id} not found`)
         }
         res.status(200).send(classToEdit)
-    }catch(err){
+    } catch (err) {
         res.status(500).send(err.message);
     }
 }
@@ -122,7 +120,7 @@ async function deleteClass(req, res) {
         const result = await classModel.deleteOne({ _id: _id });
         res.status(200).send(`${result} deleted`)
     } catch (err) {
-       res.status(500).send(err.message)
+        res.status(500).send(err.message)
     }
 }
 

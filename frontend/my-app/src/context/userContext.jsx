@@ -12,17 +12,7 @@ export function useUser() {
 export function UserProvider({ children }) {
     const [user, setUser] = useState({});
     const [connected, setConnected] = useState(false);
-    const [myClasses, setMyClasses] = useState([])
     const navigate = useNavigate();
-
-    async function loadClasses(userId) {
-        try {
-            const response = await axios.get(`${API_URL}/class/by-creater/${userId}`);
-            setMyClasses(response.data);
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
 
     async function Login(user) {
         try {
@@ -35,7 +25,6 @@ export function UserProvider({ children }) {
             }
             setUser(userLogIn.data.user);
             setConnected(true);
-            loadClasses(userLogIn.data.userName);
             navigate('/home');
         } catch (err) {
             console.error(err.message);
@@ -46,7 +35,6 @@ export function UserProvider({ children }) {
         try {
             setConnected(false);
             setUser(null);
-            setMyClasses(null);
             navigate("/");
         } catch (err) {
             console.error(err.message);
@@ -79,7 +67,7 @@ export function UserProvider({ children }) {
     }
 
     return (
-        <userContext.Provider value={{ user, connected, myClasses, loadClasses, Login, LogOut, editUser }}>
+        <userContext.Provider value={{ user, connected, Login, LogOut, editUser }}>
             {children}
         </userContext.Provider>
     )

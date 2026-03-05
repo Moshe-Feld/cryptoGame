@@ -8,11 +8,21 @@ function ClassPage() {
     const navigate = useNavigate();
     const [subject, setSubject] = useState("");
     const [code, setCode] = useState("");
+    const [myClasses, setMyClasses] = useState([])
     const [studentClass, setStudentClass] = useState([]);
-    const { user, myClasses, loadClasses } = useUser();
+    const { user } = useUser();
     const API_URL = "http://localhost:3000";
 
     if (!user || !user.userName) return navigate("/");
+
+     async function loadClasses(userName) {
+        try {
+            const response = await axios.get(`${API_URL}/class/by-creater/${userName}`);
+            setMyClasses(response.data);
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
     async function loadStudentClass(userName) {
         try {
             const response = await axios.get(`${API_URL}/class/joinedUsers/${userName}`);

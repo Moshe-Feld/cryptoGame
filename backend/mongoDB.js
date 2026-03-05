@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const DB_URL = 'mongodb+srv://user:123@cluster0.r2nip.mongodb.net/'
 
-const connect = () => {
+const connect = async () => {
     try {
-        mongoose.connect(DB_URL);
+        await mongoose.connect(DB_URL);
         console.log("connected to DB")
     }
     catch (err) {
