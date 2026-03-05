@@ -455,3 +455,37 @@
 .puzzle-cell:has(.puzzle-input:disabled) {
   animation: cellComplete 0.3s ease;
 }
+.model {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  text-align: center;
+  min-width: 350px;
+  animation: popIn 0.3s ease;
+  border: 3px solid #27AE60;
+}
+.model p {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #27AE60;
+  margin-bottom: 30px;
+  font-family: 'Inter', sans-serif;
+}
+
+.model button {
+  margin: 0 8px;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}

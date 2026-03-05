@@ -3,10 +3,12 @@ import "../css/CreatePuzzle.css";
 import { useUser } from "../context/userContext";
 import Keyboard from "./Keyboard";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
   const { user, editUser } = useUser();
+  const navigate = useNavigate()
   const form = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 };
   const [code, setCode] = useState(form);
   const [numbersState, setNumbersState] = useState([]);
@@ -20,6 +22,7 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
   const [cipherDone, setCipherDone] = useState(false);
   const [guessInput, setGuessInput] = useState("");
   const [guessResult, setGuessResult] = useState(null);
+  const [showModel, setShowModel] = useState(false)
   const inputRefs = useRef([]);
   const completedRef = useRef(false);
   let inputIndex = 0;
@@ -237,8 +240,9 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
             if (titleToGuess) {
               setCipherDone(true);
             } else {
-              alert("well done 🎉");
-              editUser(user, type, quoteId);
+              setShowModel(true)
+              // alert("well done 🎉");
+              // editUser(user, type, quoteId);
             }
           }
           return newState;
@@ -454,6 +458,23 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
           )}
         </div>
       )}
+      {
+        showModel &&(
+          <div className="model">
+            <p>well done!!</p>
+            <p>{text}</p>
+            <button onClick={()=>{
+              editUser(user, type, quoteId)
+              setShowModel(false)}
+            }>Next</button>
+            <button onClick={()=> {
+              editUser(user, type, quoteId)
+              navigate("/home")
+              setShowModel(false)
+            }}>Home</button>
+          </div>
+        )
+      }
 
     </>
   );
