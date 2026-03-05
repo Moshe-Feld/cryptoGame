@@ -459,16 +459,23 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
         </div>
       )}
       {
-        showModel &&(
+        showModel && (
           <div className="model">
             <p>well done!!</p>
             <p>{text}</p>
-            <button onClick={()=>{
-              editUser(user, type, quoteId)
-              setShowModel(false)}
-            }>Next</button>
-            <button onClick={()=> {
-              editUser(user, type, quoteId)
+            {
+              type === "level" && (
+                <button onClick={() => {
+                  editUser(user, type, quoteId)
+                  setShowModel(false)
+                }
+                }>Next</button>
+              )
+            }
+            <button onClick={() => {
+              if(type === "level"){
+                editUser(user, type, quoteId)
+              }
               navigate("/home")
               setShowModel(false)
             }}>Home</button>
