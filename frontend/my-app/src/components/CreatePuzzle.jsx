@@ -271,7 +271,8 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
     const cleanTitle = titleToGuess.replace(/\s*\(.*?\)/g, "").trim().toLowerCase();
     if (guessInput.trim().toLowerCase() === cleanTitle) {
       setGuessResult("correct");
-      editUser(user, type);
+      // editUser(user, type);
+      setShowModel(true)
     } else {
       setGuessResult("wrong");
     }
