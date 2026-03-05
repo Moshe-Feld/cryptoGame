@@ -271,7 +271,8 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
     const cleanTitle = titleToGuess.replace(/\s*\(.*?\)/g, "").trim().toLowerCase();
     if (guessInput.trim().toLowerCase() === cleanTitle) {
       setGuessResult("correct");
-      editUser(user, type);
+      // editUser(user, type);
+      setShowModel(true)
     } else {
       setGuessResult("wrong");
     }
@@ -459,15 +460,16 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
         </div>
       )}
       {
-        showModel &&(
+        showModel && (
           <div className="model">
             <p>well done!!</p>
             <p>{text}</p>
-            <button onClick={()=>{
+            <button onClick={() => {
               editUser(user, type, quoteId)
-              setShowModel(false)}
+              setShowModel(false)
+            }
             }>Next</button>
-            <button onClick={()=> {
+            <button onClick={() => {
               editUser(user, type, quoteId)
               navigate("/home")
               setShowModel(false)
