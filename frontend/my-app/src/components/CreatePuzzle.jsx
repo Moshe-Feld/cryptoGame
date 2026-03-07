@@ -372,6 +372,14 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
           </span>
         ))}
       </div>
+      <div className="game-buttons">
+        <button onClick={resetGame} className="restart-btn">
+          🔄 Restart
+        </button>
+        <button onClick={() => setHintMode(!hintMode)} className="hint-btn">
+          💡 Hint
+        </button>
+      </div>
       {!showModel && (<div className="puzzle-container">
         {items.map((item, i) => {
           if (item.type === "space") {
@@ -431,14 +439,6 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
         fullyRevealedLetters={fullyRevealedLetters}
         onLetterClick={onKeyboardLetterClick}
       />
-      <div className="game-buttons">
-        <button onClick={resetGame} className="restart-btn">
-          🔄 Restart
-        </button>
-        <button onClick={() => setHintMode(!hintMode)} className="hint-btn">
-          💡 Hint
-        </button>
-      </div>
       {titleToGuess && cipherDone && (
         <div className="guess-container">
           <h3>🎯 Now guess the title!</h3>
