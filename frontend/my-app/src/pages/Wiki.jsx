@@ -374,12 +374,12 @@ function Wiki() {
 
 
     return (
-        <div style={{ padding: 20 }}>
-            <h1>Wiki Cipher</h1>
-            <h2>{category.toUpperCase()}</h2>
-            <h3>Level: {currentLevel}</h3>
-            <p><strong>Coins: </strong>{user?.coins}</p>
-
+        <div>
+            <div className="game-header">
+                <h1>Mystery Cipher</h1>
+                <h2>{category.toUpperCase()}</h2>
+                <h3>Level: {currentLevel}</h3>
+            </div>
             {load ? <p>Loading...</p> : (
                 <>
                     <button onClick={() => setShow(!show)}>

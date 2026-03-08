@@ -13,7 +13,7 @@ import Class from './pages/Class.jsx'
 import ClassPage from './pages/ClassPage.jsx'
 import Wiki from './pages/Wiki.jsx'
 import WikiHome from './pages/WikiHome.jsx'
-import Qoute from './pages/Qoute.jsx'
+import Quote from './pages/Quote.jsx'
 import Profile from './pages/Profile.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -32,7 +32,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/profile' element={<Profile />} />
             <Route path='/class' element={<ClassPage />} />
             <Route path='/class/:_id' element={<Class />} />
-            <Route path='/quote/:_id' element={<Qoute/>}/>
+            <Route path='/quote/:_id' element={<Quote/>}/>
           </Route>
         </Routes>
       </UserProvider>

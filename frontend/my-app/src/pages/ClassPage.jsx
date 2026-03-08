@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import "../css/ClasePage.css";
+import { use } from "react";
 
 function ClassPage() {
     const navigate = useNavigate();
@@ -57,9 +58,12 @@ function ClassPage() {
     }
 
     useEffect(() => {
-        loadStudentClass(user.userName);
         loadClasses(user.userName);
-    }, [studentClass, myClasses]);
+    }, [myClasses]);
+
+    useEffect(()=>{
+        loadStudentClass(user.userName)
+    },[studentClass])
 
     useEffect(() => {
         const sections = document.querySelectorAll('.class-section, .form-card');

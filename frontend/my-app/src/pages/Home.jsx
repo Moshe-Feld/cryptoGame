@@ -19,28 +19,27 @@ function Home() {
             </section>
 
             <section className="section reveal game-bg" onClick={() => navigate("/startGame")}>
-                <h2>Cipher Game</h2>
+                <h2>Quote Cipher</h2>
                 <p>
                     Solve encrypted sentences, improve your decoding skills, and unlock
                     the next levels.
                 </p>
                 <span>Your level: {user.level}</span>
                 {
-                    user.level >= 1400 ? 
-                    <div>
-                        <p>you finished all the levels!!</p>
-                        <button onClick={()=> editUser(user, "restart")}>Restart Levels</button>
-                    </div> : <></>
+                    user.level >= 1400 ?
+                        <div>
+                            <p>you finished all the levels!!</p>
+                            <button onClick={() => editUser(user, "restart")}>Restart Levels</button>
+                        </div> : <></>
                 }
             </section>
 
             <section className="section reveal wiki-bg" onClick={() => navigate("/homeWiki")}>
-                <h2>Cipher Wiki</h2>
+                <h2>Mystery Cipher</h2>
                 <p>
-                    Learn how encryption works, explore common cipher techniques,
-                    and get hints to solve harder challenges.
+                    Crack the encrypted sentence to reveal several clues about a mystery
+                    actor, movie, or TV show. Can you guess the hidden subject?
                 </p>
-                <span>Your knowledge level: {user.wikiLevels}</span>
             </section>
 
             <section className="section reveal class-bg" onClick={() => navigate("/class")}>

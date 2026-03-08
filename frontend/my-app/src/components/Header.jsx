@@ -1,4 +1,4 @@
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 function Header() {
     const { user, LogOut } = useUser();
@@ -6,9 +6,13 @@ function Header() {
     return (
         <>
             <div className="header">
-                <p onClick={()=> navigate("/home")}>Crypto Game</p>
-                <p onClick={()=>navigate(`/profile`)}>connect as {user.userName} <br/> your coins: {user.coins}</p>
-                 <button onClick={() => LogOut()}>Log Out</button>
+                <p onClick={() => navigate("/home")}>Crypto Game</p>
+                <div className="header-user-info" onClick={() => navigate(`/profile`)}>
+                    <span className="user-label">Connected as</span>
+                    <span className="user-name">{user.userName}</span>
+                    <span className="user-coins">🪙 {user.coins} coins</span>
+                </div>
+                <button onClick={() => LogOut()}>Log Out</button>
             </div>
         </>
     )
