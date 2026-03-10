@@ -26,7 +26,7 @@ function ClassPage() {
     }
     async function loadStudentClass(userName) {
         try {
-            const response = await axios.get(`${API_URL}/class/joinedUsers/${userName}`);
+            const response = await axios.get(`${API_URL}/userClass/join-class/${userName}`);
             setStudentClass(response.data);
         } catch (err) {
             console.error(err.message);
@@ -45,15 +45,27 @@ function ClassPage() {
         }
     }
 
-    async function joinToClss() {
-        try {
-            const student = {
-                userName: user.userName,
-                joinCode: code
+    // async function joinToClass() {
+    //     try {
+    //         const student = {
+    //             userName: user.userName,
+    //             joinCode: code
+    //         }
+    //         await axios.put(`${API_URL}/class/join/`, student);
+    //     } catch (err) {
+    //         console.error(err.message);
+    //     }
+    // }
+
+    async function joinToClass(req, res) {
+        try{
+            const userToJoin = {
+                userId: user.userName,
             }
-            await axios.put(`${API_URL}/class/join/`, student);
-        } catch (err) {
-            console.error(err.message);
+            const response = await axios.post(`${API_URL}/userClass/${code}`, {userToJoin})
+            set
+        }catch(err){
+            console.error(err.message)
         }
     }
 
@@ -126,7 +138,7 @@ function ClassPage() {
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                     />
-                    <button onClick={joinToClss}>Join</button>
+                    <button onClick={joinToClass}>Join</button>
                 </div>
             </div>
 
