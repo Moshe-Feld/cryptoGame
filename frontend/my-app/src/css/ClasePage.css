@@ -6,6 +6,14 @@
    =================================== */
 
 /* ============ PAGE TITLE ============ */
+/* ===================================
+   CIPHERQUEST - CLASS PAGES
+   Design: Modern Minimalist
+   Colors: Red/Orange Energy
+   FULL WIDTH VERSION - FOR SEPARATE PAGES
+   =================================== */
+
+/* ============ PAGE TITLE ============ */
 h1 {
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 3rem;
@@ -18,15 +26,11 @@ h1 {
 
 /* ============ CLASS SECTIONS CONTAINER ============ */
 .class-sections {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 40px;
-  max-width: 1200px;
-  margin: 0 auto 60px auto;
-  padding: 0 20px;
+  width: 100%;
+  padding: 0 20px 60px 20px;
 }
 
-/* ============ CLASS SECTION CARDS ============ */
+/* ============ CLASS SECTION CARD ============ */
 .class-section {
   background: #FFFFFF;
   border-radius: 16px;
@@ -37,6 +41,9 @@ h1 {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.3s ease;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .class-section.visible {
@@ -106,15 +113,11 @@ h1 {
 
 /* ============ FORM SECTIONS CONTAINER ============ */
 .form-sections {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
-  max-width: 1200px;
-  margin: 0 auto 80px auto;
-  padding: 0 20px;
+  width: 100%;
+  padding: 0 20px 40px 20px;
 }
 
-/* ============ FORM CARDS ============ */
+/* ============ FORM CARD ============ */
 .form-card {
   background: #FFFFFF;
   border-radius: 16px;
@@ -124,6 +127,9 @@ h1 {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.3s ease;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .form-card.visible {
@@ -192,6 +198,40 @@ h1 {
   box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
 }
 
+/* ============ NAVIGATION BUTTON (Create/Join) ============ */
+body > button,
+.class-sections + button,
+.form-sections + button {
+  display: block;
+  max-width: 400px;
+  margin: 40px auto 80px auto;
+  padding: 16px 32px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #5A6C7D 0%, #7B8A9E 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(90, 108, 125, 0.3);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+body > button:hover,
+.class-sections + button:hover,
+.form-sections + button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(90, 108, 125, 0.4);
+}
+
+body > button:active,
+.class-sections + button:active,
+.form-sections + button:active {
+  transform: translateY(0);
+}
+
 /* ============ LOADING STATE ============ */
 body > p {
   font-family: 'Inter', sans-serif;
@@ -199,71 +239,4 @@ body > p {
   color: #95A5A6;
   text-align: center;
   margin-top: 100px;
-}
-
-/* ============ RESPONSIVE DESIGN ============ */
-
-@media (max-width: 900px) {
-  .class-sections,
-  .form-sections {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    margin: 40px 0 30px 0;
-  }
-
-  .class-section,
-  .form-card {
-    padding: 30px;
-  }
-}
-
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2rem;
-    margin: 30px 0 20px 0;
-  }
-
-  .class-sections,
-  .form-sections {
-    padding: 0 16px;
-    gap: 20px;
-  }
-
-  .class-section,
-  .form-card {
-    padding: 24px;
-  }
-
-  .class-section h3,
-  .form-card h3 {
-    font-size: 1.4rem;
-  }
-
-  .class-box {
-    padding: 20px;
-  }
-
-  .class-box p {
-    font-size: 1rem;
-  }
-
-  .form-card input,
-  .form-card button {
-    padding: 14px 18px;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 450px) {
-  .class-sections {
-    grid-template-columns: 1fr;
-  }
-
-  .form-sections {
-    grid-template-columns: 1fr;
-  }
 }

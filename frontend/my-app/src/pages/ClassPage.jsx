@@ -7,75 +7,54 @@ import { use } from "react";
 
 function ClassPage() {
     const navigate = useNavigate();
-    const [subject, setSubject] = useState("");
     const [code, setCode] = useState("");
-    const [myClasses, setMyClasses] = useState([])
+    const [classIds, setClassIds] = useState([])
     const [studentClass, setStudentClass] = useState([]);
     const { user } = useUser();
     const API_URL = "http://localhost:3000";
 
     if (!user || !user.userName) return navigate("/");
 
-     async function loadClasses(userName) {
-        try {
-            const response = await axios.get(`${API_URL}/class/by-creater/${userName}`);
-            setMyClasses(response.data);
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
+
     async function loadStudentClass(userName) {
         try {
             const response = await axios.get(`${API_URL}/userClass/join-class/${userName}`);
-            setStudentClass(response.data);
+            setClassIds(response.data);
         } catch (err) {
             console.error(err.message);
         }
     }
-    async function addClass() {
+
+    async function getClassData(classIds) {
         try {
-            const classDetails = {
-                userId: user.userName,
-                subject,
-            };
-            await axios.post(`${API_URL}/class`, classDetails);
-            alert("Class added");
+            const requests = classIds.map((item) =>
+                axios.get(`${API_URL}/class/${item.classId}`)
+            )
+            const responses = await Promise.all(requests)
+            const classes = responses.map(res => res.data)
+            setStudentClass(classes)
         } catch (err) {
-            console.error(err.message);
+            console.error(err.message)
         }
     }
 
-    // async function joinToClass() {
-    //     try {
-    //         const student = {
-    //             userName: user.userName,
-    //             joinCode: code
-    //         }
-    //         await axios.put(`${API_URL}/class/join/`, student);
-    //     } catch (err) {
-    //         console.error(err.message);
-    //     }
-    // }
-
-    async function joinToClass(req, res) {
-        try{
+    async function joinToClass() {
+        try {
             const userToJoin = {
                 userId: user.userName,
             }
-            const response = await axios.post(`${API_URL}/userClass/${code}`, {userToJoin})
-            set
-        }catch(err){
+            const response = await axios.post(`${API_URL}/userClass/${code}`, userToJoin)
+            await loadStudentClass(user.userName)
+            await getClassData(classIds)
+        } catch (err) {
             console.error(err.message)
         }
     }
 
     useEffect(() => {
-        loadClasses(user.userName);
-    }, [myClasses]);
-
-    useEffect(()=>{
         loadStudentClass(user.userName)
-    },[studentClass])
+        getClassData(classIds)
+    }, [])
 
     useEffect(() => {
         const sections = document.querySelectorAll('.class-section, .form-card');
@@ -90,22 +69,12 @@ function ClassPage() {
         sections.forEach(section => observer.observe(section));
 
         return () => sections.forEach(section => observer.unobserve(section));
-    },[])
+    }, [])
 
     return (
-        <>
+        <div className="class-page-container">
             <h1>My Classes</h1>
             <div className="class-sections">
-                <div className="class-section">
-                    <h3>Classes I Created</h3>
-                    {Array.isArray(myClasses) && myClasses.length > 0 ? (
-                        myClasses.map((item) => <div className="class-box"
-                            onClick={() => navigate(`/class/${item._id}`)}
-                        > <p>{item.subject}</p></div>)
-                    ) : (
-                        <p>No classes yet.</p>
-                    )}
-                </div>
 
                 <div className="class-section">
                     <h3>Classes I Joined</h3>
@@ -122,27 +91,17 @@ function ClassPage() {
 
             <div className="form-sections">
                 <div className="form-card">
-                    <h3>New Class</h3>
-                    <input
-                        placeholder="Subject"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                    />
-                    <button onClick={addClass}>Add Class</button>
-                </div>
-
-                <div className="form-card">
                     <h3>Join To Class</h3>
                     <input
                         placeholder="join code"
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                     />
-                    <button onClick={joinToClass}>Join</button>
+                    <button onClick={() => joinToClass()}>Join</button>
                 </div>
             </div>
-
-        </>
+            <button onClick={() => navigate("/create-class")}>Create your classes</button>
+        </div>
     );
 }
 export default ClassPage;

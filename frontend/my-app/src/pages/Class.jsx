@@ -58,7 +58,7 @@ function Class() {
         try {
             if (!window.confirm('Are you sure? This will delete all quotes!')) return;
             const res = await axios.delete(`${API_URL}/class/${id}`)
-            navigate('/class');
+            navigate('/create-class');
         } catch (err) {
             console.error(err.message);
         }
