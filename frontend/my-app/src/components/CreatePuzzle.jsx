@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
+function CreatePuzzle({ text, type, titleToGuess, quoteId, classId }) {
 
   const { user, editUser } = useUser();
   const navigate = useNavigate()
@@ -474,6 +474,9 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
             </button>
             <button onClick={() => {
               editUser(user, type, quoteId)
+              if(classId !== ""){
+                return navigate(`/class/${classId}`)
+              }
               navigate("/home")
               setShowModel(false)
             }}>Home</button>

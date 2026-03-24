@@ -10,10 +10,12 @@ function Quote() {
     const { _id } = useParams();
     const {user} = useUser()
     const [quote, setQuote] = useState("");
+    const [classId, setClassId] = useState("")
     async function loadQuote(id) {
         try {
             const response = await axios.get(`${API_URL}/quotes/${id}`);
             setQuote(response.data.text);
+            setClassId(response.data.classId);
         } catch (err) {
             console.error(err.message);
         }
@@ -26,7 +28,7 @@ function Quote() {
         <>
             {
                 isCompleted ? <p>{quote}</p> :
-                <CreatePuzzle text={quote} quoteId={_id} />
+                <CreatePuzzle text={quote} quoteId={_id} classId={classId}/>
             }
 
         </>
