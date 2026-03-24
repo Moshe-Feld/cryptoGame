@@ -24,7 +24,7 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
   const [guessInput, setGuessInput] = useState("");
   const [guessResult, setGuessResult] = useState(null);
   const [showModel, setShowModel] = useState(false)
-  const [sohwText, setShowText] = useState("");
+  const [showText, setShowText] = useState("");
   const inputRefs = useRef([]);
   const completedRef = useRef(false);
   let inputIndex = 0;
@@ -242,11 +242,8 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
             if (titleToGuess) {
               setCipherDone(true);
             } else {
-              editUser(user, type, quoteId)
               setShowModel(true)
               setShowText(text)
-              // alert("well done 🎉");
-              // editUser(user, type, quoteId);
             }
           }
           return newState;
@@ -275,8 +272,6 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
     const cleanTitle = titleToGuess.replace(/\s*\(.*?\)/g, "").trim().toLowerCase();
     if (guessInput.trim().toLowerCase() === cleanTitle) {
       setGuessResult("correct");
-      // editUser(user, type);
-      editUser(user, type, quoteId)
       setShowModel(true)
       setShowText(text)
     } else {
@@ -469,11 +464,16 @@ function CreatePuzzle({ text, type, titleToGuess, quoteId }) {
         showModel && (
           <div className="model">
             <p>well done!!</p>
-            <p>{sohwText}</p>
-            <button onClick={() => setShowModel(false)}>
+            <p>{showText}</p>
+            <button onClick={() => {
+              setShowModel(false)
+              editUser(user, type, quoteId)
+            }
+            } >
               Next
             </button>
             <button onClick={() => {
+              editUser(user, type, quoteId)
               navigate("/home")
               setShowModel(false)
             }}>Home</button>

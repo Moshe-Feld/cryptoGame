@@ -48,7 +48,7 @@ async function addUser(req, res) {
 async function updateUser(req, res) {
     try {
         const { _id } = req.params;
-        const { coins = 50, level = 0, filmLevel = 0, peopleLevel = 0, tvLevel = 0, quoteId = "" } = req.body;
+        const { coins = 0, level = 0, filmLevel = 0, peopleLevel = 0, tvLevel = 0, quoteId = "" } = req.body;
         const result = await userModel.findById(_id);
 
         if (!result) return res.status(404).send("user not found");

@@ -181,13 +181,19 @@
 
 /* ── Guess section ── */
 .guess-container {
-  margin: var(--space-md) var(--space-xl) var(--space-lg);
-  padding: var(--space-lg);
+  position: fixed;
+  top: 20%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  z-index: 300;
+  width: min(420px, 90vw);
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  animation: fadeUp 0.4s var(--ease-out) both;
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-lg), 0 0 0 4000px rgba(26,26,46,0.4);
+  text-align: center;
+  animation: popIn 0.4s var(--ease) both;
 }
 
 .guess-container h3 {
