@@ -295,30 +295,32 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     if (!input || input.disabled) return;
 
     const char = input.dataset.char;
-    const number = Number(input.dataset.number);
+    handleInput(char, index);
 
-    input.value = char.toUpperCase();
-    input.disabled = true;
+    // const number = Number(input.dataset.number);
 
-    setRevealedLetters(prev => {
-      if (prev.includes(char.toLowerCase())) return prev;
-      return [...prev, char.toLowerCase()];
-    });
+    // input.value = char.toUpperCase();
+    // input.disabled = true;
 
-    const stillRemaining = remainingOccurrences(char);
-    if (!stillRemaining) {
-      setNumbersState((prev) =>
-        prev.map((num) => (num === number ? null : num))
-      );
-    }
+    // setRevealedLetters(prev => {
+    //   if (prev.includes(char.toLowerCase())) return prev;
+    //   return [...prev, char.toLowerCase()];
+    // });
 
-    setTimeout(() => {
-      const nextIndex = getNextActiveIndex(index, 1);
-      if (nextIndex !== null && inputRefs.current[nextIndex]) {
-        inputRefs.current[nextIndex].focus();
-        setFocusedIndex(nextIndex);
-      }
-    }, 0);
+    // const stillRemaining = remainingOccurrences(char);
+    // if (!stillRemaining) {
+    //   setNumbersState((prev) =>
+    //     prev.map((num) => (num === number ? null : num))
+    //   );
+    // }
+
+    // setTimeout(() => {
+    //   const nextIndex = getNextActiveIndex(index, 1);
+    //   if (nextIndex !== null && inputRefs.current[nextIndex]) {
+    //     inputRefs.current[nextIndex].focus();
+    //     setFocusedIndex(nextIndex);
+    //   }
+    // }, 0);
   };
 
   useEffect(() => {
