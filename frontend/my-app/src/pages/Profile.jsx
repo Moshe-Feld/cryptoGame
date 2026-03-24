@@ -50,11 +50,28 @@ function Profile() {
                         <span className="info-label">Level:</span>
                         <span className="info-value">{user.level}</span>
                     </div>
-                    <div className="info-row">
-                        <span className="info-label">Mystery Levels:</span>
-                        <span className="info-value">{user.filmLevel}</span>
-                        <span className="info-value">{user.peopleLevel}</span>
-                        <span className="info-value">{user.tvLevel}</span>
+                    <div className="mystery-section">
+                        <div className="mystery-title">Mystery Levels</div>
+
+                        <div className="mystery-grid">
+                            <div className="mystery-card people">
+                                <span>🧑‍🤝‍🧑</span>
+                                <p>People</p>
+                                <strong>{user.peopleLevel}</strong>
+                            </div>
+
+                            <div className="mystery-card movies">
+                                <span>🎬</span>
+                                <p>Movies</p>
+                                <strong>{user.filmLevel}</strong>
+                            </div>
+
+                            <div className="mystery-card tv">
+                                <span>📺</span>
+                                <p>TV</p>
+                                <strong>{user.tvLevel}</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
