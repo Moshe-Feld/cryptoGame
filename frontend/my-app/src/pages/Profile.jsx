@@ -10,7 +10,7 @@ function Profile() {
     const [details, setDetails] = useState({
         userName: user?.userName || "",
         email: user?.email || "",
-        password: ""
+        password: user.password
     });
 
     async function updateProfile() {
@@ -23,7 +23,7 @@ function Profile() {
             await axios.put(`${API_URL}/users/update-profile/${user.userName}`, details);
             alert("Profile updated successfully!");
             setShowModal(false);
-            setDetails({ ...details, password: "" }); 
+            setDetails({ ...details, password: "" });
         } catch (err) {
             console.error(err.message);
             alert("Error updating profile");
@@ -36,7 +36,7 @@ function Profile() {
         <>
             <div className="profile-container">
                 <h1>Profile</h1>
-                
+
                 <div className="profile-info">
                     <div className="info-row">
                         <span className="info-label">Username:</span>
@@ -51,8 +51,10 @@ function Profile() {
                         <span className="info-value">{user.level}</span>
                     </div>
                     <div className="info-row">
-                        <span className="info-label">Wiki Levels:</span>
-                        <span className="info-value">{user.wikiLevels}</span>
+                        <span className="info-label">Mystery Levels:</span>
+                        <span className="info-value">{user.filmLevel}</span>
+                        <span className="info-value">{user.peopleLevel}</span>
+                        <span className="info-value">{user.tvLevel}</span>
                     </div>
                 </div>
 
@@ -63,30 +65,23 @@ function Profile() {
                     </div>
                 )}
 
-                <button 
+                <button
                     className="update-btn"
                     onClick={() => setShowModal(true)}
                 >
-                    ✏️ Update Details
+                    Update Details
                 </button>
             </div>
 
-            {/* Modal Popup */}
             {showModal && (
                 <>
-                    <div 
-                        className="modal-overlay" 
+                    <div
+                        className="modal-overlay"
                         onClick={() => setShowModal(false)}
                     />
                     <div className="modal">
                         <div className="modal-header">
                             <h2>Update Profile</h2>
-                            <button 
-                                className="close-btn"
-                                onClick={() => setShowModal(false)}
-                            >
-                                ✕
-                            </button>
                         </div>
 
                         <div className="modal-body">
@@ -94,11 +89,9 @@ function Profile() {
                                 <label>Username</label>
                                 <input
                                     type="text"
+                                    placeholder="Enter new user name"
                                     value={details.userName}
-                                    disabled
-                                    className="disabled-input"
-                                />
-                                <small>Username cannot be changed</small>
+                                    onChange={(e) => setDetails({ ...details, userName: e.target.value })} />
                             </div>
 
                             <div className="input-group">
@@ -107,7 +100,7 @@ function Profile() {
                                     type="email"
                                     placeholder="Enter new email"
                                     value={details.email}
-                                    onChange={(e) => setDetails({...details, email: e.target.value})}
+                                    onChange={(e) => setDetails({ ...details, email: e.target.value })}
                                 />
                             </div>
 
@@ -116,21 +109,20 @@ function Profile() {
                                 <input
                                     type="password"
                                     placeholder="Leave empty to keep current"
-                                    value={details.password}
-                                    onChange={(e) => setDetails({...details, password: e.target.value})}
+                                    onChange={(e) => setDetails({ ...details, password: e.target.value })}
                                 />
                                 <small>Only fill if you want to change password</small>
                             </div>
                         </div>
 
                         <div className="modal-footer">
-                            <button 
+                            <button
                                 className="cancel-btn"
                                 onClick={() => setShowModal(false)}
                             >
                                 Cancel
                             </button>
-                            <button 
+                            <button
                                 className="save-btn"
                                 onClick={updateProfile}
                             >

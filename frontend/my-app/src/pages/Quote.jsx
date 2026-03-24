@@ -28,7 +28,7 @@ function Quote() {
         <>
             {
                 isCompleted ? <p>{quote}</p> :
-                <CreatePuzzle text={quote} quoteId={_id} classId={classId}/>
+                <CreatePuzzle text={quote} type={"class"} quoteId={_id} classId={classId}/>
             }
 
         </>

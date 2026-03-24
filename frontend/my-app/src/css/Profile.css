@@ -1,0 +1,252 @@
+/* ============================================
+   Profile.css
+   ============================================ */
+
+.profile-container {
+  max-width: 540px;
+  margin: var(--space-xl) auto;
+  padding: var(--space-xl);
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+
+/* ── Title ── */
+.profile-container h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.profile-container h1::before { content: '👤'; font-size: 1.6rem; }
+
+/* ── Info card ── */
+.profile-info {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-md);
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px var(--space-lg);
+  border-bottom: 2px solid var(--border);
+  transition: background var(--duration) var(--ease-out);
+}
+.info-row:last-child { border-bottom: none; }
+.info-row:hover { background: var(--bg); }
+
+.info-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.info-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: var(--bg-2);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border);
+}
+
+/* Level badges get special color */
+.info-row:nth-child(3) .info-value {
+  background: var(--blue-light);
+  color: var(--blue);
+  border-color: var(--blue-mid);
+}
+.info-row:nth-child(4) .info-value {
+  background: var(--purple-light);
+  color: var(--purple);
+  border-color: rgba(168,85,247,0.25);
+}
+
+/* ── Warning box ── */
+.warning-box {
+  background: #fff7ed;
+  border: 2px solid #fed7aa;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-md);
+  animation: fadeUp 0.4s var(--ease-out) 0.05s both;
+}
+.warning-box p {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #c2410c;
+  line-height: 1.5;
+}
+.warning-box p:first-child { margin-bottom: 4px; }
+
+/* ── Update button ── */
+.profile-container > .update-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 12px 26px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-blue);
+  animation: fadeUp 0.4s var(--ease-out) 0.1s both;
+  transition: transform var(--duration) var(--ease),
+              filter var(--duration) var(--ease-out),
+              box-shadow var(--duration) var(--ease-out);
+}
+.profile-container > .update-btn::before { content: '✏️'; font-size: 0.9rem; }
+.profile-container > .update-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 28px rgba(79,110,247,0.35);
+}
+.profile-container > .update-btn:active { transform: scale(0.97); }
+
+/* ── Modal overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,26,46,0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  animation: fadeIn 0.2s ease both;
+}
+
+/* ── Modal ── */
+.modal {
+  position: fixed;
+  top: 0%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 201;
+  width: min(460px, 92vw);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: popIn 0.35s var(--ease) both;
+}
+
+.modal-header {
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 2px solid var(--border);
+  background: var(--bg);
+}
+.modal-header h2 {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.modal-header h2::before { content: '✏️'; font-size: 1rem; }
+
+.modal-body {
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ── Input groups ── */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-group label {
+  font-size: 0.73rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+}
+.input-group input {
+  background: var(--bg);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: border-color var(--duration) var(--ease-out),
+              box-shadow var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease);
+}
+.input-group input::placeholder { color: var(--text-muted); font-weight: 400; }
+.input-group input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(79,110,247,0.12);
+  transform: scale(1.01);
+  outline: none;
+}
+
+.input-group small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ── Modal footer ── */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  border-top: 2px solid var(--border);
+  background: var(--bg);
+}
+
+.cancel-btn {
+  background: var(--bg-2);
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease);
+}
+.cancel-btn:hover {
+  border-color: var(--text-muted);
+  transform: scale(1.02);
+}
+
+.save-btn {
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-blue);
+  transition: transform var(--duration) var(--ease),
+              filter var(--duration) var(--ease-out);
+}
+.save-btn:hover  { transform: scale(1.03); filter: brightness(1.07); }
+.save-btn:active { transform: scale(0.97); }

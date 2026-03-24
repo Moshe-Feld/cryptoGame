@@ -59,7 +59,7 @@ function Game() {
         </div>
       )}
 
-      <CreatePuzzle text={quote?.quote || ""} type={"level"} />
+      <CreatePuzzle text={quote?.quote || ""} type={"level"} author={quote.author}/>
     </div>
   );
 }

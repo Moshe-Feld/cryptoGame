@@ -17,7 +17,7 @@ export default function Keyboard({ alphabet, revealedLetters = [], fullyRevealed
             <button
                 key={ltr}
                 className={cls}
-                tabIndex={-1}                     
+                tabIndex={-1}
                 onMouseDown={(e) => { e.preventDefault(); onLetterClick(lower); }}
                 onTouchStart={(e) => { e.preventDefault(); onLetterClick(lower); }}
                 type="button"
@@ -37,10 +37,11 @@ export default function Keyboard({ alphabet, revealedLetters = [], fullyRevealed
 
     return (
         <>
-            <button className="toggle-keyboard" onClick={() => setVisible(false)}>
-                ⌨ Hide Keyboard
-            </button>
+
             <div className="keyboard">
+                <button className="toggle-keyboard" onClick={() => setVisible(false)}>
+                    ⌨ {visible ? "Hide Keyboard" : "Show Keyboard"}
+                </button>
                 <div className="keyboard-row">
                     {alphabet.slice(0, 10).map(renderKey)}
                 </div>
