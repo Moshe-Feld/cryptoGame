@@ -7,10 +7,10 @@ import "../css/Class.css"
 function Class() {
     const { _id } = useParams();
     const API_URL = "http://localhost:3000";
-    const [myStudents, setMyStudents] = useState([]);
+    const [joinedUsers, setJoinedUsers] = useState([])
     const [classData, setclassData] = useState("");
     const [myQuotes, setMyQuotes] = useState([]);
-    const [newQuote, setNewQuote] = useState({ classId: _id });
+    const [newQuote, setNewQuote] = useState({classId: _id, text:"", author:""});
     const [showModel, setShowModal] = useState(false);
     const [input, setInput] = useState("");
     const { user } = useUser();
@@ -21,8 +21,16 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/class/${id}`);
             setclassData(response.data);
-            setMyStudents(response.data.joinedUsers);
         } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    async function getJoinedUsers(id) {
+        try{
+            const response = await axios.get(`${API_URL}/userClass/joined-users/${id}`)
+            setJoinedUsers(response.data)
+        }catch(err){
             console.error(err.message);
         }
     }
@@ -31,6 +39,7 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/quotes/by-class/${id}`);
             setMyQuotes(response.data);
+            console.log(`My Quotes: ${response.data}`)
         } catch (err) {
             console.error(err.message);
         }
@@ -39,6 +48,7 @@ function Class() {
     async function postQuote(body) {
         try {
             await axios.post(`${API_URL}/quotes`, body);
+            loadQuotes(_id);
             alert("quote added");
         } catch (err) {
             console.error(err.message);
@@ -49,6 +59,7 @@ function Class() {
         try {
             const res = await axios.put(`${API_URL}/class/${id}`, details)
             setShowModal(false);
+            loadQuotes(_id);
         } catch (err) {
             console.error(err.message);
         }
@@ -68,21 +79,24 @@ function Class() {
         try {
             if (!window.confirm('Are you sure? This will delete all quotes!')) return;
             const res = await axios.delete(`${API_URL}/quotes/${id}`)
-            navigate(`/class/${classData._id}`)
+            navigate(`/class/${_id}`)
         } catch (err) {
             console.error(err.message)
         }
     }
-
-    useEffect(() => {
-        getClass(_id);
+    useEffect(()=>{
+         getClass(_id);
         loadQuotes(_id);
-    }, [myQuotes])
+    },[_id])
+
+    useEffect(()=>{
+        getJoinedUsers(_id)
+    },[])
 
     if (!classData || !user) return <p>Loading...</p>;
 
-    const isTeacher = classData?.userId === user.userName;
-    const isStudent = classData?.joinedUsers?.includes(user.userName);
+    const isTeacher = classData?.userId === user._id;
+    const isStudent = joinedUsers.includes(user._id)
     return (
         <>
             <h1>{classData.subject}</h1>
@@ -117,9 +131,9 @@ function Class() {
                 {isTeacher && (
                     <div className="students-section">
                         <h3>Students</h3>
-                        {Array.isArray(myStudents) && myStudents.length > 0 ? (
+                        {Array.isArray(joinedUsers) && joinedUsers.length > 0 ? (
                             <ul>
-                                {myStudents.map((item, index) => (
+                                {joinedUsers.map((item, index) => (
                                     <li key={index}>{item}</li>
                                 ))}
                             </ul>
@@ -137,7 +151,7 @@ function Class() {
                         <input
                             placeholder="Quote"
                             onChange={(e) =>
-                                setNewQuote({ ...newQuote, quote: e.target.value })
+                                setNewQuote({ ...newQuote, text: e.target.value })
                             }
                         />
                         <input

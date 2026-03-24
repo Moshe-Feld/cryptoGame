@@ -1,0 +1,189 @@
+/* ============================================
+   WikiHome.css
+   ============================================ */
+
+.wiki-home-container,
+.login-container {
+  max-width: 480px;
+  margin: var(--space-2xl) auto;
+  padding: var(--space-xl);
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+
+/* Stats bar */
+.wiki-home-container h3,
+.login-container h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+/* Each stat as pill */
+.wiki-home-container h3,
+.login-container h3 {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  line-height: 1.8;
+}
+
+.wiki-home-container h4,
+.login-container h4 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+/* Category buttons */
+.wiki-home-container > div,
+.login-container > div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--space-sm) !important;
+  width: 100% !important;
+}
+
+.wiki-home-container > div button,
+.login-container > div button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-lg);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--duration) var(--ease),
+              box-shadow var(--duration) var(--ease-out),
+              border-color var(--duration) var(--ease-out),
+              background var(--duration) var(--ease-out);
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+.wiki-home-container > div button:nth-child(1),
+.login-container > div button:nth-child(1) { animation-delay: 0.05s; }
+.wiki-home-container > div button:nth-child(2),
+.login-container > div button:nth-child(2) { animation-delay: 0.10s; }
+.wiki-home-container > div button:nth-child(3),
+.login-container > div button:nth-child(3) { animation-delay: 0.15s; }
+
+/* Films → blue */
+.wiki-home-container > div button:nth-child(1):hover,
+.login-container > div button:nth-child(1):hover {
+  border-color: var(--blue);
+  background: var(--blue-light);
+  transform: translateX(6px);
+  box-shadow: var(--shadow-blue);
+}
+/* Actors → orange */
+.wiki-home-container > div button:nth-child(2):hover,
+.login-container > div button:nth-child(2):hover {
+  border-color: var(--orange);
+  background: var(--orange-light);
+  transform: translateX(6px);
+  box-shadow: var(--shadow-orange);
+}
+/* TV → purple */
+.wiki-home-container > div button:nth-child(3):hover,
+.login-container > div button:nth-child(3):hover {
+  border-color: var(--purple);
+  background: var(--purple-light);
+  transform: translateX(6px);
+  box-shadow: 0 4px 20px rgba(168,85,247,0.2);
+}
+
+/* Arrow on hover */
+.wiki-home-container > div button::after,
+.login-container > div button::after {
+  content: '→';
+  position: absolute;
+  right: var(--space-lg);
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease);
+}
+.wiki-home-container > div button:hover::after,
+.login-container > div button:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ============================================
+   Wiki.css  (game page)
+   ============================================ */
+
+.wiki-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+
+/* Hint toggle button */
+.wiki-page > button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--yellow-light);
+  color: #b45309;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  border: 2px solid #fde68a;
+  cursor: pointer;
+  margin-bottom: var(--space-md);
+  transition: background var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease);
+}
+.wiki-page > button:hover {
+  background: var(--yellow);
+  color: #fff;
+  transform: scale(1.03);
+}
+
+/* Hint text */
+.wiki-page > p {
+  background: var(--yellow-light);
+  border: 2px solid #fde68a;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+  line-height: 1.65;
+  font-weight: 500;
+  animation: fadeUp 0.3s var(--ease-out) both;
+}
+.wiki-page > p strong { color: #b45309; }
+
+/* Loading */
+.wiki-page > p:only-child {
+  background: none;
+  border: none;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1rem;
+}

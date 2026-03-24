@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
-
+import "../css/WikiHome.css"
 const categories = [
     { name: "🎬 FILMS", key: "films" },
     { name: "👤 ACTORS", key: "people" },

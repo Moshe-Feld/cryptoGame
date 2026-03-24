@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const quoteScheme = new mongoose.Schema({
-    quote :{type: String, required: true},
+    text :{type: String, required: true},
     author:{type: String, required: true},
     classId: {type: mongoose.Schema.Types.ObjectId, required: true} //refernce to class._id
 })

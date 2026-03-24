@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
-import "../css/ClasePage.css";
-import { use } from "react";
+import "../css/ClassPage.css"
 
 function ClassPage() {
     const navigate = useNavigate();
@@ -16,9 +15,9 @@ function ClassPage() {
     if (!user || !user.userName) return navigate("/");
 
 
-    async function loadStudentClass(userName) {
+    async function loadStudentClass(userId) {
         try {
-            const response = await axios.get(`${API_URL}/userClass/join-class/${userName}`);
+            const response = await axios.get(`${API_URL}/userClass/join-class/${userId}`);
             setClassIds(response.data);
         } catch (err) {
             console.error(err.message);
@@ -37,24 +36,25 @@ function ClassPage() {
             console.error(err.message)
         }
     }
-
+    
     async function joinToClass() {
         try {
-            const userToJoin = {
-                userId: user.userName,
-            }
-            const response = await axios.post(`${API_URL}/userClass/${code}`, userToJoin)
-            await loadStudentClass(user.userName)
+            const response = await axios.post(`${API_URL}/userClass/${code}`, {userId: user._id})
+            await loadStudentClass(user._id)
             await getClassData(classIds)
         } catch (err) {
             console.error(err.message)
-        }
+        } 
     }
 
     useEffect(() => {
-        loadStudentClass(user.userName)
-        getClassData(classIds)
+        loadStudentClass(user._id)
+
     }, [])
+
+    useEffect(()=>{
+        getClassData(classIds)
+    },[classIds])
 
     useEffect(() => {
         const sections = document.querySelectorAll('.class-section, .form-card');

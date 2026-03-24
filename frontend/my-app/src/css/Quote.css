@@ -1,0 +1,113 @@
+/* ============================================
+   Quote.css
+   ============================================ */
+
+.quote-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+
+/* Completed quote display */
+.quote-page > p,
+.quote-completed {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.8;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  animation: fadeUp 0.4s var(--ease-out) both;
+}
+.quote-page > p::before,
+.quote-completed::before {
+  content: '"';
+  position: absolute;
+  top: -15px;
+  left: var(--space-xl);
+  font-family: var(--font-display);
+  font-size: 5rem;
+  color: var(--blue);
+  opacity: 0.1;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ============================================
+   CreateClass.css
+   — Inherits all .class-page-container styles
+     from ClassPage.css, only adds overrides
+   ============================================ */
+
+/* Title placement inside .class-sections wrapper */
+.class-sections > h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.class-sections > h1::before { content: '📚'; }
+
+/* Standalone .form-card at root level (without .form-sections wrapper) */
+.class-page-container > .form-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.4s var(--ease-out) 0.08s both;
+}
+.class-page-container > .form-card h3 {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+.class-page-container > .form-card input {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  transition: border-color var(--duration) var(--ease-out),
+              box-shadow var(--duration) var(--ease-out);
+}
+.class-page-container > .form-card input::placeholder { color: var(--text-muted); }
+.class-page-container > .form-card input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(79,110,247,0.12);
+}
+.class-page-container > .form-card button {
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 11px 26px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-blue);
+  transition: transform var(--duration) var(--ease),
+              filter var(--duration) var(--ease-out);
+}
+.class-page-container > .form-card button:hover {
+  transform: scale(1.03);
+  filter: brightness(1.07);
+}

@@ -9,9 +9,9 @@ function CreateClass() {
     const navigate = useNavigate()
     const API_URL = "http://localhost:3000";
 
-    async function loadClasses(userName) {
+    async function loadClasses(userId) {
         try {
-            const response = await axios.get(`${API_URL}/class/by-creater/${userName}`);
+            const response = await axios.get(`${API_URL}/class/by-creater/${userId}`);
             setMyClasses(response.data);
         } catch (err) {
             console.error(err.message);
@@ -21,19 +21,19 @@ function CreateClass() {
     async function addClass() {
         try {
             const classDetails = {
-                userId: user.userName,
+                userId: user._id,
                 subject,
             };
             await axios.post(`${API_URL}/class`, classDetails);
             alert("Class added");
-            await loadClasses(user.userName)
+            await loadClasses(user._id)
         } catch (err) {
             console.error(err.message);
         }
     }
 
     useEffect(() => {
-        loadClasses(user.userName);
+        loadClasses(user._id);
     }, []);
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 const classModel = require('../models/class.model');
 const quoteModel = require('../models/quote.model');
 const userModel = require('../models/user.modle');
+const userClassModel = require('../models/userClass.model')
 async function getAllClasses(req, res) {
     try {
         const result = await classModel.find({});
@@ -36,17 +37,6 @@ async function getClassesOfTeacher(req, res) {
     }
 }
 
-async function getClassesOfStudents(req, res) {
-    try {
-        const { userName } = req.params;
-        const response = await classModel.find({});
-        const result = response.filter((item) => item.joinedUsers.includes(userName));
-        res.status(200).send(result);
-    } catch (err) {
-        res.status(500).send(res.message);
-    }
-}
-
 async function addClass(req, res) {
     try {
         let joinCode;
@@ -68,22 +58,22 @@ async function addClass(req, res) {
     }
 }
 
-async function joinToClass(req, res) {
-    try {
-        const { userName, joinCode } = req.body;
-        const classToEdit = await classModel.findOne({ joinCode: joinCode });
-        if (!classToEdit) {
-            return res.status(404).send(`${joinCode} undefine`);
+async function addQuote(req, res) {
+    try{
+        const {id} = req.params
+        const quote = req.body
+        const addToClass = await classModel.findById(id)
+        if (!addToClass){
+            return res.status(404).send(`class ${id} not found`)
         }
-        if (!classToEdit.joinedUsers.includes(userName)) {
-            classToEdit.joinedUsers.push(userName);
-            await classToEdit.save();
+        if(!addToClass.quotes.includes(quote)){
+            addToClass.quotes.push(quote)
+            await addToClass.save()
         }
-        res.status(200).send(`${userName} added to class`);
-    } catch (err) {
-        res.status(500).send(err.message);
+        res.status(200).send(`${quote} added to the class`)
+    }catch(err){
+        res.status(500).send(err.message)
     }
-
 }
 
 async function updateClass(req, res) {
@@ -109,13 +99,13 @@ async function deleteClass(req, res) {
         const { _id } = req.params;
         const quotesToDelete = await quoteModel.find({ classId: _id });
         const quotesIds = quotesToDelete.map(quote => quote._id.toString());
-        console.log(quotesIds)
         const updateRes = await userModel.updateMany(
             { levelCompleted: { $in: quotesIds } },
             { $pull: { levelCompleted: { $in: quotesIds } } }
         );
         console.log(updateRes);
         await quoteModel.deleteMany({ classId: _id });
+        await userClassModel.deleteMany({classId: _id})
         console.log(`deleted ${quotesIds.length} quotes`);
         const result = await classModel.deleteOne({ _id: _id });
         res.status(200).send(`${result} deleted`)
@@ -137,9 +127,8 @@ module.exports = {
     getAllClasses,
     getClssById,
     getClassesOfTeacher,
-    getClassesOfStudents,
     addClass,
-    joinToClass,
+    addQuote,
     updateClass,
     deleteClass,
     deleteAllClasses

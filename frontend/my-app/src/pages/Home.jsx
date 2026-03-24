@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { useUser } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
+import "../css/Home.css"
 
 function Home() {
     const navigate = useNavigate();

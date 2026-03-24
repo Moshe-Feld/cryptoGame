@@ -2,26 +2,33 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CreatePuzzle from "../components/CreatePuzzle";
+import { useUser } from "../context/userContext";
+import "../css/Quote.css"
 
-function Quote(){
+function Quote() {
     const API_URL = "http://localhost:3000";
-    const {_id} = useParams();
+    const { _id } = useParams();
+    const {user} = useUser()
     const [quote, setQuote] = useState("");
-    async function loadQuote(id){
-        try{
+    async function loadQuote(id) {
+        try {
             const response = await axios.get(`${API_URL}/quotes/${id}`);
-            setQuote(response.data.quote);
-        }catch(err){
+            setQuote(response.data.text);
+        } catch (err) {
             console.error(err.message);
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         loadQuote(_id);
-    },[]);
-
-    return(
+    }, []);
+    const isCompleted = user?.levelCompleted?.includes(_id);
+    return (
         <>
-        <CreatePuzzle text={quote} quoteId={_id}/>
+            {
+                isCompleted ? <p>{quote}</p> :
+                <CreatePuzzle text={quote} quoteId={_id} />
+            }
+
         </>
     )
 }

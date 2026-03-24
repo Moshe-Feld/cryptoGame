@@ -1,0 +1,108 @@
+/* ============================================
+   Header.css
+   ============================================ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-xl);
+  height: 64px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 2px solid var(--border);
+  animation: slideDown 0.35s var(--ease-out) both;
+}
+
+/* ── Logo ── */
+.header > p {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: var(--blue);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: transform var(--duration) var(--ease);
+  user-select: none;
+}
+.header > p::before {
+  content: '🔐';
+  font-size: 1.1rem;
+}
+.header > p:hover { transform: scale(1.04); }
+
+/* ── User info pill ── */
+.header-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  transition: border-color var(--duration) var(--ease-out),
+              box-shadow var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease);
+}
+.header-user-info:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-light);
+  transform: translateY(-1px);
+}
+
+.user-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.user-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.user-coins {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #b45309;
+  background: var(--yellow-light);
+  padding: 2px 9px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid #fde68a;
+}
+
+/* ── Divider dot ── */
+.header-user-info::before {
+  display: none;
+}
+
+/* ── Logout ── */
+.header > button {
+  background: var(--red-light);
+  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background var(--duration) var(--ease-out),
+              border-color var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease);
+}
+.header > button:hover {
+  background: var(--red);
+  color: #fff;
+  transform: scale(1.03);
+}

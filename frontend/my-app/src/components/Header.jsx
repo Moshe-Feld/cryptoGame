@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
+import "../css/Header.css"
 function Header() {
     const { user, LogOut } = useUser();
     const navigate = useNavigate()
