@@ -8,9 +8,11 @@ function Class() {
     const { _id } = useParams();
     const API_URL = "http://localhost:3000";
     const [joinedUsers, setJoinedUsers] = useState([])
+    const [joinedIds, setJoinedIds] = useState([])
     const [classData, setclassData] = useState("");
+    const [createdBy, setCreatedBy] = useState("")
     const [myQuotes, setMyQuotes] = useState([]);
-    const [newQuote, setNewQuote] = useState({classId: _id, text:"", author:""});
+    const [newQuote, setNewQuote] = useState({ classId: _id, text: "", author: "" });
     const [showModel, setShowModal] = useState(false);
     const [input, setInput] = useState("");
     const { user } = useUser();
@@ -27,14 +29,28 @@ function Class() {
     }
 
     async function getJoinedUsers(id) {
-        try{
-            const response = await axios.get(`${API_URL}/userClass/joined-users/${id}`)
-            setJoinedUsers(response.data)
-        }catch(err){
+        try {
+            const result = await axios.get(`${API_URL}/userClass/joined-users/${id}`)
+            setJoinedIds(result.data)
+            const requests = result.data.map((item) =>
+                axios.get(`${API_URL}/users/${item}`)
+            )
+            const responses = await Promise.all(requests)
+            const usersData = responses.map(u => u.data)
+            setJoinedUsers(usersData)
+        } catch (err) {
             console.error(err.message);
         }
     }
 
+    async function getCreatedUser(id) {
+        try {
+            const response = await axios.get(`${API_URL}/users/${id}`)
+            setCreatedBy(response.data.userName)
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
     async function loadQuotes(id) {
         try {
             const response = await axios.get(`${API_URL}/quotes/by-class/${id}`);
@@ -84,19 +100,20 @@ function Class() {
             console.error(err.message)
         }
     }
-    useEffect(()=>{
-         getClass(_id);
+    useEffect(() => {
+        getClass(_id);
         loadQuotes(_id);
-    },[_id])
-
-    useEffect(()=>{
         getJoinedUsers(_id)
-    },[])
+    }, [_id])
+
+    useEffect(() => {
+        getCreatedUser(classData.userId)
+    }, [classData])
 
     if (!classData || !user) return <p>Loading...</p>;
 
     const isTeacher = classData?.userId === user._id;
-    const isStudent = joinedUsers.includes(user._id)
+    const isStudent = joinedIds.includes(user._id)
     return (
         <>
             <h1>{classData.subject}</h1>
@@ -117,7 +134,13 @@ function Class() {
                                     className="quote-card"
                                     key={item._id}
                                 >
-                                    <p onClick={() => navigate(`/quote/${item._id}`)}>Level: {index + 1}</p>
+                                    <p onClick={() =>{
+                                        if(!isTeacher){
+                                            navigate(`/quote/${item._id}`)
+                                        }
+                                    }}
+                                    style={{ cursor: isTeacher ? "not-allowed" : "pointer" }}
+                                    >Level: {index + 1}</p>
                                     {isCompleted && <span> ✔</span>}
                                     {isTeacher && (<button className="dlt-btn" onClick={() => deleteQuote(item._id)}>Delete</button>)}
                                 </div>
@@ -134,7 +157,7 @@ function Class() {
                         {Array.isArray(joinedUsers) && joinedUsers.length > 0 ? (
                             <ul>
                                 {joinedUsers.map((item, index) => (
-                                    <li key={index}>{item}</li>
+                                    <li key={index}>{item.userName}</li>
                                 ))}
                             </ul>
                         ) : (
@@ -215,7 +238,7 @@ function Class() {
             )}
             {isStudent && !isTeacher && (
                 <div className="student-view">
-                    <p>class created by user: {classData.userId}</p>
+                    <p>class created by user: {createdBy}</p>
                     <p>You are a student in this class.</p>
                     <p>Click on a level to start the activity!</p>
                 </div>
