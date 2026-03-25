@@ -39,6 +39,7 @@ function ClassPage() {
     
     async function joinToClass() {
         try {
+            console.log("user בזמן שליחה:", user);
             const response = await axios.post(`${API_URL}/userClass/${code}`, {userId: user._id})
             await loadStudentClass(user._id)
             await getClassData(classIds)

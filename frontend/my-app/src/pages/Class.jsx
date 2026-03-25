@@ -103,11 +103,10 @@ function Class() {
         getClass(_id);
         loadQuotes(_id);
         getJoinedUsers(_id)
+        if(classData?.userId){
+             getCreatedUser(classData.userId)
+        }
     }, [_id])
-
-    useEffect(() => {
-        getCreatedUser(classData.userId)
-    }, [classData])
 
     if (!classData || !user) return <p>Loading...</p>;
 

@@ -15,6 +15,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
   const [numbersState, setNumbersState] = useState([]);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [mistakes, setMistakes] = useState(0);
+  const [mistakeFlash, setMistakeFlash] = useState(false)
   const [hintMode, setHintMode] = useState(false);
   const [revealedLetters, setRevealedLetters] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
@@ -214,7 +215,10 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     );
   };
 
-
+  const triggerMistakeFlash = () => {
+    setMistakeFlash(true);
+    setTimeout(() => setMistakeFlash(false), 600);
+  };
 
   const handleInput = (value, index) => {
     if (index === null || !inputRefs.current[index]) return;
@@ -255,6 +259,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
 
     }
     else {
+      triggerMistakeFlash();
       setMistakes((prev) => {
         const newMistakes = prev + 1;
         if (newMistakes >= 3) {
@@ -362,6 +367,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
 
   return (
     <>
+      {mistakeFlash && <div className="mistake-flash-overlay" />}
       <div className="mistakes">
         {[...Array(3)].map((_, i) => (
           <span key={i} className={i < mistakes ? "mistake active" : "mistake"}>
@@ -468,16 +474,19 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
             <p>well done!!</p>
             <p>{showText}</p>
             <p>{author}</p>
-            <button onClick={() => {
-              setShowModel(false)
-              editUser(user, type, quoteId)
+            {
+              type !== "class" ? <button onClick={() => {
+                setShowModel(false)
+                editUser(user, type, quoteId)
+              }
+              } >
+                Next
+              </button> : <></>
             }
-            } >
-              Next
-            </button>
+
             <button onClick={() => {
               editUser(user, type, quoteId)
-              if(type === "class"){
+              if (type === "class") {
                 return navigate(`/class/${classId}`)
               }
               navigate("/home")

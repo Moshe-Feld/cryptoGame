@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllClasses, addClass, deleteClass, getClassesOfTeacher, getClssById, deleteAllClasses, updateClass, addQuote } = require('../controllers/class.controller');
+const { getAllClasses, addClass, deleteClass, getClassesOfTeacher, getProgressClass, getClssById, deleteAllClasses, updateClass, addQuote } = require('../controllers/class.controller');
 
 const router = express.Router();
 
@@ -8,6 +8,8 @@ router.get('/', getAllClasses);
 router.get('/:_id', getClssById)
 
 router.get('/by-creater/:userId', getClassesOfTeacher);
+
+router.get('/progress-class/:id', getProgressClass)
 
 router.post('/', addClass);
 

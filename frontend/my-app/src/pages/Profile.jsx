@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import "../css/Profile.css";
 
 function Profile() {
     const API_URL = 'http://localhost:3000';
     const { user } = useUser();
+    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const [details, setDetails] = useState({
         userName: user?.userName || "",
@@ -141,7 +143,13 @@ function Profile() {
                             </button>
                             <button
                                 className="save-btn"
-                                onClick={updateProfile}
+                                onClick={()=>{
+                                    updateProfile()
+                                    alert("log in agan with your new details")
+                                    navigate('/')
+                                }}
+                                
+                                
                             >
                                 Save Changes
                             </button>
