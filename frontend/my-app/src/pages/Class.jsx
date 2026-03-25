@@ -55,7 +55,6 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/quotes/by-class/${id}`);
             setMyQuotes(response.data);
-            console.log(`My Quotes: ${response.data}`)
         } catch (err) {
             console.error(err.message);
         }
