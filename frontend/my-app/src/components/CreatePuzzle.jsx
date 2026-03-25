@@ -203,7 +203,15 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     }
 
 
-    return Array.from(chosen); // מחזירה רק אינדקסים
+    const chosenArray = Array.from(chosen);
+
+    // אם בחרנו את כל האותיות → מורידים אחת
+    if (chosenArray.length >= encLetters.length) {
+      const randomIndex = Math.floor(Math.random() * chosenArray.length);
+      chosenArray.splice(randomIndex, 1);
+    }
+
+    return chosenArray;
   };
 
 
@@ -296,36 +304,14 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
   };
 
   const revealHint = (index) => {
+    if (user.coins < 10) { alert("Not enough coins 💰"); return; }
+    if (!window.confirm('Are you sure? This will cost you 10 coins')) return;
     const input = inputRefs.current[index];
     if (!input || input.disabled) return;
-
     const char = input.dataset.char;
     handleInput(char, index);
+    editUser(user,"hint", quoteId)
 
-    // const number = Number(input.dataset.number);
-
-    // input.value = char.toUpperCase();
-    // input.disabled = true;
-
-    // setRevealedLetters(prev => {
-    //   if (prev.includes(char.toLowerCase())) return prev;
-    //   return [...prev, char.toLowerCase()];
-    // });
-
-    // const stillRemaining = remainingOccurrences(char);
-    // if (!stillRemaining) {
-    //   setNumbersState((prev) =>
-    //     prev.map((num) => (num === number ? null : num))
-    //   );
-    // }
-
-    // setTimeout(() => {
-    //   const nextIndex = getNextActiveIndex(index, 1);
-    //   if (nextIndex !== null && inputRefs.current[nextIndex]) {
-    //     inputRefs.current[nextIndex].focus();
-    //     setFocusedIndex(nextIndex);
-    //   }
-    // }, 0);
   };
 
   useEffect(() => {
