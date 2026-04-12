@@ -37,22 +37,6 @@ async function getClassesOfTeacher(req, res) {
     }
 }
 
-async function getProgressClass(req, res) {
-    try{
-        const {id} = req.params
-        const quotes = await quoteModel.find({classId: id})
-        const userClasses = await userClassModel.find({classId: id})
-        const usersId = userClasses.map(uc=> uc.userId)
-        const users = await userModel.find({_id: {$in: usersId} })
-        const result = users.map(user=>{
-            const solved = quotes.filter(q=> user.levelCompleted.includes(q._id))
-        })
-        res.status(200).send(result)
-    }catch(err){
-        res.status(500).send(err.message)
-    }
-}
-
 async function addClass(req, res) {
     try {
         let joinCode;
@@ -143,7 +127,6 @@ module.exports = {
     getAllClasses,
     getClssById,
     getClassesOfTeacher,
-    getProgressClass,
     addClass,
     addQuote,
     updateClass,

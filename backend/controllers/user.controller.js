@@ -1,4 +1,5 @@
 const userModel = require("../models/user.modle");
+const quoteModel = require("../models/quote.model")
 async function getAllUsers(req, res) {
     try {
         const allUsers = await userModel.find();
@@ -29,6 +30,27 @@ async function getUserByUserName(req, res) {
 
     } catch (err) {
         res.status(500).send({ message: err.message });
+    }
+}
+
+async function getUserProgress(req, res) {
+    try{
+        const {_id} = req.params
+        const {classId} = req.query
+        const myUser = await userModel.findById(_id)
+        if(!myUser){
+            return res.status(404).send(`user: ${_id} undefine`)
+        }
+        const classLevelsData = await quoteModel.find({classId})
+        if(classLevelsData.length <= 0){
+            return res.status(404).send(`class: ${classId} undefine`)
+        }
+        const totalLevels = classLevelsData.length
+        const classLevels = classLevelsData.map(item => item._id.toString())
+        const myLevels = myUser.levelCompleted.filter(lc => classLevels.includes(lc.toString())).length
+        res.status(200).send({totalLevels, myLevels})
+    }catch(err){
+        res.status(500).send(err.message)
     }
 }
 
@@ -111,6 +133,7 @@ module.exports = {
     getAllUsers,
     getUserById,
     getUserByUserName,
+    getUserProgress,
     addUser,
     deleteAllUsers,
     updateUser,

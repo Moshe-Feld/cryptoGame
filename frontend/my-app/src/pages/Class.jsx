@@ -14,6 +14,7 @@ function Class() {
     const [myQuotes, setMyQuotes] = useState([]);
     const [newQuote, setNewQuote] = useState({ classId: _id, text: "", author: "" });
     const [showModel, setShowModal] = useState(false);
+    const [progress, setProgress] = useState({})
     const [input, setInput] = useState("");
     const { user } = useUser();
 
@@ -23,6 +24,7 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/class/${id}`);
             setclassData(response.data);
+            getCreatedUser(response.data.userId)
         } catch (err) {
             console.error(err.message);
         }
@@ -94,7 +96,22 @@ function Class() {
         try {
             if (!window.confirm('Are you sure? This will delete all quotes!')) return;
             const res = await axios.delete(`${API_URL}/quotes/${id}`)
-            navigate(`/class/${_id}`)
+            loadQuotes(_id)
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
+
+    async function fetchAllProgress() {
+        try {
+            const progressObj = {}
+            await Promise.all(
+                joinedUsers.map(async (ju) => {
+                    const res = await axios.get(`${API_URL}/users/user-progress/${ju._id}`, {params: {classId:_id}})
+                    progressObj[ju._id] = res.data
+                })
+            )
+            setProgress(progressObj)
         } catch (err) {
             console.error(err.message)
         }
@@ -103,10 +120,14 @@ function Class() {
         getClass(_id);
         loadQuotes(_id);
         getJoinedUsers(_id)
-        if(classData?.userId){
-             getCreatedUser(classData.userId)
-        }
+        console.log(classData?.userId)
     }, [_id])
+
+    useEffect(() => {
+        if (joinedUsers.length > 1) {
+            fetchAllProgress()
+        }
+    }, [joinedUsers, myQuotes])
 
     if (!classData || !user) return <p>Loading...</p>;
 
@@ -132,12 +153,12 @@ function Class() {
                                     className="quote-card"
                                     key={item._id}
                                 >
-                                    <p onClick={() =>{
-                                        if(!isTeacher){
+                                    <p onClick={() => {
+                                        if (!isTeacher) {
                                             navigate(`/quote/${item._id}`)
                                         }
                                     }}
-                                    style={{ cursor: isTeacher ? "not-allowed" : "pointer" }}
+                                        style={{ cursor: isTeacher ? "not-allowed" : "pointer" }}
                                     >Level: {index + 1}</p>
                                     {isCompleted && <span> ✔</span>}
                                     {isTeacher && (<button className="dlt-btn" onClick={() => deleteQuote(item._id)}>Delete</button>)}
@@ -154,9 +175,27 @@ function Class() {
                         <h3>Students</h3>
                         {Array.isArray(joinedUsers) && joinedUsers.length > 0 ? (
                             <ul>
-                                {joinedUsers.map((item, index) => (
-                                    <li key={index}>{item.userName}</li>
-                                ))}
+                                {joinedUsers.map((item, index) => {
+                                    const prog = progress[item._id]
+                                    const percent = prog
+                                        ? Math.round((prog.myLevels / prog.totalLevels) * 100)
+                                        : 0
+
+                                    return (
+                                        <li key={index}>
+                                            <span>{item.userName}</span>
+                                            <div className="progress-bar-container">
+                                                <div
+                                                    className="progress-bar-fill"
+                                                    style={{ width: `${percent}%` }}
+                                                />
+                                            </div>
+                                            <small>
+                                                {prog ? `${prog.myLevels}/${prog.totalLevels} levels` : 'loading...'}
+                                            </small>
+                                        </li>
+                                    )
+                                })}
                             </ul>
                         ) : (
                             <p>No Students yet.</p>
