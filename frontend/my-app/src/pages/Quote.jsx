@@ -16,8 +16,13 @@ function Quote() {
             const response = await axios.get(`${API_URL}/quotes/${id}`);
             setQuote(response.data);
             setClassId(response.data.classId);
-        } catch (err) {
-            console.error(err.message);
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
     useEffect(() => {
@@ -27,7 +32,7 @@ function Quote() {
     return (
         <>
             {
-                isCompleted ? <p>{quote}</p> :
+                isCompleted ? <div className="completed"><p>{quote.text}</p></div> :
                 <CreatePuzzle text={quote.text} type={"class"} quoteId={_id.toString()} classId={classId} author={quote.author}/>
             }
 

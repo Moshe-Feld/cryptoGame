@@ -14,6 +14,7 @@ async function getUserClassById(req, res) {
     try {
         const { id } = req.params;
         const result = await userClassModel.findById(id)
+        if(!result) return res.status(404).send({message: "user-class not found"})
         res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message)
@@ -26,20 +27,25 @@ async function addUserClass(req, res) {
         const {userId} = req.body
         const classToJoin = await classModel.findOne({ joinCode })
         if (!classToJoin) {
-            return res.status(404).send("Class not found")
+            return res.status(404).send({message: "Class not found"})
         }
         const classToJoinId = classToJoin._id
         await userClassModel.create({ userId, classId: classToJoinId })
-        res.status(200).send(userId)
+        res.status(201).send(userId)
     } catch (err) {
-        res.status(500).send(err.message)
+    if (err.code === 11000) {
+        return res.status(409).send({ message: "User already in this class" })
     }
+
+    res.status(500).send({ message: err.message })
+}
 }
 
 async function getUserClassByUser(req, res) {
     try {
         const { userId } = req.params
         const result = await userClassModel.find({userId})
+        if(result.length < 0) return res.status(404).send({message:"user not found"})
         res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message)
@@ -60,7 +66,7 @@ async function getJoinedUsers(req, res) {
         const {id} = req.params
         const result = await userClassModel.find({classId:id})
         if(!result){
-            return res.status(404).send(`class ${id} not found`)
+            return res.status(404).send({message:`class ${id} not found`})
         }
         const joined = result.map(j => j.userId)
         res.status(200).send(joined)

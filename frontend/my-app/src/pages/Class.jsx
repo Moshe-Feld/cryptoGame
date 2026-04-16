@@ -26,7 +26,12 @@ function Class() {
             setclassData(response.data);
             getCreatedUser(response.data.userId)
         } catch (err) {
-            console.error(err.message);
+            if(err.response?.status === 404){
+                alert(err.response?.data?.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
 
@@ -41,7 +46,12 @@ function Class() {
             const usersData = responses.map(u => u.data)
             setJoinedUsers(usersData)
         } catch (err) {
-            console.error(err.message);
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
 
@@ -49,16 +59,26 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/users/${id}`)
             setCreatedBy(response.data.userName)
-        } catch (err) {
-            console.error(err.message)
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
     async function loadQuotes(id) {
         try {
             const response = await axios.get(`${API_URL}/quotes/by-class/${id}`);
             setMyQuotes(response.data);
-        } catch (err) {
-            console.error(err.message);
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
 
@@ -68,7 +88,7 @@ function Class() {
             loadQuotes(_id);
             alert("quote added");
         } catch (err) {
-            console.error(err.message);
+            alert("Network error")
         }
     }
 
@@ -77,8 +97,11 @@ function Class() {
             const res = await axios.put(`${API_URL}/class/${id}`, details)
             setShowModal(false);
             loadQuotes(_id);
-        } catch (err) {
-            console.error(err.message);
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+           alert("Network error")
         }
     }
 
@@ -88,7 +111,7 @@ function Class() {
             const res = await axios.delete(`${API_URL}/class/${id}`)
             navigate('/create-class');
         } catch (err) {
-            console.error(err.message);
+            alert("Network error")
         }
     }
 
@@ -98,7 +121,7 @@ function Class() {
             const res = await axios.delete(`${API_URL}/quotes/${id}`)
             loadQuotes(_id)
         } catch (err) {
-            console.error(err.message)
+            alert("Network error")
         }
     }
 
@@ -112,15 +135,19 @@ function Class() {
                 })
             )
             setProgress(progressObj)
-        } catch (err) {
-            console.error(err.message)
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
     useEffect(() => {
         getClass(_id);
         loadQuotes(_id);
         getJoinedUsers(_id)
-        console.log(classData?.userId)
     }, [_id])
 
     useEffect(() => {

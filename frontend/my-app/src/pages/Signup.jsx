@@ -24,18 +24,20 @@ function Signup() {
             }
 
             setLoad(true);
-            const existing = await axios.get(`${API_URL}/users/user-name/${userName}`);
-            if (existing.data.exists) {
-                alert("Username already exists!");
-                setLoad(false);
-                return;
-            }
             await axios.post(`${API_URL}/users`, newUser);
             setLoad(false);
             alert("user created succefuly!");
             navigate("/");
-        } catch (err) {
-            console.error(err.message);
+         } catch (err) {
+            if(err.response?.status === 409){
+                alert(err.response?.data?.message)
+            }
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error")
+            }
         }
     }
     return (

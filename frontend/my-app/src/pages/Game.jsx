@@ -53,12 +53,7 @@ function Game() {
         <p><strong>Your coins:</strong> {user?.coins || 0}</p>
       </div>
 
-      {quote?.quote && (
-        <div className="quote-display">
-          <p>"{quote.quote}"</p>
-        </div>
-      )}
-
+     
       <CreatePuzzle text={quote?.quote || ""} type={"level"} author={quote.author}/>
     </div>
   );

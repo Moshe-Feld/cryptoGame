@@ -14,11 +14,11 @@ async function getAllClasses(req, res) {
 async function getClssById(req, res) {
     try {
         const { _id } = req.params;
-        const response = await classModel.findById(_id);
-        if (!response) {
-            return res.status(404).send(`${_id} undefine`);
+        const result = await classModel.findById(_id);
+        if (!result) {
+            return res.status(404).send({message:`Class ${_id} not found`});
         }
-        res.status(200).send(response);
+        res.status(200).send(result);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -27,9 +27,9 @@ async function getClssById(req, res) {
 async function getClassesOfTeacher(req, res) {
     try {
         const { userId } = req.params;
-        const result = await classModel.find({ userId: userId });
+        const result = await classModel.find({ userId });
         if (result.length < 1) {
-            return res.status(404).send(`${userId} undefine`);
+            return res.status(404).send({message:`${userId} not found`});
         }
         res.status(200).send(result);
     } catch (err) {
@@ -52,7 +52,7 @@ async function addClass(req, res) {
             joinCode
         }
         await classModel.create(newClass);
-        res.status(200).send(`${body} created`);
+        res.status(201).send(`class created`);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -64,13 +64,13 @@ async function addQuote(req, res) {
         const quote = req.body
         const addToClass = await classModel.findById(id)
         if (!addToClass){
-            return res.status(404).send(`class ${id} not found`)
+            return res.status(404).send({message:`class ${id} not found`})
         }
         if(!addToClass.quotes.includes(quote)){
             addToClass.quotes.push(quote)
             await addToClass.save()
         }
-        res.status(200).send(`${quote} added to the class`)
+        res.status(201).send(`quote added to the class`)
     }catch(err){
         res.status(500).send(err.message)
     }
@@ -80,15 +80,15 @@ async function updateClass(req, res) {
     try {
         const { _id } = req.params
         const { subject } = req.body;
-        const classToEdit = await classModel.findOneAndUpdate(
+        const result = await classModel.findOneAndUpdate(
             { _id },
             { subject },
             { new: true }
         )
-        if (!classToEdit) {
-            return res.status(404).send(`class: ${_id} not found`)
+        if (!result) {
+            return res.status(404).send({message:`class: ${_id} not found`})
         }
-        res.status(200).send(classToEdit)
+        res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -103,12 +103,10 @@ async function deleteClass(req, res) {
             { levelCompleted: { $in: quotesIds } },
             { $pull: { levelCompleted: { $in: quotesIds } } }
         );
-        console.log(updateRes);
         await quoteModel.deleteMany({ classId: _id });
         await userClassModel.deleteMany({classId: _id})
-        console.log(`deleted ${quotesIds.length} quotes`);
-        const result = await classModel.deleteOne({ _id: _id });
-        res.status(200).send(`${result} deleted`)
+        const result = await classModel.deleteOne({ _id });
+        res.status(200).send(`class deleted`)
     } catch (err) {
         res.status(500).send(err.message)
     }

@@ -19,8 +19,13 @@ function ClassPage() {
         try {
             const response = await axios.get(`${API_URL}/userClass/join-class/${userId}`);
             setClassIds(response.data);
-        } catch (err) {
-            console.error(err.message);
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
 
@@ -32,20 +37,30 @@ function ClassPage() {
             const responses = await Promise.all(requests)
             const classes = responses.map(res => res.data)
             setStudentClass(classes)
-        } catch (err) {
-            console.error(err.message)
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
     
     async function joinToClass() {
         try {
-            console.log("user בזמן שליחה:", user);
             const response = await axios.post(`${API_URL}/userClass/${code}`, {userId: user._id})
             await loadStudentClass(user._id)
             await getClassData(classIds)
-        } catch (err) {
-            console.error(err.message)
-        } 
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            if(err.response?.status === 409){
+                alert(err.response?.data.message)
+            }
+           alert("Network error")
+        }
     }
 
     useEffect(() => {

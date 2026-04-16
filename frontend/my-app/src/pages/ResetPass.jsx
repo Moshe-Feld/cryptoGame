@@ -19,13 +19,13 @@ function ResetPass() {
             const res = await axios.put(`${API_URL}/users/reset-password/${email}`);
             alert(`your password is reset. go to your profile to check it`);
             navigate("/")
-        } catch (err) {
-            if (err.response?.status === 404) {
-                alert("No account found with this email address");
-                setEmail("")
-                return;
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
             }
-            console.error(err.mesaage);
+            else{
+                alert("Network error");
+            }
         }
     }
     return (

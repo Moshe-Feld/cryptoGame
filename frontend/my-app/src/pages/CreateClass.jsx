@@ -13,8 +13,13 @@ function CreateClass() {
         try {
             const response = await axios.get(`${API_URL}/class/by-creater/${userId}`);
             setMyClasses(response.data);
-        } catch (err) {
-            console.error(err.message);
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
 
@@ -28,7 +33,7 @@ function CreateClass() {
             alert("Class added");
             await loadClasses(user._id)
         } catch (err) {
-            console.error(err.message);
+            alert("Network error");
         }
     }
 

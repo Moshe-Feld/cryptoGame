@@ -12,6 +12,7 @@ async function getQuoteByClass(req, res) {
     try {
         const { classId } = req.params
         const result = await quoteModel.find({ classId })
+        if(result.length < 0) return res.status(404).send({message:"class not found"})
         res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message)
@@ -21,8 +22,9 @@ async function getQuoteByClass(req, res) {
 async function getQuoteById(req, res) {
     try {
         const { id } = req.params;
-        const quote = await quoteModel.findById(id)
-        res.status(200).send(quote)
+        const result = await quoteModel.findById(id)
+        if(!result) return res.status(404).send({message:"quote not found"})
+        res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message)
     }
@@ -32,7 +34,7 @@ async function postQuote(req, res) {
     try {
         const newQuote = req.body;
         await quoteModel.create(newQuote);
-        res.status(200).send(newQuote)
+        res.status(201).send("quote added")
     } catch (err) {
         res.status(500).send(err.message);
     }

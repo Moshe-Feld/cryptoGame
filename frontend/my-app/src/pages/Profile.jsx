@@ -26,9 +26,13 @@ function Profile() {
             alert("Profile updated successfully!");
             setShowModal(false);
             setDetails({ ...details, password: "" });
-        } catch (err) {
-            console.error(err.message);
-            alert("Error updating profile");
+         } catch (err) {
+            if(err.response?.status === 404){
+                alert(err.response?.data.message)
+            }
+            else{
+                alert("Network error");
+            }
         }
     }
 

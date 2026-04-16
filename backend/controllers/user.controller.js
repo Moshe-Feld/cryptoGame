@@ -12,11 +12,11 @@ async function getAllUsers(req, res) {
 async function getUserById(req, res) {
     try {
         const { _id } = req.params;
-        const findUser = await userModel.findById(_id);
-        if (!findUser) {
-            return res.status(404).send("user undefine")
+        const result = await userModel.findById(_id);
+        if (!result) {
+            return res.status(404).send({message:"user not found"})
         }
-        res.status(200).send(findUser);
+        res.status(200).send(result);
     } catch (err) {
         console.error(err.message);
     }
@@ -26,10 +26,13 @@ async function getUserByUserName(req, res) {
     try {
         const { userName } = req.params;
         const result = await userModel.findOne({ userName });
-        res.status(200).send({ exists: !!result, user: result || null });
+        if(!result){
+            return res.status(404).send({message: "No account found with this username"})
+        }
+        res.status(200).send(result);
 
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        res.status(500).send(err.message);
     }
 }
 
@@ -39,11 +42,11 @@ async function getUserProgress(req, res) {
         const {classId} = req.query
         const myUser = await userModel.findById(_id)
         if(!myUser){
-            return res.status(404).send(`user: ${_id} undefine`)
+            return res.status(404).send({message:`user: ${_id} not found`})
         }
         const classLevelsData = await quoteModel.find({classId})
         if(classLevelsData.length <= 0){
-            return res.status(404).send(`class: ${classId} undefine`)
+            return res.status(404).send({message:`class: ${classId} not found`})
         }
         const totalLevels = classLevelsData.length
         const classLevels = classLevelsData.map(item => item._id.toString())
@@ -59,8 +62,10 @@ async function addUser(req, res) {
     try {
         const body = req.body;
         const newUser = { ...body, coins: 50, level: 1 }
+        const result = await userModel.findOne({userName: body.userName})
+        if(result) return res.status(409).send({message: "User name already exists!"})
         await userModel.create(newUser);
-        res.status(200).send(newUser);
+        res.status(201).send(newUser);
     } catch (err) {
         console.error(err.message);
     }
@@ -73,17 +78,16 @@ async function updateUser(req, res) {
         const { coins = 0, level = 0, filmLevel = 0, peopleLevel = 0, tvLevel = 0, quoteId = "" } = req.body;
         const result = await userModel.findById(_id);
 
-        if (!result) return res.status(404).send("user not found");
+        if (!result) return res.status(404).send({message:"user not found"});
         await userModel.updateOne(
             { _id },
             { $inc: { coins, level, filmLevel, peopleLevel, tvLevel } }
         );
-        const updatedUser = await userModel.findById(_id);
-        if (!updatedUser.levelCompleted.includes(quoteId)) {
-            updatedUser.levelCompleted.push(quoteId);
-            await updatedUser.save();
+        if (!result.levelCompleted.includes(quoteId)) {
+            result.levelCompleted.push(quoteId);
+            await result.save();
         }
-        res.status(200).send(updatedUser);
+        res.status(200).send(result);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -99,7 +103,7 @@ async function updateProfile(req, res) {
             { new: true }
         );
         if (!result) {
-            return res.status(404).send(`${userName} is undefine`)
+            return res.status(404).send({message:"User not found"})
         }
         res.status(200).send(result)
     } catch (err) {
@@ -111,7 +115,7 @@ async function resetPass(req, res) {
     try {
         const { email } = req.params;
         const result = await userModel.findOne({ email });
-        if (!result) return res.status(404).send(`user not found`);
+        if (!result) return res.status(404).send({message:`user not found`});
         result.password = "0000";
         await result.save()
         res.status(200).send(result);

@@ -17,17 +17,19 @@ export function UserProvider({ children }) {
     async function Login(user) {
         try {
             const userLogIn = await axios.get(`${API_URL}/users/user-name/${user.userName}`);
-            if (!userLogIn.data.exists) {
-                return alert("No account found with this username");
-            }
-            if (user.password !== userLogIn.data.user.password) {
+            if (user.password !== userLogIn.data.password) {
                 return alert("Wrong password");
             }
-            setUser(userLogIn.data.user);
+            setUser(userLogIn.data);
             setConnected(true);
             navigate('/home');
         } catch (err) {
-            console.error(err.message);
+            if (err.response?.status === 404) {
+                alert(err.response?.data?.message || err)
+            }
+            else {
+               alert("Network error");
+            }
         }
     }
 
@@ -37,7 +39,7 @@ export function UserProvider({ children }) {
             setUser(null);
             navigate("/");
         } catch (err) {
-            console.error(err.message);
+            alert(err);
         }
     }
 
@@ -60,9 +62,9 @@ export function UserProvider({ children }) {
             setUser(updatedUser);
         } catch (err) {
             if (err.response?.status === 404) {
-                console.error(err.message);
+                alert(err.response?.data?.message);
             } else {
-                console.error("Error updating user:", err.message);
+                alert("Network error");
             }
         }
     }
