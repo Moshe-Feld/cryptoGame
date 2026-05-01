@@ -309,7 +309,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     if (!input || input.disabled) return;
     const char = input.dataset.char;
     handleInput(char, index);
-    editUser(user,"hint", quoteId)
+    editUser(user,"hint")
 
   };
 

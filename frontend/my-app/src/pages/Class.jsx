@@ -162,6 +162,7 @@ function Class() {
     const isStudent = joinedIds.includes(user._id)
     return (
         <>
+        <button className="back" onClick={()=> navigate("/class")}>Go back</button>
             <h1>{classData.subject}</h1>
             {
                 isTeacher && (

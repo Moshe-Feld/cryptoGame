@@ -45,7 +45,7 @@ async function getUserClassByUser(req, res) {
     try {
         const { userId } = req.params
         const result = await userClassModel.find({userId})
-        if(result.length < 0) return res.status(404).send({message:"user not found"})
+        if(result.length < 1) return res.status(404).send({message:"user not found"})
         res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message)
@@ -65,7 +65,7 @@ async function getJoinedUsers(req, res) {
     try{
         const {id} = req.params
         const result = await userClassModel.find({classId:id})
-        if(!result){
+        if(result.length < 1){
             return res.status(404).send({message:`class ${id} not found`})
         }
         const joined = result.map(j => j.userId)

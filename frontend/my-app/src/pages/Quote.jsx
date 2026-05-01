@@ -25,9 +25,11 @@ function Quote() {
             }
         }
     }
+    
     useEffect(() => {
         loadQuote(_id);
     }, []);
+
     const isCompleted = user?.levelCompleted?.includes(_id);
     return (
         <>

@@ -64,8 +64,10 @@ async function addUser(req, res) {
         const newUser = { ...body, coins: 50, level: 1 }
         const result = await userModel.findOne({userName: body.userName})
         if(result) return res.status(409).send({message: "User name already exists!"})
+
         const checkEmail = await userModel.findOne({email: body.email})
         if(checkEmail) return res.status(409).send({message: "Email already exists"})
+            
         await userModel.create(newUser);
         res.status(201).send(newUser);
     } catch (err) {

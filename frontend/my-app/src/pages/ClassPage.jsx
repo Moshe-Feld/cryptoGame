@@ -72,20 +72,20 @@ function ClassPage() {
         getClassData(classIds)
     },[classIds])
 
-    useEffect(() => {
-        const sections = document.querySelectorAll('.class-section, .form-card');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.2 });
+    // useEffect(() => {
+    //     const sections = document.querySelectorAll('.class-section, .form-card');
+    //     const observer = new IntersectionObserver((entries) => {
+    //         entries.forEach(entry => {
+    //             if (entry.isIntersecting) {
+    //                 entry.target.classList.add('visible');
+    //             }
+    //         });
+    //     }, { threshold: 0.2 });
 
-        sections.forEach(section => observer.observe(section));
+    //     sections.forEach(section => observer.observe(section));
 
-        return () => sections.forEach(section => observer.unobserve(section));
-    }, [])
+    //     return () => sections.forEach(section => observer.unobserve(section));
+    // }, [])
 
     return (
         <div className="class-page-container">
