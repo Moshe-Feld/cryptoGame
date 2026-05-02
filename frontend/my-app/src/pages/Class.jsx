@@ -26,10 +26,10 @@ function Class() {
             setclassData(response.data);
             getCreatedUser(response.data.userId)
         } catch (err) {
-            if(err.response?.status === 404){
+            if (err.response?.status === 404) {
                 alert(err.response?.data?.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
@@ -46,10 +46,10 @@ function Class() {
             const usersData = responses.map(u => u.data)
             setJoinedUsers(usersData)
         } catch (err) {
-            if(err.response?.status === 404){
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
@@ -59,11 +59,11 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/users/${id}`)
             setCreatedBy(response.data.userName)
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
@@ -72,11 +72,11 @@ function Class() {
         try {
             const response = await axios.get(`${API_URL}/quotes/by-class/${id}`);
             setMyQuotes(response.data);
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
@@ -97,11 +97,11 @@ function Class() {
             const res = await axios.put(`${API_URL}/class/${id}`, details)
             setShowModal(false);
             loadQuotes(_id);
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-           alert("Network error")
+            alert("Network error")
         }
     }
 
@@ -130,16 +130,16 @@ function Class() {
             const progressObj = {}
             await Promise.all(
                 joinedUsers.map(async (ju) => {
-                    const res = await axios.get(`${API_URL}/users/user-progress/${ju._id}`, {params: {classId:_id}})
+                    const res = await axios.get(`${API_URL}/users/user-progress/${ju._id}`, { params: { classId: _id } })
                     progressObj[ju._id] = res.data
                 })
             )
             setProgress(progressObj)
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
@@ -162,13 +162,20 @@ function Class() {
     const isStudent = joinedIds.includes(user._id)
     return (
         <>
-        <button className="back" onClick={()=> navigate("/class")}>Go back</button>
-            <h1>{classData.subject}</h1>
-            {
-                isTeacher && (
-                    <button className="update-btn" onClick={() => setShowModal(true)}>Update Class</button>
-                )
-            }
+            <div class-header>
+                <button className="back" onClick={() => navigate("/class")}>Go back</button>
+                {
+                    isTeacher && (
+                        <button className="update-btn" onClick={() => setShowModal(true)}>Update Class</button>
+                    )
+                }
+            </div>
+
+            <div className="title">
+                <span className="label">class</span>
+                <h1>{classData.subject}</h1>
+            </div>
+
             <div className="class-content">
                 <div className="quotes-section">
                     <h3>Quotes</h3>
@@ -183,7 +190,15 @@ function Class() {
                                 >
                                     <p onClick={() => {
                                         if (!isTeacher) {
-                                            navigate(`/quote/${item._id}`)
+                                            navigate(`/quote/${item._id}`, {
+                                                state: {
+                                                    text: item.text,
+                                                    author: item.author,
+                                                    classId: _id,
+                                                    className: classData.subject,
+                                                    level: index + 1
+                                                }
+                                            })
                                         }
                                     }}
                                         style={{ cursor: isTeacher ? "not-allowed" : "pointer" }}
