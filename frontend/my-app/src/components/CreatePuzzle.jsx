@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
 
-  const { user, editUser } = useUser();
+  const { user, editUser, showModel, setShowModel } = useUser();
   const navigate = useNavigate()
   const form = { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20, u: 21, v: 22, w: 23, x: 24, y: 25, z: 26 };
   const [code, setCode] = useState(form);
@@ -23,8 +23,8 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
   const [cipherDone, setCipherDone] = useState(false);
   const [guessInput, setGuessInput] = useState("");
   const [guessResult, setGuessResult] = useState(null);
-  const [showModel, setShowModel] = useState(false)
-  const [showText, setShowText] = useState("");
+  // const [showModel, setShowModel] = useState();
+  const [showText, setShowText] = useState(null);
   const inputRefs = useRef([]);
   const completedRef = useRef(false);
   let inputIndex = 0;
@@ -151,13 +151,6 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
       }
     });
     setResetTrigger(prev => prev + 1);
-    // setTimeout(() => {
-    //   const firstIndex = getNextActiveIndex(-1, 1);
-    //   if (firstIndex !== null && inputRefs.current[firstIndex]) {
-    //     inputRefs.current[firstIndex].focus();
-    //     setFocusedIndex(firstIndex);
-    //   }
-    // }, 0);
   };
 
   const choseStartLetters = (items) => {
@@ -181,7 +174,6 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
       }
     });
 
-    // בחר עוד 2–3 אותיות רנדומליות
     const encLetters = [];
     let globalIndex = 0;
     items.forEach((item) => {
@@ -204,7 +196,6 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
 
     const chosenArray = Array.from(chosen);
 
-    // אם בחרנו את כל האותיות → מורידים אחת
     if (chosenArray.length >= encLetters.length) {
       const randomIndex = Math.floor(Math.random() * chosenArray.length);
       chosenArray.splice(randomIndex, 1);
@@ -232,6 +223,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     const inputChar = value.toLowerCase();
     const number = Number(inputRefs.current[index].dataset.number);
 
+    if (!code[inputChar]) { inputRefs.current[index].value = ""; return; }
     if (code[inputChar] === number) {
       inputRefs.current[index].value = inputChar.toUpperCase();
       inputRefs.current[index].disabled = true;
@@ -254,7 +246,8 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
               setCipherDone(true);
             } else {
               setShowModel(true)
-              setShowText(text)
+              setShowText({text:text, author:author})
+              editUser(user, type, quoteId)
             }
           }
           return newState;
@@ -285,7 +278,8 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     if (guessInput.trim().toLowerCase() === cleanTitle) {
       setGuessResult("correct");
       setShowModel(true)
-      setShowText(text)
+      setShowText({text:text, author:author})
+      editUser(user, type, quoteId)
     } else {
       setGuessResult("wrong");
     }
@@ -309,7 +303,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
     if (!input || input.disabled) return;
     const char = input.dataset.char;
     handleInput(char, index);
-    editUser(user,"hint")
+    editUser(user, "hint")
 
   };
 
@@ -457,12 +451,13 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
         showModel && (
           <div className="model">
             <p>well done!!</p>
-            <p>{showText}</p>
-            <p>{author}</p>
+            <p>{showText.text}</p>
+            <p>{showText.author}</p>
             {
               type !== "class" ? <button onClick={() => {
                 setShowModel(false)
-                editUser(user, type, quoteId)
+                resetGame();
+                // editUser(user, type, quoteId)
               }
               } >
                 Next
@@ -470,7 +465,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
             }
 
             <button onClick={() => {
-              editUser(user, type, quoteId)
+                // editUser(user, type, quoteId)
               if (type === "class") {
                 return navigate(`/class/${classId}`)
               }

@@ -12,6 +12,7 @@ export function useUser() {
 export function UserProvider({ children }) {
     const [user, setUser] = useState({});
     const [connected, setConnected] = useState(false);
+    const [showModel, setShowModel] = useState(false);
     const navigate = useNavigate();
 
     async function Login(user) {
@@ -28,7 +29,7 @@ export function UserProvider({ children }) {
                 alert(err.response?.data?.message || err)
             }
             else {
-               alert("Network error");
+                alert("Network error");
             }
         }
     }
@@ -59,7 +60,8 @@ export function UserProvider({ children }) {
             else if (type === "hint") update.coins = -10;
             const { data: updatedUser } = await axios.put(`${API_URL}/users/${user._id}`,
                 update);
-            setUser(updatedUser);
+            const userUpdated = await axios.get(`${API_URL}/users/user-name/${user.userName}`);
+            setUser(userUpdated.data);
         } catch (err) {
             if (err.response?.status === 404) {
                 alert(err.response?.data?.message);
@@ -70,7 +72,7 @@ export function UserProvider({ children }) {
     }
 
     return (
-        <userContext.Provider value={{ user, connected, Login, LogOut, editUser }}>
+        <userContext.Provider value={{ user, connected, showModel, setShowModel, Login, LogOut, editUser }}>
             {children}
         </userContext.Provider>
     )
