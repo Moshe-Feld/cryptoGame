@@ -33,17 +33,27 @@ function Quote() {
     useEffect(() => {
         loadQuote(_id);
     }, []);
-    
+
     const isCompleted = user?.levelCompleted?.includes(_id);
     return (
         <>
-        <button onClick={()=>navigate(`/class/${classId}`)}>Go Back</button>
-            <div className="quote-section">
-                <h1>{state.className}</h1>
-                <p>level: {state.level}</p>
+            <div className="quote-header">
+                <button className="back" onClick={() => navigate(`/class/${classId}`)}>Go Back</button>
             </div>
+
+             <div className="quote-title-section">
+                <span className="quote-label">level: {state.level}</span>
+                <h1>{state.className}</h1>
+            </div>
+
             {
-                isCompleted ? <div className="completed"><p>{quote.text}</p></div> :
+                isCompleted ? 
+                 <div className="completed-card">
+                    <span className="completed-badge">✔</span>
+                    <p className="completed-text">{quote.text}</p>
+                    <p className="completed-author">— {quote.author}</p>
+                </div>
+                :
                     <CreatePuzzle text={quote.text} type={"class"} quoteId={_id.toString()} classId={classId} author={quote.author} />
             }
 

@@ -163,7 +163,7 @@ function Class() {
     return (
         <>
             <div class-header>
-                <button className="back" onClick={() => navigate("/class")}>Go back</button>
+                <button className="back" onClick={() => navigate(-1)}>Go back</button>
                 {
                     isTeacher && (
                         <button className="update-btn" onClick={() => setShowModal(true)}>Update Class</button>
