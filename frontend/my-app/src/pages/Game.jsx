@@ -53,8 +53,8 @@ function Game() {
         <p><strong>Your coins:</strong> {user?.coins || 0}</p>
       </div>
 
-     
-      <CreatePuzzle text={quote?.quote || ""} type={"level"} author={quote.author}/>
+
+      <CreatePuzzle text={quote?.quote || ""} type={"level"} author={quote.author} />
     </div>
   );
 }
