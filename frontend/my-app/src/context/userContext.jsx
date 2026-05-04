@@ -12,7 +12,6 @@ export function useUser() {
 export function UserProvider({ children }) {
     const [user, setUser] = useState({});
     const [connected, setConnected] = useState(false);
-    const [showModel, setShowModel] = useState(false);
     const navigate = useNavigate();
 
     async function Login(user) {
@@ -72,7 +71,7 @@ export function UserProvider({ children }) {
     }
 
     return (
-        <userContext.Provider value={{ user, connected, showModel, setShowModel, Login, LogOut, editUser }}>
+        <userContext.Provider value={{ user, connected, Login, LogOut, editUser }}>
             {children}
         </userContext.Provider>
     )
