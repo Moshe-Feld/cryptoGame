@@ -28,9 +28,9 @@ async function getClassesOfTeacher(req, res) {
     try {
         const { userId } = req.params;
         const result = await classModel.find({ userId });
-        if (result.length < 1) {
-            return res.status(404).send({message:`${userId} not found`});
-        }
+        // if (result.length < 1) {
+        //     return res.status(404).send({message:`${userId} not found`});
+        // }
         res.status(200).send(result);
     } catch (err) {
         res.status(500).send(err.message);

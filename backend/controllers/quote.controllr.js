@@ -12,7 +12,7 @@ async function getQuoteByClass(req, res) {
     try {
         const { classId } = req.params
         const result = await quoteModel.find({ classId })
-        if(result.length == 0) return res.status(404).send({message:"class not found"})
+        // if(result.length == 0) return res.status(200).send({message:"class not found"})
         res.status(200).send(result)
     } catch (err) {
         res.status(500).send(err.message)

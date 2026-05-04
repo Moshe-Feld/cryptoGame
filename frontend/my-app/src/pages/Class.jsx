@@ -162,8 +162,11 @@ function Class() {
     const isStudent = joinedIds.includes(user._id)
     return (
         <>
-            <div class-header>
-                <button className="back" onClick={() => navigate(-1)}>Go back</button>
+            <div className="class-header">
+                <button className="back" onClick={() => {
+                    isTeacher ? navigate('/create-class') :
+                    navigate('/class')
+                }}>Go back</button>
                 {
                     isTeacher && (
                         <button className="update-btn" onClick={() => setShowModal(true)}>Update Class</button>

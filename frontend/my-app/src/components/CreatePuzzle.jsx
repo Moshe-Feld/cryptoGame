@@ -24,7 +24,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
   const [guessInput, setGuessInput] = useState("");
   const [guessResult, setGuessResult] = useState(null);
   // const [showModel, setShowModel] = useState();
-  const [showText, setShowText] = useState(null);
+  const [showText, setShowText] = useState("");
   const inputRefs = useRef([]);
   const completedRef = useRef(false);
   let inputIndex = 0;

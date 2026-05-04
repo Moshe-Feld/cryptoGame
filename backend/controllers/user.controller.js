@@ -1,5 +1,7 @@
 const userModel = require("../models/user.modle");
 const quoteModel = require("../models/quote.model")
+const bcrypt = require('bcrypt')
+
 async function getAllUsers(req, res) {
     try {
         const allUsers = await userModel.find();
@@ -62,6 +64,7 @@ async function addUser(req, res) {
     try {
         const body = req.body;
         const newUser = { ...body, coins: 50, level: 1 }
+        
         const result = await userModel.findOne({userName: body.userName})
         if(result) return res.status(409).send({message: "User name already exists!"})
 
