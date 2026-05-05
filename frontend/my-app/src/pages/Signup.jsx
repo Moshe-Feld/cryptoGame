@@ -8,19 +8,12 @@ function Signup() {
     const [newUser, setNewUser] = useState({});
     const [load, setLoad] = useState(false);
 
-    function isValidEmail(email){
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
     async function postNewUser(newUser) {
         try {
-            const {userName, password, email} = newUser;
-            if(!userName || !password || !email){
+            const {userName, password} = newUser;
+            if(!userName || !password){
                 alert("Pleae fill all fileds");
                 return;
-            }
-            if(!isValidEmail(email)){
-                alert("Invalid email format")
-                return
             }
 
             setLoad(true);
@@ -45,7 +38,6 @@ function Signup() {
             <h1>Sign Up</h1>
             <input placeholder="user-name" onChange={(e) => setNewUser({ ...newUser, userName: e.target.value })} />
             <input placeholder="password" onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} />
-            <input placeholder="email" onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
             <button onClick={() => postNewUser(newUser)}>Create User</button>
             {load ? <p>Loading...</p> : <></>}
             <p>already have an account? <strong onClick={() => navigate("/")}>log in</strong></p>

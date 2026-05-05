@@ -19,11 +19,11 @@ function ClassPage() {
         try {
             const response = await axios.get(`${API_URL}/userClass/join-class/${userId}`);
             setClassIds(response.data);
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
@@ -37,29 +37,32 @@ function ClassPage() {
             const responses = await Promise.all(requests)
             const classes = responses.map(res => res.data)
             setStudentClass(classes)
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            else{
+            else {
                 alert("Network error");
             }
         }
     }
-    
+
     async function joinToClass() {
         try {
-            const response = await axios.post(`${API_URL}/userClass/${code}`, {userId: user._id})
+            setCode("")
+            const response = await axios.post(`${API_URL}/userClass/${code}`, { userId: user._id })
             await loadStudentClass(user._id)
             await getClassData(classIds)
-         } catch (err) {
-            if(err.response?.status === 404){
+        } catch (err) {
+            if (err.response?.status === 404) {
                 alert(err.response?.data.message)
             }
-            if(err.response?.status === 409){
+            else if (err.response?.status === 409) {
                 alert(err.response?.data.message)
             }
-           alert("Network error")
+            else {
+                alert("Network error")
+            }
         }
     }
 
@@ -68,24 +71,9 @@ function ClassPage() {
 
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         getClassData(classIds)
-    },[classIds])
-
-    // useEffect(() => {
-    //     const sections = document.querySelectorAll('.class-section, .form-card');
-    //     const observer = new IntersectionObserver((entries) => {
-    //         entries.forEach(entry => {
-    //             if (entry.isIntersecting) {
-    //                 entry.target.classList.add('visible');
-    //             }
-    //         });
-    //     }, { threshold: 0.2 });
-
-    //     sections.forEach(section => observer.observe(section));
-
-    //     return () => sections.forEach(section => observer.unobserve(section));
-    // }, [])
+    }, [classIds])
 
     return (
         <div className="class-page-container">

@@ -15,7 +15,6 @@ export default function Login() {
                 onChange={(e) => setUser({ ...user, userName: e.target.value })} />
             <input placeholder="password"
                 onChange={(e) => setUser({ ...user, password: e.target.value })} />
-            <p style={{ "cursor": "pointer" }}>Forgat password? <strong onClick={() => navigate("/reset-pass")}>Reset Password</strong></p>
             <button onClick={async () => {
                 Login(user);
             }}>Log in</button>

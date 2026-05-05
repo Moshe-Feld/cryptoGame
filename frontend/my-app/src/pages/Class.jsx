@@ -84,6 +84,7 @@ function Class() {
 
     async function postQuote(body) {
         try {
+            setNewQuote({classId:_id, text:"", author:""})
             await axios.post(`${API_URL}/quotes`, body);
             loadQuotes(_id);
             alert("quote added");
@@ -115,16 +116,6 @@ function Class() {
         }
     }
 
-    async function deleteQuote(id) {
-        try {
-            if (!window.confirm('Are you sure? This will delete all quotes!')) return;
-            const res = await axios.delete(`${API_URL}/quotes/${id}`)
-            loadQuotes(_id)
-        } catch (err) {
-            alert("Network error")
-        }
-    }
-
     async function fetchAllProgress() {
         try {
             const progressObj = {}
@@ -144,6 +135,7 @@ function Class() {
             }
         }
     }
+
     useEffect(() => {
         getClass(_id);
         loadQuotes(_id);
@@ -151,7 +143,7 @@ function Class() {
     }, [_id])
 
     useEffect(() => {
-        if (joinedUsers.length > 1) {
+        if (joinedUsers.length > 0) {
             fetchAllProgress()
         }
     }, [joinedUsers, myQuotes])
@@ -165,7 +157,7 @@ function Class() {
             <div className="class-header">
                 <button className="back" onClick={() => {
                     isTeacher ? navigate('/create-class') :
-                    navigate('/class')
+                        navigate('/class')
                 }}>Go back</button>
                 {
                     isTeacher && (
@@ -187,27 +179,24 @@ function Class() {
                             const isCompleted = user?.levelCompleted?.includes(item._id);
 
                             return (
-                                <div
+                                <div onClick={() => {
+                                    navigate(`/quote/${item._id}`, {
+                                        state: {
+                                            text: item.text,
+                                            author: item.author,
+                                            classId: _id,
+                                            className: classData.subject,
+                                            level: index + 1,
+                                            isTeacher: isTeacher
+                                        }
+                                    })
+                                }}
                                     className="quote-card"
                                     key={item._id}
+                                    style={{ cursor: "pointer" }}
                                 >
-                                    <p onClick={() => {
-                                        if (!isTeacher) {
-                                            navigate(`/quote/${item._id}`, {
-                                                state: {
-                                                    text: item.text,
-                                                    author: item.author,
-                                                    classId: _id,
-                                                    className: classData.subject,
-                                                    level: index + 1
-                                                }
-                                            })
-                                        }
-                                    }}
-                                        style={{ cursor: isTeacher ? "not-allowed" : "pointer" }}
-                                    >Level: {index + 1}</p>
+                                    <p>Level: {index + 1}</p>
                                     {isCompleted && <span> ✔</span>}
-                                    {isTeacher && (<button className="dlt-btn" onClick={() => deleteQuote(item._id)}>Delete</button>)}
                                 </div>
                             );
                         })
@@ -256,12 +245,14 @@ function Class() {
                         <h3>Add New Quote</h3>
                         <input
                             placeholder="Quote"
+                            value={newQuote.text}
                             onChange={(e) =>
                                 setNewQuote({ ...newQuote, text: e.target.value })
                             }
                         />
                         <input
                             placeholder="Author"
+                            value={newQuote.author}
                             onChange={(e) =>
                                 setNewQuote({ ...newQuote, author: e.target.value })
                             }
@@ -319,6 +310,7 @@ function Class() {
                     </div>
                 </>
             )}
+
             {isStudent && !isTeacher && (
                 <div className="student-view">
                     <p>class created by user: {createdBy}</p>

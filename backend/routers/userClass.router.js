@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllUserClass, getUserClassById, addUserClass, getUserClassByUser, deleteAllUserClass, getJoinedUsers } = require('../controllers/userClass.contriller')
+const { getAllUserClass, getUserClassById, addUserClass, getUserClassByUser, deleteAllUserClass, getJoinedUsers, leaveClass } = require('../controllers/userClass.contriller')
 
 const router = express.Router()
 

@@ -11,17 +11,11 @@ function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [details, setDetails] = useState({
         userName: user?.userName || "",
-        email: user?.email || "",
-        password: user.password
+        password: user.password || ""
     });
 
     async function updateProfile() {
         try {
-            if (!details.email) {
-                alert("Email is required");
-                return;
-            }
-
             await axios.put(`${API_URL}/users/update-profile/${user.userName}`, details);
             alert("Profile updated successfully!");
             setShowModal(false);
@@ -47,10 +41,6 @@ function Profile() {
                     <div className="info-row">
                         <span className="info-label">Username:</span>
                         <span className="info-value">{user.userName}</span>
-                    </div>
-                    <div className="info-row">
-                        <span className="info-label">Email:</span>
-                        <span className="info-value">{user.email}</span>
                     </div>
                     <div className="info-row">
                         <span className="info-label">Level:</span>
@@ -113,24 +103,13 @@ function Profile() {
                                 <input
                                     type="text"
                                     placeholder="Enter new user name"
-                                    value={details.userName}
                                     onChange={(e) => setDetails({ ...details, userName: e.target.value })} />
                             </div>
 
-                            <div className="input-group">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    placeholder="Enter new email"
-                                    value={details.email}
-                                    onChange={(e) => setDetails({ ...details, email: e.target.value })}
-                                />
-                            </div>
 
                             <div className="input-group">
                                 <label>New Password</label>
                                 <input
-                                    type="password"
                                     placeholder="Leave empty to keep current"
                                     onChange={(e) => setDetails({ ...details, password: e.target.value })}
                                 />

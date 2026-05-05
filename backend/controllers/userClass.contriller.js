@@ -29,6 +29,9 @@ async function addUserClass(req, res) {
         if (!classToJoin) {
             return res.status(404).send({message: "Class not found"})
         }
+        if(userId.toString() === classToJoin.userId.toString()){
+            return res.status(409).send({message: "You cannot join your own class"})
+        }
         const classToJoinId = classToJoin._id
         await userClassModel.create({ userId, classId: classToJoinId })
         res.status(201).send(userId)

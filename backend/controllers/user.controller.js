@@ -47,9 +47,6 @@ async function getUserProgress(req, res) {
             return res.status(404).send({message:`user: ${_id} not found`})
         }
         const classLevelsData = await quoteModel.find({classId})
-        if(classLevelsData.length <= 0){
-            return res.status(404).send({message:`class: ${classId} not found`})
-        }
         const totalLevels = classLevelsData.length
         const classLevels = classLevelsData.map(item => item._id.toString())
         const myLevels = myUser.levelCompleted.filter(lc => classLevels.includes(lc.toString())).length
@@ -67,9 +64,6 @@ async function addUser(req, res) {
         
         const result = await userModel.findOne({userName: body.userName})
         if(result) return res.status(409).send({message: "User name already exists!"})
-
-        const checkEmail = await userModel.findOne({email: body.email})
-        if(checkEmail) return res.status(409).send({message: "Email already exists"})
             
         await userModel.create(newUser);
         res.status(201).send(newUser);
@@ -118,19 +112,6 @@ async function updateProfile(req, res) {
     }
 }
 
-async function resetPass(req, res) {
-    try {
-        const { email } = req.params;
-        const result = await userModel.findOne({ email });
-        if (!result) return res.status(404).send({message:`user not found`});
-        result.password = "0000";
-        await result.save()
-        res.status(200).send(result);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-}
-
 async function deleteAllUsers(req, res) {
     try {
         const result = await userModel.deleteMany({});
@@ -148,6 +129,5 @@ module.exports = {
     addUser,
     deleteAllUsers,
     updateUser,
-    updateProfile,
-    resetPass
+    updateProfile
 }

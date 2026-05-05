@@ -14,7 +14,6 @@ function Game() {
   const API_URL = 'http://localhost:3000';
 
   useEffect(() => {
-    let ignore = false;
     const fetchQuote = async () => {
       try {
         if (user.level >= 1400) {
@@ -24,7 +23,7 @@ function Game() {
         const randomData = await axios.get(
           `https://dummyjson.com/quotes/${user.level}`
         );
-        if (!ignore) setQuote(randomData.data);
+        setQuote(randomData.data);
       } catch (err) {
         console.error("Error fetching quote:", err);
       } finally {
@@ -32,9 +31,6 @@ function Game() {
       }
     };
     fetchQuote();
-    return () => {
-      ignore = true;
-    };
   }, [user.level]);
 
   if (load) {

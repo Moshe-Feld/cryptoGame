@@ -457,7 +457,7 @@ function CreatePuzzle({ text, type, author, titleToGuess, quoteId, classId }) {
               type !== "class" ? <button onClick={() => {
                 setShowModel(false)
                 // resetGame();
-                editUser(user, type, quoteId)
+                editUser(user, type)
               }
               } >
                 Next

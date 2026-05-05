@@ -30,6 +30,17 @@ function Quote() {
             }
         }
     }
+
+    async function deleteQuote(id) {
+        try {
+            if (!window.confirm('Are you sure? This will delete all quotes!')) return;
+            const res = await axios.delete(`${API_URL}/quotes/${id}`)
+            navigate(-1)
+        } catch (err) {
+            alert("Network error")
+        }
+    }
+
     useEffect(() => {
         loadQuote(_id);
     }, []);
@@ -41,19 +52,20 @@ function Quote() {
                 <button className="back" onClick={() => navigate(`/class/${classId}`)}>Go Back</button>
             </div>
 
-             <div className="quote-title-section">
+            <div className="quote-title-section">
                 <span className="quote-label">level: {state.level}</span>
                 <h1>{state.className}</h1>
             </div>
 
             {
-                isCompleted ? 
-                 <div className="completed-card">
-                    <span className="completed-badge">✔</span>
-                    <p className="completed-text">{quote.text}</p>
-                    <p className="completed-author">— {quote.author}</p>
-                </div>
-                :
+                isCompleted || state.isTeacher ?
+                    <div className="completed-card">
+                        <span className="completed-badge">✔</span>
+                        <p className="completed-text">{quote.text}</p>
+                        <p className="completed-author">— {quote.author}</p>
+                        {state.isTeacher && (<button className="dlt-btn" onClick={() => deleteQuote(_id)}>Delete</button>)}
+                    </div>
+                    :
                     <CreatePuzzle text={quote.text} type={"class"} quoteId={_id.toString()} classId={classId} author={quote.author} />
             }
 

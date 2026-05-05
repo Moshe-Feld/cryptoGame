@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllUsers, addUser, getUserById, getUserByUserName, getUserProgress, deleteAllUsers, updateUser, resetPass, updateProfile } = require('../controllers/user.controller');
+const { getAllUsers, addUser, getUserById, getUserByUserName, getUserProgress, deleteAllUsers, updateUser, updateProfile } = require('../controllers/user.controller');
 const router = express.Router();
 
 router.get('/', getAllUsers)
@@ -15,8 +15,6 @@ router.post('/', addUser)
 router.put('/:_id', updateUser);
 
 router.put('/update-profile/:userName', updateProfile)
-
-router.put('/reset-password/:email', resetPass)
 
 router.delete('/', deleteAllUsers);
 
