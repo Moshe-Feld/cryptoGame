@@ -84,7 +84,7 @@ function Class() {
 
     async function postQuote(body) {
         try {
-            setNewQuote({classId:_id, text:"", author:""})
+            setNewQuote({ classId: _id, text: "", author: "" })
             await axios.post(`${API_URL}/quotes`, body);
             loadQuotes(_id);
             alert("quote added");
@@ -97,7 +97,7 @@ function Class() {
         try {
             const res = await axios.put(`${API_URL}/class/${id}`, details)
             setShowModal(false);
-            loadQuotes(_id);
+            navigate('/create-class')
         } catch (err) {
             if (err.response?.status === 404) {
                 alert(err.response?.data.message)
@@ -132,6 +132,21 @@ function Class() {
             }
             else {
                 alert("Network error");
+            }
+        }
+    }
+
+    async function leaveClass(id) {
+        try {
+            if (!window.confirm('Are you sure you want leave this class?')) return;
+            const responae = await axios.delete(`${API_URL}/userClass/${id}`)
+            navigate('/class')
+        } catch (err) {
+            if (err.responae?.status == 404) {
+                alert(err.responae?.data.message)
+            }
+            else {
+                alert("Network error")
             }
         }
     }
@@ -316,6 +331,7 @@ function Class() {
                     <p>class created by user: {createdBy}</p>
                     <p>You are a student in this class.</p>
                     <p>Click on a level to start the activity!</p>
+                    <button className="delete-btn" onClick={() => leaveClass(_id)}>Leave class</button>
                 </div>
             )}
         </>

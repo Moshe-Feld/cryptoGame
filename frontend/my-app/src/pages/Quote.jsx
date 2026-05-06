@@ -40,12 +40,11 @@ function Quote() {
             alert("Network error")
         }
     }
-
+    let isCompleted = false
     useEffect(() => {
         loadQuote(_id);
+        isCompleted = user?.levelCompleted?.includes(_id);
     }, []);
-
-    const isCompleted = user?.levelCompleted?.includes(_id);
     return (
         <>
             <div className="quote-header">

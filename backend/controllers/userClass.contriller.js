@@ -1,6 +1,7 @@
 const userClassModel = require('../models/userClass.model')
 const classModel = require("../models/class.model")
-
+const quoteModel = require("../models/quote.model")
+const userModel = require("../models/user.modle")
 async function getAllUserClass(req, res) {
     try {
         const result = await userClassModel.find({})
@@ -78,11 +79,29 @@ async function getJoinedUsers(req, res) {
     }
 }
 
+async function deleteUserClass(req, res) {
+    try{
+        const {classId} = req.params
+        const quotesToDelete = await quoteModel.find({classId});
+        const quotesIds = quotesToDelete.map(quote => quote._id.toString());
+        const updateRes = await userModel.updateMany(
+            { levelCompleted: { $in: quotesIds } },
+            { $pull: { levelCompleted: { $in: quotesIds } } }
+        )
+        const result = await userClassModel.deleteOne({classId})
+        if(!result) return res.status(404).send({message: "class not found"})
+        res.status(200).send('you leave the class')
+    }catch(err){
+        res.status(500).send(err.message)
+    }
+}
+
 module.exports = {
     getAllUserClass,
     getUserClassById,
     addUserClass,
     getUserClassByUser,
     deleteAllUserClass,
-    getJoinedUsers
+    getJoinedUsers,
+    deleteUserClass
 }
