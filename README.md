@@ -4,7 +4,7 @@ npm install
 
 node index.js
 
-
+-----------
 cd frontend
 
 cd my-app
@@ -13,6 +13,7 @@ npm install
 
 npm run dev
 
+------------
 
 env. - VITE_TMDB_API_KEY=
 
